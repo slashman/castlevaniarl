@@ -2,12 +2,9 @@ package crl.ui.graphicsUI.effects;
 
 import java.awt.Image;
 
-import sz.csi.ConsoleSystemInterface;
 import sz.util.Position;
 import crl.action.Action;
-import crl.ui.UserInterface;
-import crl.ui.consoleUI.ConsoleUserInterface;
-import crl.ui.consoleUI.effects.CharDirectedEffect;
+import crl.conf.gfx.data.GFXConfiguration;
 import crl.ui.graphicsUI.GFXUserInterface;
 import crl.ui.graphicsUI.SwingSystemInterface;
 
@@ -87,7 +84,8 @@ public class GFXDirectionalMissileEffect extends GFXDirectedEffect {
 			Position toPrint = Position.add(ui.PC_POS, relative);
 			if (!ui.insideViewPort(toPrint))
 				break;
-			si.drawImage(toPrint.x()*32, toPrint.y()*32-4*height, icon);
+			si.drawImage(toPrint.x()*configuration.getNormalTileWidth(), 
+					     toPrint.y()*configuration.getNormalTileWidth()-4*height, icon);
 			si.refresh();
 			animationPause();
 			si.restore();
@@ -105,8 +103,8 @@ public class GFXDirectionalMissileEffect extends GFXDirectedEffect {
 		setAnimationDelay(animationDelay * 36);*/
 	}
 
-	public GFXDirectionalMissileEffect(String ID, Image[] missile, int delay){
-		super(ID, delay);
+	public GFXDirectionalMissileEffect(String ID, Image[] missile, int delay, GFXConfiguration configuration){
+		super(ID, delay, configuration);
 		setMissile(missile);
 	}
 

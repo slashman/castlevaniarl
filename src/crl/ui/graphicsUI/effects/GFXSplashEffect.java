@@ -3,18 +3,15 @@ package crl.ui.graphicsUI.effects;
 import java.awt.Image;
 
 import sz.util.Position;
-import crl.ui.UserInterface;
+import crl.conf.gfx.data.GFXConfiguration;
 import crl.ui.graphicsUI.GFXUserInterface;
 import crl.ui.graphicsUI.SwingSystemInterface;
 
 public class GFXSplashEffect extends GFXEffect{
 	private Image[] tiles;
 
-	//private transient SwingSystemInterface si;
-	
-
-    public GFXSplashEffect(String ID, Image[] tiles, int delay){
-    	super(ID,delay);
+    public GFXSplashEffect(String ID, Image[] tiles, int delay, GFXConfiguration configuration){
+    	super(ID, delay, configuration);
 		this.tiles = tiles;
     }
     
@@ -26,7 +23,8 @@ public class GFXSplashEffect extends GFXEffect{
 		int height = 0;
 		if (ui.getPlayer().getLevel().getMapCell(getPosition()) != null)
 			height = ui.getPlayer().getLevel().getMapCell(getPosition()).getHeight();
-		si.drawImage(center.x*32, center.y*32, tiles[0]);
+		si.drawImage(center.x*configuration.getNormalTileWidth(), 
+				     center.y*configuration.getNormalTileWidth(), tiles[0]);
 
 		for (int ring = 1; ring < tiles.length; ring++){
 			drawCircle(ui, si, center, ring, tiles[ring],height);
@@ -64,20 +62,20 @@ public class GFXSplashEffect extends GFXEffect{
 
 	private void drawCirclePixels(GFXUserInterface ui, SwingSystemInterface si, Position center, int x, int y, Image tile, int height){
 		if (ui.insideViewPort(center.x+x, center.y + y))
-			si.drawImage((center.x + x)*32, (center.y + y)*32-4*height, tile);
+			si.drawImage((center.x + x)*configuration.getNormalTileWidth(), (center.y + y)*configuration.getNormalTileWidth()-4*height, tile);
 		if (ui.insideViewPort(center.x+x, center.y - y))
-			si.drawImage((center.x + x)*32, (center.y - y)*32-4*height, tile);
+			si.drawImage((center.x + x)*configuration.getNormalTileWidth(), (center.y - y)*configuration.getNormalTileWidth()-4*height, tile);
 		if (ui.insideViewPort(center.x-x, center.y + y))
-			si.drawImage((center.x - x)*32, (center.y + y)*32-4*height, tile);
+			si.drawImage((center.x - x)*configuration.getNormalTileWidth(), (center.y + y)*configuration.getNormalTileWidth()-4*height, tile);
 		if (ui.insideViewPort(center.x-x, center.y - y))
-			si.drawImage((center.x - x)*32, (center.y - y)*32-4*height, tile);
+			si.drawImage((center.x - x)*configuration.getNormalTileWidth(), (center.y - y)*configuration.getNormalTileWidth()-4*height, tile);
 		if (ui.insideViewPort(center.x+y, center.y + x))
-			si.drawImage((center.x + y)*32, (center.y + x)*32-4*height, tile);
+			si.drawImage((center.x + y)*configuration.getNormalTileWidth(), (center.y + x)*configuration.getNormalTileWidth()-4*height, tile);
 		if (ui.insideViewPort(center.x+y, center.y - x))
-			si.drawImage((center.x + y)*32, (center.y - x)*32-4*height, tile);
+			si.drawImage((center.x + y)*configuration.getNormalTileWidth(), (center.y - x)*configuration.getNormalTileWidth()-4*height, tile);
 		if (ui.insideViewPort(center.x-y, center.y + x))
-			si.drawImage((center.x - y)*32, (center.y + x)*32-4*height, tile);
+			si.drawImage((center.x - y)*configuration.getNormalTileWidth(), (center.y + x)*configuration.getNormalTileWidth()-4*height, tile);
 		if (ui.insideViewPort(center.x-y, center.y - x))
-			si.drawImage((center.x - y)*32, (center.y - x)*32-4*height, tile);
+			si.drawImage((center.x - y)*configuration.getNormalTileWidth(), (center.y - x)*configuration.getNormalTileWidth()-4*height, tile);
 	}
 }

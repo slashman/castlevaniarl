@@ -6,12 +6,10 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import sz.util.ImageUtils;
 import crl.ui.graphicsUI.AddornedBorderPanel;
 import crl.ui.graphicsUI.GFXDisplay;
 

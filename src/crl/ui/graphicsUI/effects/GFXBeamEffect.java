@@ -2,11 +2,8 @@ package crl.ui.graphicsUI.effects;
 
 import java.awt.Image;
 
-import sz.csi.ConsoleSystemInterface;
 import sz.util.Position;
-import crl.ui.UserInterface;
-import crl.ui.consoleUI.ConsoleUserInterface;
-import crl.ui.consoleUI.effects.CharDirectedEffect;
+import crl.conf.gfx.data.GFXConfiguration;
 import crl.ui.graphicsUI.GFXUserInterface;
 import crl.ui.graphicsUI.SwingSystemInterface;
 
@@ -28,15 +25,16 @@ public class GFXBeamEffect extends GFXDirectedEffect {
 			Position toPrint = Position.add(ui.PC_POS, relative);
 			if (!ui.insideViewPort(toPrint))
 				break;
-			si.drawImage(toPrint.x()*32, toPrint.y()*32-4*height, missile[too]);
+			si.drawImage(toPrint.x()*configuration.getNormalTileWidth(), 
+					     toPrint.y()*configuration.getNormalTileWidth()-4*height, missile[too]);
 			si.refresh();
 			animationPause();
 		}
 		si.restore();
 	}
 
-	public GFXBeamEffect(String ID, Image[] missile, int delay){
-		super(ID);
+	public GFXBeamEffect(String ID, Image[] missile, int delay, GFXConfiguration configuration){
+		super(ID, configuration);
 		setMissile(missile);
 		setAnimationDelay(delay);
 		

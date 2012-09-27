@@ -1,7 +1,6 @@
 package crl.ui.graphicsUI.effects;
 
-import crl.ui.graphicsUI.GFXUserInterface;
-import crl.ui.graphicsUI.SwingSystemInterface;
+import crl.conf.gfx.data.GFXConfiguration;
 import sz.util.Line;
 import sz.util.Position;
 
@@ -10,12 +9,12 @@ public abstract class GFXDirectedEffect extends GFXEffect {
 	protected int depth;
 	private Position startPosition;
 	
-	public GFXDirectedEffect(String id){
-		super(id);
+	public GFXDirectedEffect(String id, GFXConfiguration configuration){
+		super(id, configuration);
 	}
 
-	public GFXDirectedEffect(String id, int delay){
-		super(id, delay);
+	public GFXDirectedEffect(String id, int delay, GFXConfiguration configuration){
+		super(id, delay, configuration);
 	}
 	
 	/*public void drawEffect(GFXUserInterface ui, SwingSystemInterface si){

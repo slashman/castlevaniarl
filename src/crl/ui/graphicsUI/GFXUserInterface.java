@@ -5,35 +5,26 @@ package crl.ui.graphicsUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.DisplayMode;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import sz.csi.CharKey;
-import sz.csi.ConsoleSystemInterface;
 import sz.gadgets.*;
 import sz.util.*;
 import crl.action.*;
@@ -49,8 +40,8 @@ import crl.npc.*;
 import crl.monster.*;
 import crl.feature.*;
 import crl.game.*;
-import crl.ai.*;
 import crl.actor.*;
+import crl.conf.gfx.data.GFXConfiguration;
 import crl.ui.*;
 
 /** 
@@ -62,13 +53,10 @@ import crl.ui.*;
 public class GFXUserInterface extends UserInterface implements Runnable {
 	private static final String INTERFACE_FILE = "gfx/barrett-interface.gif";
 
-	private static final int STANDARD_WIDTH = 64;
+	private int STANDARD_WIDTH;
 	//Attributes
-	/*private int xrange = 11;
-	private int yrange = 8;*/
-	
-	private int xrange = 5;
-	private int yrange = 5;
+	private int xrange;
+	private int yrange;
 	
 	//Components
 	public SwingInformBox messageBox;
@@ -159,6 +147,17 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		RAINCOLOR = new Color(180,200, 250, 100),
 		THUNDERCOLOR = new Color(180,200, 200, 150),
 		FOGCOLOR = new Color(200,200, 200, 200);
+	
+	protected GFXConfiguration configuration;
+	
+	/**
+	 * Default constructor
+	 * 
+	 * @param configuration Configuration for this user interface
+	 */
+	public GFXUserInterface(GFXConfiguration configuration) {
+		this.configuration = configuration;
+	}
 	
 	// Setters
 	/** Sets the object which will be informed of the player commands.
@@ -461,7 +460,11 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		Debug.enterMethod(this, "drawLevel");
 		//Cell[] [] cells = level.getCellsAround(player.getPosition().x,player.getPosition().y, player.getPosition().z, range);
 		Cell[] [] rcells = level.getMemoryCellsAround(player.getPosition().x,player.getPosition().y, player.getPosition().z, xrange,yrange);
-		Cell[] [] vcells = level.getVisibleCellsAround(player.getPosition().x,player.getPosition().y, player.getPosition().z, xrange,yrange);
+		Cell[] [] vcells = level.getVisibleCellsAround(player.getPosition().x,
+													   player.getPosition().y, 
+													   player.getPosition().z, 
+													   xrange,
+													   yrange);
 		
 		Position runner = new Position(player.getPosition().x - xrange, player.getPosition().y-yrange, player.getPosition().z);
 		
@@ -637,7 +640,9 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		
 		if (mask != null){
 			si.getGraphics2D().setColor(mask);
-			si.getGraphics2D().fillRect(0,0,800,600);
+			si.getGraphics2D().fillRect(0,0,
+					this.configuration.getScreenWidth(),
+					this.configuration.getScreenHeight());
 		}
 		
 		
@@ -807,51 +812,30 @@ public class GFXUserInterface extends UserInterface implements Runnable {
   		Debug.exitMethod();
     }
 
-    private void initProperties(Properties p){
-		xrange = PropertyFilters.inte(p.getProperty("XRANGE"));
-		yrange = PropertyFilters.inte(p.getProperty("YRANGE"));
-		//POS_LEVELDESC_X = PropertyFilters.inte(p.getProperty("POS_LEVELDESC_X"));
-		//POS_LEVELDESC_Y = PropertyFilters.inte(p.getProperty("POS_LEVELDESC_Y"));
-		
-		//UPLEFTBORDER = PropertyFilters.inte(p.getProperty("UPLEFTBORDER"));
-		PC_POS = PropertyFilters.getPosition(p.getProperty("PC_POS"));
-		/*TILESIZE = PropertyFilters.inte(p.getProperty("TILESIZE"));*/
-		COLOR_WINDOW_BACKGROUND = PropertyFilters.getColor(p.getProperty("COLOR_WINDOW_BACKGROUND"));
-		COLOR_BORDER_IN = PropertyFilters.getColor(p.getProperty("COLOR_BORDER_IN"));
-		COLOR_BORDER_OUT = PropertyFilters.getColor(p.getProperty("COLOR_BORDER_OUT"));
-		/*COLOR_MSGBOX_ACTIVE = PropertyFilters.getColor(p.getProperty("COLOR_MSGBOX_ACTIVE"));
-		COLOR_MSGBOX_INACTIVE = PropertyFilters.getColor(p.getProperty("COLOR_MSGBOX_INACTIVE"));*/
-		try {
-			FNT_MESSAGEBOX = PropertyFilters.getFont(p.getProperty("FNT_MESSAGEBOX"),p.getProperty("FNT_MESSAGEBOX_SIZE"));
-			FNT_PERSISTANTMESSAGEBOX = PropertyFilters.getFont(p.getProperty("FNT_PERSISTANTMESSAGEBOX"),p.getProperty("FNT_PERSISTANTMESSAGEBOX_SIZE"));
-			
-		} catch (FontFormatException ffe){
-			Game.crash("Error loading the font", ffe);
-		} catch (IOException ioe){
-			Game.crash("Error loading the font", ioe);
-		}
-		
-		/*-- Load UI Images */
-		try {
-			IMG_STATUSSCR_BGROUND = ImageUtils.createImage(p.getProperty("IMG_STATUSSCR_BGROUND"));
-			GADGETSIZE = PropertyFilters.inte(p.getProperty("GADGETSIZE"));
-			BufferedImage IMG_GADGETS = PropertyFilters.getImage(p.getProperty("IMG_GADGETS"), p.getProperty("IMG_GADGETS_BOUNDS"));
-			TILE_LINE_AIM  = ImageUtils.crearImagen(IMG_GADGETS, 0, 0, GADGETSIZE, GADGETSIZE);
-			TILE_SCAN  = ImageUtils.crearImagen(IMG_GADGETS, GADGETSIZE, 0, GADGETSIZE, GADGETSIZE);
-			TILE_LINE_STEPS  = ImageUtils.crearImagen(IMG_GADGETS, GADGETSIZE*2, 0, GADGETSIZE, GADGETSIZE);
-			
-			//IMG_ICON = ImageUtils.createImage("res/crl_icon.png");
-		} catch (Exception e){
-			Game.crash(e.getMessage(),e);
-		}
-		
+    private void initProperties(){
+    	STANDARD_WIDTH = this.configuration.getNormalTileWidth();
+    	
+		xrange = this.configuration.getScreenWidthInTiles();
+		yrange = this.configuration.getScreenHeightInTiles();
+
+		PC_POS = this.configuration.getPlayerLocationOnScreen();
+		COLOR_WINDOW_BACKGROUND = this.configuration.getWindowBackgroundColour();
+		COLOR_BORDER_IN = this.configuration.getBorderColourIn();
+		COLOR_BORDER_OUT = this.configuration.getBorderColourOut();
+		FNT_MESSAGEBOX = this.configuration.getMessageBoxFont();
+		FNT_PERSISTANTMESSAGEBOX = this.configuration.getPersistantMessageBoxFont();
+		IMG_STATUSSCR_BGROUND = this.configuration.getStatusScreenBackground();
+		GADGETSIZE = this.configuration.getGadgetSize();		
+		TILE_LINE_AIM  = this.configuration.getAimLineTile();
+		TILE_SCAN  = this.configuration.getScanTile();
+		TILE_LINE_STEPS  = this.configuration.getStepsTile();	
 	}
     
-	public void init(SwingSystemInterface psi, UserCommand[] gameCommands, Properties UIProperties, Action target){
+	public void init(SwingSystemInterface psi, UserCommand[] gameCommands, Action target){
 		Debug.enterMethod(this, "init");
 		super.init(gameCommands);
 		this.target = target;
-		initProperties(UIProperties);
+		initProperties();
 		//GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setDisplayMode(new DisplayMode(800,600,8, DisplayMode.REFRESH_RATE_UNKNOWN));
 		
 		/*-- Assign values */
@@ -907,7 +891,8 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			TILE_HEALTH_BACK = ImageUtils.crearImagen(INTERFACE_FILE, 3, 34, 261, 24);
 			TILE_TIME_BACK  = ImageUtils.crearImagen(INTERFACE_FILE, 246, 1, 22, 21);
 			
-			IMG_STATUSSCR_BGROUND = ImageUtils.createImage("gfx/barrett-moon_2x.gif");
+			IMG_STATUSSCR_BGROUND = configuration.getUserInterfaceBackgroundImage(); 
+					//ImageUtils.createImage("gfx/barrett-moon_2x.gif");
 			
 			BORDER1 = ImageUtils.crearImagen(INTERFACE_FILE, 34,1,STANDARD_WIDTH,STANDARD_WIDTH);
 			BORDER2 = ImageUtils.crearImagen(INTERFACE_FILE, 1,1,STANDARD_WIDTH,STANDARD_WIDTH);
