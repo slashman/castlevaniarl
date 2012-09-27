@@ -10,6 +10,7 @@ import crl.level.Level;
 import crl.monster.Monster;
 import crl.npc.NPC;
 import crl.player.Consts;
+import crl.player.Damage;
 import crl.player.Player;
 import crl.ui.UserInterface;
 
@@ -160,7 +161,7 @@ public class Jump extends Action{
 			if (aMonster != null && !(aMonster instanceof Merchant || aMonster instanceof NPC)){
 				// Damage the poor player and bounce him back
 				StringBuffer buff = new StringBuffer("You are bounced back by the "+aMonster.getDescription()+"!");
-				if (aPlayer.damage(buff, aMonster, aMonster.getAttack()))
+				if (aPlayer.damage(buff, aMonster, new Damage(aMonster.getAttack(), false)))
 					aLevel.getPlayer().bounceBack(Position.mul(var, -1), 3);
 				aLevel.addMessage(buff.toString());
 				break out;

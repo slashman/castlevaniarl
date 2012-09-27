@@ -9,6 +9,7 @@ import crl.item.ItemFactory;
 import crl.monster.Monster;
 import crl.npc.Hostage;
 import crl.player.Consts;
+import crl.player.Damage;
 import crl.player.Player;
 import crl.ui.UserInterface;
 
@@ -155,7 +156,7 @@ public class Use extends Action{
 				if (aPlayer.isInvincible())
 					aPlayer.getLevel().addMessage("The damage is repelled!");
 				else
-					aPlayer.selfDamage(message, Player.DAMAGE_USING_ITEM, Integer.parseInt(effect[cmd+1]));
+					aPlayer.selfDamage(message, Player.DAMAGE_USING_ITEM, new Damage(Integer.parseInt(effect[cmd+1]), false));
 			}else if (effect[cmd].equals("LIGHT")) {
 				aPlayer.setCounter("LIGHT", 200);
 			}

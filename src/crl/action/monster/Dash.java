@@ -5,6 +5,7 @@ import crl.action.Action;
 import crl.level.Cell;
 import crl.level.Level;
 import crl.monster.Monster;
+import crl.player.Damage;
 import crl.player.Player;
 
 public class Dash extends Action{
@@ -33,7 +34,7 @@ public class Dash extends Action{
 			if (aPlayer.getPosition().equals(destinationPoint) && 
 					aPlayer.getStandingHeight() == aMonster.getStandingHeight()){
 				message.append("The "+aMonster.getDescription()+ " slices you!");
-				if (aPlayer.damage(message, aMonster, aMonster.getAttack()))
+				if (aPlayer.damage(message, aMonster, new Damage(aMonster.getAttack(), false)))
 					aPlayer.bounceBack(var, 1);
 			}
 

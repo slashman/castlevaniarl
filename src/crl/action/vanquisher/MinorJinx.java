@@ -3,6 +3,7 @@ package crl.action.vanquisher;
 import crl.action.Action;
 import crl.actor.Actor;
 import crl.level.Level;
+import crl.player.Damage;
 import crl.player.Player;
 
 public class MinorJinx extends Action{
@@ -26,7 +27,7 @@ public class MinorJinx extends Action{
 		int recover = 10;
 		StringBuffer buff = new StringBuffer("You exchange vitality for power!! (+"+recover+")");
 		aPlayer.addHearts(recover);
-		aPlayer.selfDamage(buff, Player.DAMAGE_JINX, 5);
+		aPlayer.selfDamage(buff, Player.DAMAGE_JINX, new Damage(5, true));
 		aLevel.addMessage(buff.toString());
 		
 	}

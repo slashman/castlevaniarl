@@ -11,6 +11,7 @@ import crl.level.Cell;
 import crl.level.Level;
 import crl.monster.Monster;
 import crl.player.Consts;
+import crl.player.Damage;
 
 public class MonsterWalk extends Action{
 	public String getID(){
@@ -81,7 +82,7 @@ public class MonsterWalk extends Action{
 										if (aMonster.getWavOnHit() != null)
 											SFXManager.play(aMonster.getWavOnHit());
 										StringBuffer buff = new StringBuffer ("You are hit by the "+aMonster.getDescription()+"!");
-										if (aLevel.getPlayer().damage(buff, aMonster, aMonster.getAttack())) {
+										if (aLevel.getPlayer().damage(buff, aMonster, new Damage(aMonster.getAttack(), false))) {
 											aLevel.getPlayer().bounceBack(var,2);
 											aLevel.addMessage(buff.toString());
 											if (!aLevel.getPlayer().getPosition().equals(destinationPoint)){

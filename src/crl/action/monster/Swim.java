@@ -6,6 +6,7 @@ import crl.action.Action;
 import crl.level.Cell;
 import crl.level.Level;
 import crl.monster.Monster;
+import crl.player.Damage;
 
 public class Swim extends Action{
 	public String getID(){
@@ -39,7 +40,7 @@ public class Swim extends Action{
 		if (aMonster.getAttack() > 0 && aLevel.getPlayer().getPosition().equals(destinationPoint) && aLevel.getPlayer().getStandingHeight() == aMonster.getStandingHeight()){
 			// Damage the poor player and bounce him back
 			StringBuffer buff = new StringBuffer("The "+aMonster.getDescription()+" hits you with his jump!");
-			if (aLevel.getPlayer().damage(buff, aMonster, aMonster.getAttack()))
+			if (aLevel.getPlayer().damage(buff, aMonster, new Damage(aMonster.getAttack(), false)))
 				aLevel.getPlayer().bounceBack(var,1);
 			aLevel.addMessage(buff.toString());
 		}
