@@ -4,17 +4,17 @@
 useMouse = false
 TILESET = dragontileset.gif
 TILESET_DARK = dragontileset_dark.gif
-TILESIZE = 64
-BIG_TILESIZE = 96
-HALF_TILESIZE = 32
-CELL_HEIGHT = 98
+TILESIZE = 32
+BIG_TILESIZE = 48
+HALF_TILESIZE = 16
+CELL_HEIGHT = 49
 
 SPRITES_UI_GADGETS = gfx/drashinterface.gif
 GADGETSIZE = 36
 
-PC_POS = 7,5
-XRANGE = 7
-YRANGE = 5
+PC_POS = 14,10
+XRANGE = 14
+YRANGE = 10
 UPLEFTBORDER = 0
 
 # Message Box 
@@ -30,7 +30,7 @@ POS_LEVELDESC_X = 20
 POS_LEVELDESC_Y = 40
 
 
-IMG_STATUSSCR_BGROUND = gfx/barrett-moon.gif
+IMG_STATUSSCR_BGROUND = gfx/barrett-moon_2x.gif
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 768
 SCREEN_SCALE = 1.28
@@ -77,14 +77,14 @@ FNT_MONO_SIZE = 15
 SFXSET = gfx/dragon-drashsfx.gif
 SFXSET2 = gfx/tempSlashes.gif
 
-TILES_SHADOW = gfx/shadow_2x.gif
-TILES_CHARACTERS = gfx/crl_chars_2x.gif
-TILES_MONSTERS = gfx/crl_mons32_2x.gif
-TILES_BIG_MONSTERS = gfx/crl_mons48_2x.gif
-TILES_ITEMS = gfx/crl_items_2x.gif
-TILES_TERRAIN = gfx/crl_terrain_2x.gif
-TILES_DARK_TERRAIN = gfx/crl_terrain_d_2x.gif
-TILES_NIGHT_TERRAIN = gfx/crl_terrain_night_2x.gif
-TILES_DARK_NIGHT_TERRAIN = gfx/crl_terrain_night_d_2x.gif
-TILES_FEATURES = gfx/crl_features_2x.gif
-TILES_EFFECTS = gfx/crl_effects_2x.gif
+TILES_SHADOW = gfx/shadow.gif
+TILES_CHARACTERS = gfx/crl_chars.gif
+TILES_MONSTERS = gfx/crl_mons32.gif
+TILES_BIG_MONSTERS = gfx/crl_mons48.gif
+TILES_ITEMS = gfx/crl_items.gif
+TILES_TERRAIN = gfx/crl_terrain.gif
+TILES_DARK_TERRAIN = gfx/crl_terrain_d.gif
+TILES_NIGHT_TERRAIN = gfx/crl_terrain_night.gif
+TILES_DARK_NIGHT_TERRAIN = gfx/crl_terrain_night_d.gif
+TILES_FEATURES = gfx/crl_features.gif
+TILES_EFFECTS = gfx/crl_effects.gif
