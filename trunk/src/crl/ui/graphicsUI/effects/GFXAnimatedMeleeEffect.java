@@ -1,10 +1,10 @@
 package crl.ui.graphicsUI.effects;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import sz.util.Position;
 import crl.action.Action;
+import crl.conf.gfx.data.GFXConfiguration;
 import crl.ui.graphicsUI.GFXUserInterface;
 import crl.ui.graphicsUI.SwingSystemInterface;
 
@@ -67,7 +67,8 @@ public class GFXAnimatedMeleeEffect extends GFXDirectionalEffect{
 			Position toPrint = Position.add(ui.PC_POS, relative);
 			/*if (!ui.insideViewPort(toPrint))
 				break;*/
-			toPrint = new Position(toPrint.x()*32, toPrint.y()*32-4*height);
+			toPrint = new Position(toPrint.x()*configuration.getNormalTileWidth(), 
+					               toPrint.y()*configuration.getNormalTileWidth()-4*height);
 			toPrint = Position.add(toPrint, vars[i]);
 			si.drawImage(toPrint.x(), toPrint.y(), sequence[i]);
 			si.refresh();
@@ -77,8 +78,8 @@ public class GFXAnimatedMeleeEffect extends GFXDirectionalEffect{
 		
 	}
 
-	public GFXAnimatedMeleeEffect(String ID, BufferedImage[][] frames, Position vars[][], int delay){
-		super(ID, delay);
+	public GFXAnimatedMeleeEffect(String ID, BufferedImage[][] frames, Position vars[][], int delay, GFXConfiguration configuration){
+		super(ID, delay, configuration);
 		setMissile(frames);
 		variations = vars;
 	}

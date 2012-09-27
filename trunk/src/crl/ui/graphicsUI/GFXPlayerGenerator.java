@@ -5,15 +5,14 @@ import java.awt.Color;
 import javax.swing.JTextArea;
 
 import sz.csi.CharKey;
-import sz.util.ScriptUtil;
-import sz.util.Util;
+import crl.conf.gfx.data.GFXConfiguration;
 import crl.game.PlayerGenerator;
 import crl.player.Player;
 import crl.ui.AppearanceFactory;
-import crl.ui.Display;
 
 public class GFXPlayerGenerator extends PlayerGenerator{
-	public GFXPlayerGenerator(SwingSystemInterface si){
+	public GFXPlayerGenerator(SwingSystemInterface si, GFXConfiguration configuration){
+		this.configuration = configuration;
 		this.si = si;
 		txtClassDescription = new JTextArea();
 		txtClassDescription.setOpaque(false);
@@ -30,12 +29,11 @@ public class GFXPlayerGenerator extends PlayerGenerator{
 	}
 	private SwingSystemInterface si;
 	private JTextArea txtClassDescription;
-	
-	private String IMG_GENERATOR = "gfx/barrett-moon_2x.gif";
+	protected GFXConfiguration configuration;
 	private String IMG_FLAME = "gfx/barrett-picker.gif";
 	
 	public Player generatePlayer(){
-		si.drawImage(IMG_GENERATOR);
+		si.drawImage(configuration.getUserInterfaceBackgroundImage());
 		si.printAtPixel(69,86,"CHOOSE YOUR DESTINY", GFXDisplay.COLOR_BOLD);
 		si.getGraphics2D().setColor(Color.DARK_GRAY);
 		si.getGraphics2D().fillRect(70,94,661,3);

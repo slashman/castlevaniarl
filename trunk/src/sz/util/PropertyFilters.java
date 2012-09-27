@@ -23,6 +23,10 @@ public class PropertyFilters {
 		return Integer.parseInt(n);
 	}
 	
+	public static double getDouble(String n) {
+		return Double.parseDouble(n);
+	}
+	
 	public static Font getFont(String fontName, String size) throws FontFormatException, FileNotFoundException, IOException{
 		return Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File(fontName))).deriveFont(Font.PLAIN, inte(size));
 	}

@@ -4,17 +4,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.DisplayMode;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -22,35 +19,26 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Hashtable;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-import java.awt.Frame;
-
+import crl.conf.gfx.data.GFXConfiguration;
 import crl.game.Game;
-import crl.ui.UserInterface;
 
 import sz.csi.CharKey;
 import sz.util.ImageUtils;
 import sz.util.Position;
 
 public class SwingSystemInterface implements Runnable{ 
-	/*private static final int SCR_HEIGHT = 600;
-	private static final int SCR_WIDTH = 800;*/
-	
-	private static final int SCR_WIDTH = 1024;
-	private static final int SCR_HEIGHT = 768;
+	protected GFXConfiguration configuration;
 
 	public void run(){
 	}
 	private SwingInterfacePanel sip;
 	private StrokeNClickInformer aStrokeInformer;
 	private Position caretPosition = new Position(0,0);
-	private Hashtable images = new Hashtable();
+	private Hashtable<String, Image> images = new Hashtable<String, Image>();
 	
 	//private JTextArea invTextArea;
 	private JFrame frameMain;
@@ -83,15 +71,19 @@ public class SwingSystemInterface implements Runnable{
 		frameMain.setVisible(bal);
 	}
 	
-	public SwingSystemInterface (){
+	public SwingSystemInterface (GFXConfiguration configuration){
+		this.configuration = configuration;
 		frameMain = new JFrame();
 		
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		frameMain.setBounds((size.width - SCR_WIDTH)/2,(size.height-SCR_HEIGHT)/2,SCR_WIDTH,SCR_HEIGHT);
+		frameMain.setBounds((size.width - configuration.getScreenWidth())/2,
+				            (size.height-configuration.getScreenHeight())/2,
+				            configuration.getScreenWidth(),
+				            configuration.getScreenHeight());
 		frameMain.getContentPane().setLayout(new GridLayout(1,1));
 		frameMain.setUndecorated(true);
 		
-		sip = new SwingInterfacePanel();
+		sip = new SwingInterfacePanel(this.configuration);
 		frameMain.getContentPane().add(sip);
 		frameMain.setVisible(true);
 		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -197,7 +189,7 @@ public class SwingSystemInterface implements Runnable{
 	}
 	
 	public void drawImage(String filename){
-		Image im = (Image)images.get(filename);
+		Image im = images.get(filename);
 		if (im == null){
 			try {
 				im = ImageUtils.createImage(filename);
@@ -231,6 +223,10 @@ public class SwingSystemInterface implements Runnable{
 	public void printAtPixel(int x, int y, String text, Color color){
 		sip.print(x, y, text, color);
 	}
+	
+	public void printAtPixelCentered(int x, int y, String text, Color color) {
+		sip.print(x, y, text, color, true);
+	}
 
 	public void print(int x, int y, String text, Color color){
 		sip.print(x*10, y*24, text, color);
@@ -248,8 +244,7 @@ public class SwingSystemInterface implements Runnable{
 	}
 	
 	public void drawImage(int scrX, int scrY, String filename){
-		//System.out.println("Inadequate drawImage "+filename);
-		Image im = (Image)images.get(filename);
+		Image im = images.get(filename);
 		if (im == null){
 			try {
 				im = ImageUtils.createImage(filename);
@@ -382,10 +377,8 @@ public class SwingSystemInterface implements Runnable{
 }
 
 class SwingInterfacePanel extends JPanel{
-	/*private static final int SCR_HEIGHT = 600;
-	private static final int SCR_WIDTH = 800;*/
-	private static final int SCR_WIDTH = 1024;
-	private static final int SCR_HEIGHT = 768;
+
+	private static final long serialVersionUID = -7392757206841150146L;
 	private Image bufferImage;
 	private Graphics bufferGraphics;
 	
@@ -397,11 +390,14 @@ class SwingInterfacePanel extends JPanel{
 	
 	private Color color;
 	private Font font;
+	private FontMetrics fontMetrics;
+	protected GFXConfiguration configuration;
 	
 	public void cls(){
 		Color oldColor = bufferGraphics.getColor();
 		bufferGraphics.setColor(Color.BLACK);
-		bufferGraphics.fillRect(0,0,SCR_WIDTH,SCR_HEIGHT);
+		bufferGraphics.fillRect(0,0,configuration.getScreenWidth(),
+								configuration.getScreenHeight());
 		bufferGraphics.setColor(oldColor);
 	}
 	
@@ -413,27 +409,32 @@ class SwingInterfacePanel extends JPanel{
 	public void setFontFace(Font f){
 		font = f;
 		bufferGraphics.setFont(f);
+		fontMetrics = bufferGraphics.getFontMetrics();
 	}
 	
 	public Graphics2D getCurrentGraphics(){
 		return (Graphics2D)bufferGraphics;
 	}
 	
-	public SwingInterfacePanel(){
+	public SwingInterfacePanel(GFXConfiguration configuration){
+		this.configuration = configuration;
 		setLayout(null);
 		setBorder(new LineBorder(Color.GRAY));
 	}
 	
 	public void init(){
-		bufferImage = createImage(SCR_WIDTH, SCR_HEIGHT);
+		bufferImage = createImage(configuration.getScreenWidth(), 
+								  configuration.getScreenHeight());
         bufferGraphics = bufferImage.getGraphics();
         bufferGraphics.setColor(Color.WHITE);
-        backImage = createImage(SCR_WIDTH, SCR_HEIGHT);
+        backImage = createImage(configuration.getScreenWidth(), 
+        						configuration.getScreenHeight());
         backGraphics = backImage.getGraphics();
         backImageBuffers = new Image[5];
         backGraphicsBuffers = new Graphics[5];
         for (int i = 0 ; i < 5; i++){
-        	backImageBuffers[i] = createImage(SCR_WIDTH, SCR_HEIGHT);
+        	backImageBuffers[i] = createImage(configuration.getScreenWidth(), 
+        									  configuration.getScreenHeight());
         	backGraphicsBuffers[i] = backImageBuffers[i].getGraphics();
         }
         
@@ -452,11 +453,19 @@ class SwingInterfacePanel extends JPanel{
 		//repaint();
 	}
 	
-	public void print(int x, int y, String text, Color c){
+	public void print(int x, int y, String text, Color c, boolean centered) {
+		if (centered == true) {
+			int width = fontMetrics.stringWidth(text);
+			x = x - (width / 2);
+		}		
 		Color old = bufferGraphics.getColor(); 
 		bufferGraphics.setColor(c);
-		bufferGraphics.drawString(text, x,y);
-		bufferGraphics.setColor(old);
+		bufferGraphics.drawString(text, x, y);
+		bufferGraphics.setColor(old);		
+	}
+	
+	public void print(int x, int y, String text, Color c){
+		print(x, y, text, c, false);
 		//repaint();
 	}
 	

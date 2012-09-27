@@ -3,11 +3,9 @@ package crl.ui.graphicsUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Properties;
@@ -16,7 +14,6 @@ import java.util.Vector;
 import javax.swing.JTextArea;
 
 import sz.csi.CharKey;
-import sz.csi.ConsoleSystemInterface;
 import sz.util.ImageUtils;
 import sz.util.Position;
 import sz.util.PropertyFilters;
@@ -32,11 +29,10 @@ import crl.ui.UserInterface;
 import crl.ui.graphicsUI.components.GFXChatBox;
 import crl.monster.Monster;
 import crl.npc.*;
+import crl.conf.gfx.data.GFXConfiguration;
 import crl.conf.gfx.data.GFXCuts;
 import crl.game.Game;
 import crl.game.MonsterRecord;
-import crl.item.ItemDefinition;
-import crl.item.ItemFactory;
 
 public class GFXDisplay extends Display{
 	private SwingSystemInterface si;
@@ -54,12 +50,14 @@ public class GFXDisplay extends Display{
 	public static Font FNT_TITLE;
 	public static Font FNT_DIALOGUEIN;
 	public static Font FNT_MONO;
-	private static BufferedImage IMG_MAP;
-	private static BufferedImage IMG_MAPMARKER;
-	private static BufferedImage IMG_PICKER;
-	private static BufferedImage IMG_BORDERS;
-	
+	private BufferedImage IMG_MAP;
+	private BufferedImage IMG_MAPMARKER;
+	private BufferedImage IMG_PICKER;
+	private BufferedImage IMG_BORDERS;
+		
 	public static Color COLOR_BOLD;
+	
+	protected GFXConfiguration configuration;
 	
 	private void initProperties(Properties p){
 		IMG_TITLE = p.getProperty("IMG_TITLE");
@@ -95,7 +93,8 @@ public class GFXDisplay extends Display{
 
 	private GFXChatBox gfxChatBox;
 	
-	public GFXDisplay(SwingSystemInterface si, Properties p){
+	public GFXDisplay(SwingSystemInterface si, Properties p, GFXConfiguration configuration){
+		this.configuration = configuration;
 		initProperties(p);
 		this.si = si;
 		try {
@@ -135,28 +134,32 @@ public class GFXDisplay extends Display{
 	}
 	
 	public int showTitleScreen(){
+		double scale = configuration.getScreenScale();
+		int middlePoint = configuration.getScreenWidth() / 2;
+		int pickerXCoordinate = (configuration.getScreenWidth() / 2) - (IMG_PICKER.getWidth() / 2);
 		((GFXUserInterface)UserInterface.getUI()).messageBox.setVisible(false);
 		((GFXUserInterface)UserInterface.getUI()).persistantMessageBox.setVisible(false);
 		si.setFont(FNT_TEXT);
 		si.drawImage(IMG_TITLE);
-		//si.drawImage(215,60,IMG_TITLE_NAME);
-		si.printAtPixel(250, 530, "'CastleVania' is a trademark of Konami Corporation.", GFXDisplay.COLOR_BOLD);
-		si.printAtPixel(220, 555, "CastlevaniaRL v"+Game.getVersion()+", Developed by Santiago Zapata 2005-2010", Color.WHITE);
-		si.printAtPixel(285, 570, "Artwork by Christopher Barrett, 2006-2007", Color.WHITE);
-		si.printAtPixel(220, 585, "Midi Tracks by Jorge E. Fuentes, JiLost, Nicholas and Tom Kim", Color.WHITE);
+
+		si.printAtPixelCentered(middlePoint, (int)(530*scale), "'CastleVania' is a trademark of Konami Corporation.", GFXDisplay.COLOR_BOLD);
+		si.printAtPixelCentered(middlePoint, (int)(555*scale), "CastlevaniaRL v"+Game.getVersion()+", Developed by Santiago Zapata 2005-2010", Color.WHITE);
+		si.printAtPixelCentered(middlePoint, (int)(570*scale), "Artwork by Christopher Barrett, 2006-2007", Color.WHITE);
+		si.printAtPixelCentered(middlePoint, (int)(585*scale), "Midi Tracks by Jorge E. Fuentes, JiLost, Nicholas and Tom Kim", Color.WHITE);
 		CharKey x = new CharKey(CharKey.NONE);
     	int choice = 0;
     	si.saveBuffer();
-    	out: while (true) {
+    	while (true) {
     		si.restore();
-    		si.drawImage(294, 354+choice*20, IMG_PICKER);
-    		si.printAtPixel(362,368, "a. New Game", Color.WHITE);
-    		si.printAtPixel(344,388, "b. Load Character", Color.WHITE);
-    		si.printAtPixel(350,408, "c. View Prologue", Color.WHITE);
-    		si.printAtPixel(365,428, "d. Training", Color.WHITE);
-    		si.printAtPixel(350,448, "e. Prelude Arena", Color.WHITE);
-    		si.printAtPixel(350,468, "f. Show HiScores", Color.WHITE);
-    		si.printAtPixel(380,488, "g. Quit", Color.WHITE);
+
+    		si.drawImage(pickerXCoordinate, (int)((356+choice*20)*scale), IMG_PICKER);
+    		si.printAtPixelCentered(middlePoint,(int)(368*scale), "a. New Game", Color.WHITE);
+    		si.printAtPixelCentered(middlePoint,(int)(388*scale), "b. Load Character", Color.WHITE);
+    		si.printAtPixelCentered(middlePoint,(int)(408*scale), "c. View Prologue", Color.WHITE);
+    		si.printAtPixelCentered(middlePoint,(int)(428*scale), "d. Training", Color.WHITE);
+    		si.printAtPixelCentered(middlePoint,(int)(448*scale), "e. Prelude Arena", Color.WHITE);
+    		si.printAtPixelCentered(middlePoint,(int)(468*scale), "f. Show HiScores", Color.WHITE);
+    		si.printAtPixelCentered(middlePoint,(int)(488*scale), "g. Quit", Color.WHITE);
     		si.refresh();
 			while (x.code != CharKey.A && x.code != CharKey.a &&
 					x.code != CharKey.B && x.code != CharKey.b &&
@@ -285,30 +288,38 @@ public class GFXDisplay extends Display{
 	}
 	
 	public void showHiscores(HiScore[] scores){
+		int leftMargin;
+		int widthAdjustment;
+		
+		if (configuration.getScreenWidth() == 1024) {
+			leftMargin = 9;
+			widthAdjustment = 112;
+		} else {
+			leftMargin = 0;
+			widthAdjustment = 0;
+		}
 		si.drawImage(IMG_HISCORES);
-		addornedTextArea.setBounds(8, 110, 780, 395);
-		addornedTextArea.paintAt(si.getGraphics2D(), 8,110);
+		addornedTextArea.setBounds(8, 110, 782, 395);
+		addornedTextArea.paintAt(si.getGraphics2D(), 8 + widthAdjustment,110);
 		si.setFont(FNT_TITLE);
-		//si.printAtPixel(290,50, "Castlevania RL "+Game.getVersion(), Color.RED);
-		si.printAtPixel(190,160, "The most brave of Belmonts", Color.WHITE);
+		si.printAtPixelCentered(configuration.getScreenWidth() / 2,160, "The most brave of Belmonts", Color.WHITE);
 		si.setFont(FNT_TEXT);
-		si.print(18,8, "SCORE", GFXDisplay.COLOR_BOLD);
-		si.print(25,8, "DATE", GFXDisplay.COLOR_BOLD);	
-		si.print(36,8, "TURNS", GFXDisplay.COLOR_BOLD);
-		si.print(43,8, "DEATH", GFXDisplay.COLOR_BOLD);
+		si.print(18 + leftMargin,8, "SCORE", GFXDisplay.COLOR_BOLD);
+		si.print(25 + leftMargin,8, "DATE", GFXDisplay.COLOR_BOLD);	
+		si.print(36 + leftMargin,8, "TURNS", GFXDisplay.COLOR_BOLD);
+		si.print(43 + leftMargin,8, "DEATH", GFXDisplay.COLOR_BOLD);
 
 		for (int i = 0; i < scores.length; i++){
-			si.print(7,(9+i), scores[i].getName()+" ("+scores[i].getPlayerClass()+")", Color.WHITE);
-			si.print(18,(9+i), ""+scores[i].getScore(), Color.GRAY);
-			si.print(25,(9+i), ""+scores[i].getDate(), Color.GRAY);
-			si.print(36,(9+i), ""+scores[i].getTurns(), Color.GRAY);
-			si.print(43,(9+i), ""+scores[i].getDeathString()+" on level "+scores[i].getDeathLevel(), Color.GRAY);
+			si.print(7 + leftMargin,(9+i), scores[i].getName()+" ("+scores[i].getPlayerClass()+")", Color.WHITE);
+			si.print(18 + leftMargin,(9+i), ""+scores[i].getScore(), Color.GRAY);
+			si.print(25 + leftMargin,(9+i), ""+scores[i].getDate(), Color.GRAY);
+			si.print(36 + leftMargin,(9+i), ""+scores[i].getTurns(), Color.GRAY);
+			si.print(43 + leftMargin,(9+i), ""+scores[i].getDeathString()+" on level "+scores[i].getDeathLevel(), Color.GRAY);
 
 		}
-		si.print(7,20, "[space] to continue", GFXDisplay.COLOR_BOLD);
+		si.print(7 + leftMargin,20, "[space] to continue", GFXDisplay.COLOR_BOLD);
 		si.refresh();
-		si.waitKey(CharKey.SPACE);
-		
+		si.waitKey(CharKey.SPACE);		
 	}
 	
 	
@@ -364,7 +375,7 @@ public class GFXDisplay extends Display{
 		showTextBox(text,30,40,300,300);
 	}
 	
-	public Advancement showLevelUp(Vector advancements){
+	public Advancement showLevelUp(Vector<Advancement> advancements){
 		((GFXUserInterface)UserInterface.getUI()).messageBox.setVisible(false);
 		
 		si.saveBuffer();
@@ -489,10 +500,9 @@ public class GFXDisplay extends Display{
 		si.restore();
 	}
 
-	private Hashtable locationKeys;
+	private Hashtable<String, Position> locationKeys;
 	{
-				
-		locationKeys = new Hashtable();
+		locationKeys = new Hashtable<String, Position>();
 		locationKeys.put("TOWN", new Position(130,206));
 		locationKeys.put("FOREST", new Position(201,206));
 		locationKeys.put("BRIDGE", new Position(273,206));

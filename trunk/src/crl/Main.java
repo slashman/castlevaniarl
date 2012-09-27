@@ -37,6 +37,7 @@ import crl.conf.console.data.CharAppearances;
 import crl.conf.console.data.CharCuts;
 import crl.conf.console.data.CharEffects;
 import crl.conf.gfx.data.GFXAppearances;
+import crl.conf.gfx.data.GFXConfiguration;
 import crl.conf.gfx.data.GFXCuts;
 import crl.conf.gfx.data.GFXEffects;
 import crl.data.Cells;
@@ -101,17 +102,19 @@ public class Main {
 	}
 
 	private static void init(){
-		if (createNew){
+		if (createNew){		
 			System.out.println("CastlevaniaRL "+Game.getVersion());
 			System.out.println("Slash ~ 2005-2010");
 			System.out.println("Reading configuration");
 	    	readConfiguration();
+			GFXConfiguration gfx_configuration = new GFXConfiguration();
+			gfx_configuration.LoadConfiguration(UIconfiguration);
             try {
     			
     			switch (mode){
 				case SWING_GFX:
 					System.out.println("Initializing Graphics Appearances");
-					initializeGAppearances();
+					initializeGAppearances(gfx_configuration);
 					break;
 				case JCURSES_CONSOLE:
 				case SWING_CONSOLE:
@@ -130,17 +133,17 @@ public class Main {
 				initializeFeatures();
 				initializeSmartFeatures();
 				switch (mode){
-				case SWING_GFX:
+				case SWING_GFX:			
 					System.out.println("Initializing Swing GFX System Interface");
-					SwingSystemInterface si = new SwingSystemInterface();
-					System.out.println("Initializing Swing GFX User Interface");
-					UserInterface.setSingleton(new GFXUserInterface());
+					SwingSystemInterface si = new SwingSystemInterface(gfx_configuration);
+					System.out.println("Initializing Swing GFX User Interface");										
+					UserInterface.setSingleton(new GFXUserInterface(gfx_configuration));
 					GFXCuts.initializeSingleton();
-					Display.thus = new GFXDisplay(si, UIconfiguration);
-					PlayerGenerator.thus = new GFXPlayerGenerator(si);
+					Display.thus = new GFXDisplay(si, UIconfiguration, gfx_configuration);
+					PlayerGenerator.thus = new GFXPlayerGenerator(si, gfx_configuration);
 					//PlayerGenerator.thus.initSpecialPlayers();
 					EffectFactory.setSingleton(new GFXEffectFactory());
-					((GFXEffectFactory)EffectFactory.getSingleton()).setEffects(new GFXEffects().getEffects());
+					((GFXEffectFactory)EffectFactory.getSingleton()).setEffects(new GFXEffects(gfx_configuration).getEffects());
 					ui = UserInterface.getUI();
 					initializeUI(si);
 					break;
@@ -491,7 +494,7 @@ public class Main {
 		
 		switch (mode){
 		case SWING_GFX:
-			((GFXUserInterface)ui).init((SwingSystemInterface)si, userCommands, UIconfiguration, target);
+			((GFXUserInterface)ui).init((SwingSystemInterface)si, userCommands, target);
 			uiSelector = new GFXUISelector();
 			((GFXUISelector)uiSelector).init((SwingSystemInterface)si, userActions, UIconfiguration, walkAction, target, attack, (GFXUserInterface)ui, keyBindings);
 			break;
@@ -570,8 +573,8 @@ public class Main {
 		}
 	}
 
-	private static void initializeGAppearances(){
-		Appearance[] definitions = new GFXAppearances().getAppearances();
+	private static void initializeGAppearances(GFXConfiguration gfx_configuration){
+		Appearance[] definitions = new GFXAppearances(gfx_configuration).getAppearances();
 		for (int i=0; i<definitions.length; i++){
 			AppearanceFactory.getAppearanceFactory().addDefinition(definitions[i]);
 		}

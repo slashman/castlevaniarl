@@ -7,7 +7,7 @@ import crl.ui.effects.Effect;
 import crl.ui.effects.EffectFactory;
 
 public class GFXEffectFactory extends EffectFactory{
-	private Hashtable effects = new Hashtable();
+	private Hashtable<String, Effect> effects = new Hashtable<String, Effect>();
 	
 	public void setEffects(Effect[] effectsA){
 		for (int i = 0; i < effectsA.length; i++){

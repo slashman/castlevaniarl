@@ -5,6 +5,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 import sz.util.Position;
+import crl.conf.gfx.data.GFXConfiguration;
 import crl.ui.graphicsUI.GFXUserInterface;
 import crl.ui.graphicsUI.SwingSystemInterface;
 
@@ -12,8 +13,8 @@ public class GFXSequentialEffect extends GFXEffect{
 	private Vector sequence;
 	private Image[] tiles;
 
-	public GFXSequentialEffect(String ID, Vector sequence, Image[] tiles, int delay){
-    	super(ID);
+	public GFXSequentialEffect(String ID, Vector sequence, Image[] tiles, int delay, GFXConfiguration configuration){
+    	super(ID, configuration);
     	setAnimationDelay(delay);
 		this.tiles = tiles;
 		this.sequence = sequence;
@@ -31,7 +32,8 @@ public class GFXSequentialEffect extends GFXEffect{
 			if (tileIndex == tiles.length)
 				tileIndex = 0;
 			if (ui.insideViewPort(nextPosition))
-				si.drawImage(nextPosition.x*32, nextPosition.y*32, tiles[tileIndex]);
+				si.drawImage(nextPosition.x*configuration.getNormalTileWidth(), 
+						     nextPosition.y*configuration.getNormalTileWidth(), tiles[tileIndex]);
 			si.refresh();
 			animationPause();
 		}

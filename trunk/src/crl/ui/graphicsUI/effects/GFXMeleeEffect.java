@@ -4,6 +4,7 @@ import java.awt.Image;
 
 import sz.util.Position;
 import crl.action.Action;
+import crl.conf.gfx.data.GFXConfiguration;
 import crl.ui.graphicsUI.GFXUserInterface;
 import crl.ui.graphicsUI.SwingSystemInterface;
 
@@ -58,7 +59,8 @@ public class GFXMeleeEffect extends GFXDirectionalEffect{
 			Position toPrint = Position.add(ui.PC_POS, relative);
 			/*if (!ui.insideViewPort(toPrint))
 				break;*/
-			si.drawImage(toPrint.x()*32+8, toPrint.y()*32+8-4*height, icon);
+			si.drawImage(toPrint.x()*configuration.getNormalTileWidth()+8, 
+					     toPrint.y()*configuration.getNormalTileWidth()+8-4*height, icon);
 			si.refresh();
 			animationPause();
 			si.restore();
@@ -66,8 +68,8 @@ public class GFXMeleeEffect extends GFXDirectionalEffect{
 		
 	}
 
-	public GFXMeleeEffect(String ID, Image[] missile, int delay){
-		super(ID, delay);
+	public GFXMeleeEffect(String ID, Image[] missile, int delay, GFXConfiguration configuration){
+		super(ID, delay, configuration);
 		setMissile(missile);
 	}
 

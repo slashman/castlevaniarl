@@ -1,56 +1,54 @@
 package crl.conf.gfx.data;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.CropImageFilter;
-import java.awt.image.FilteredImageSource;
 import java.util.Hashtable;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import sz.csi.ConsoleSystemInterface;
 import sz.util.ImageUtils;
 
-import crl.feature.Feature;
 import crl.game.Game;
 import crl.ui.*;
-import crl.ui.consoleUI.CharAppearance;
 import crl.ui.graphicsUI.*;
 
 public class GFXAppearances {
-	/*private static final int WIDTH_HALF = 16;
-	private static final int CELL_HEIGHT = 49;
-	private static final int WIDTH_NORMAL = 32;*/
+	private int WIDTH_BIG;
+	private int WIDTH_HALF;
+	private int CELL_HEIGHT;
+	private int WIDTH_NORMAL;
 	
-	private static final int WIDTH_BIG = 48 * 2;
-	private static final int WIDTH_HALF = 16 * 2;
-	private static final int CELL_HEIGHT = 49 * 2;
-	private static final int WIDTH_NORMAL = 32 * 2;
-
-	private Hashtable images = new Hashtable();
-	// JLabel shortcut = new JLabel();
+	protected GFXConfiguration configuration;
 	
-	private Appearance [] defs = new Appearance[]{
+	public GFXAppearances(GFXConfiguration configuration) {
+		this.configuration = configuration;
+		
+		WIDTH_BIG = configuration.getBigTileWidth();
+		WIDTH_HALF = configuration.getHalfTileWidth();
+		CELL_HEIGHT = configuration.getCellHeight();
+		WIDTH_NORMAL = configuration.getNormalTileWidth();
+		
+		SetAppearances();
+	}
+	
+	private Appearance [] defs;
+	
+	
+	protected void SetAppearances() {
+		GFXImageConfiguration imgConfig = configuration.getImageConfiguration();
+		defs = new Appearance[]{
 		createTAppearance("VOID", 4,5),
 		new GFXAppearance("NOTHING", null, null,null,null,0,0),
 		
 		/*NEEDED*/
-		//createAppearance("COFFIN", "crl_items_2x.gif", 1,1),
+		//createAppearance("COFFIN", imgConfig.getItemsImage(), 1,1),
 		createTAppearance("COFFIN", 14, 2),
 		
 		createTAppearance("DOOR", 11,2),
 		
-		createAppearance("SHADOW", "shadow_2x.gif", 1,1),
+		createAppearance("SHADOW", imgConfig.getShadowImage(), 1,1),
 		
-		createAppearance("CHRISTOPHER_B", "crl_chars_2x.gif", 1,5),
+		createAppearance("CHRISTOPHER_B", imgConfig.getCharactersImage(), 1,5),
 		
-		createAppearance("SOLIEYU_B", "crl_chars_2x.gif", 2,5),
-		createAppearance("BADBELMONT", "crl_chars_2x.gif", 2,6),
-		createBAppearance("PRELUDE_DRACULA", "crl_mons48_2x.gif", 4, 5),
+		createAppearance("SOLIEYU_B", imgConfig.getCharactersImage(), 2,5),
+		createAppearance("BADBELMONT", imgConfig.getCharactersImage(), 2,6),
+		createBAppearance("PRELUDE_DRACULA", imgConfig.getBigMonstersImage(), 4, 5),
 		
 		/*Town*/
 		createTAppearance("TOWN_GRASS", 4, 1),
@@ -64,7 +62,7 @@ public class GFXAppearances {
 		createTAppearance("BRICKWALKWAY2", 10, 1),
 		createTAppearance("TOWN_ROOF", 14, 1),
 		createTAppearance("TOWN_STAIRSDOWN", 15, 1),
-		createTAppearance("TOWN_STAIRSUP", WIDTH_HALF, 1),
+		createTAppearance("TOWN_STAIRSUP", 16, 1),
 		createTAppearance("TOWN_TREE", 12, 1),
 		createTAppearance("TOWN_STAIRS", 3, 1),
 		
@@ -119,8 +117,16 @@ public class GFXAppearances {
 		createTAppearance("RUSTY_PLATFORM", 3, 10),
 		createTAppearance("MOSS_WATERWAY_ETH", 8, 4, 0,-10),
 		createTAppearance("MOSS_WATERWAY", 8, 4, 0,-10),
-		createAppearance("MOAT_DOWN", "crl_terrain_2x.gif", 128, 164,WIDTH_NORMAL,WIDTH_NORMAL,0,0),
-		createAppearance("MOAT_UP", "crl_terrain_2x.gif", 160, 154,WIDTH_NORMAL,42,0,10),
+		/*createAppearance("MOAT_DOWN", 
+				imgConfig.getTerrainImage(), 
+				128, 164,WIDTH_NORMAL,WIDTH_NORMAL,
+				0,0),
+		createAppearance("MOAT_UP", 
+				imgConfig.getTerrainImage(), 
+				160, 154,WIDTH_NORMAL,42,
+				0,10),*/
+		createAppearance("MOAT_DOWN", imgConfig.getTerrainImage(), 5, 4),
+		createAppearance("MOAT_UP", imgConfig.getTerrainImage(), 6, 4),
 		createTAppearance("MOSS_MIDFLOOR", 4, 4),
 		createTAppearance("MOSS_STAIRS", 3, 4),
 		//createTAppearance("MOAT_UP", 6, 4),
@@ -238,442 +244,401 @@ public class GFXAppearances {
 		createTAppearance("VOID_STAR", 1, 9),
 		createTAppearance("VOID_SUN", 2, 9),
 		
-		createAppearance("TELEPORT", "crl_terrain_2x.gif", 193,99,WIDTH_NORMAL,CELL_HEIGHT,0,WIDTH_HALF),
+		createAppearance("TELEPORT", imgConfig.getTerrainImage(), 193,99,WIDTH_NORMAL,CELL_HEIGHT,0,WIDTH_HALF),
 		
 		// Sacred weapons
-		createIAppearance("ART_CARD_SOL", "crl_items_2x.gif", 1, 1),
-		createIAppearance("ART_CARD_MOONS", "crl_items_2x.gif", 2, 1),
-		createIAppearance("ART_CARD_DEATH", "crl_items_2x.gif", 3, 1),
-		createIAppearance("ART_CARD_LOVE", "crl_items_2x.gif", 4, 1),
-		createIAppearance("RED_CARD", "crl_items_2x.gif", 5, 1),
-		createIAppearance("GOLDEN_MEDALLION", "crl_items_2x.gif", 6, 1),
-		createIAppearance("SILVER_MEDALLION", "crl_items_2x.gif", 7, 1),
-		createIAppearance("THORN_BRACELET", "crl_items_2x.gif", 8, 1),
-		createIAppearance("LIFE_POTION", "crl_items_2x.gif", 9, 1),
-		createIAppearance("FLAME_BOOK", "crl_items_2x.gif", 1, 2),
-		createIAppearance("ICE_BOOK", "crl_items_2x.gif", 2, 2),
-		createIAppearance("LIT_BOOK", "crl_items_2x.gif", 3, 2),
-		createIAppearance("HEART_CONTAINER", "crl_items_2x.gif", 4, 2),
-		createIAppearance("MIRACLE_POTION", "crl_items_2x.gif", 5, 2),
-		createIAppearance("TEPES_RING", "crl_items_2x.gif", 6, 2),
-		createIAppearance("CLUE_PAGE2", "crl_items_2x.gif", 8, 2),
-		createIAppearance("CLUE_PAGE3", "crl_items_2x.gif", 9, 2),
-		createIAppearance("JUKEBOX", "crl_items_2x.gif", 9, 2),
-		createIAppearance("CLUE_PAGE1", "crl_items_2x.gif", 7, 2),
-		createIAppearance("JUMPING_WING", "crl_items_2x.gif", 1, 3),
-		createIAppearance("FIRE_GEM", "crl_items_2x.gif", 2, 3),
-		createIAppearance("FLAME_ITEM", "crl_items_2x.gif", 3, 3),
-		createIAppearance("MAGIC_SHIELD", "crl_items_2x.gif", 8, 4),
-		createIAppearance("LIGHT_CRYSTAL", "crl_items_2x.gif", 4, 3),
-		createIAppearance("LANTERN", "crl_items_2x.gif", 5, 3),
-		createIAppearance("SOUL_RECALL", "crl_items_2x.gif", 6, 3),
-		createIAppearance("SUN_CARD", "crl_items_2x.gif", 7, 3),
-		createIAppearance("MOON_CARD", "crl_items_2x.gif", 8, 3),
-		createIAppearance("HEAL_POTION", "crl_items_2x.gif", 9, 3),
-		createIAppearance("HEAL_HERB", "crl_items_2x.gif", 1, 4),
-		createIAppearance("OXY_HERB", "crl_items_2x.gif", 1, 4),
-		createIAppearance("BIBUTI", "crl_items_2x.gif", 2, 4),
-		createIAppearance("GARLIC", "crl_items_2x.gif", 4, 4),
-		createIAppearance("TORCH", "crl_items_2x.gif", 5, 4),
-		createIAppearance("SILK_BAG", "crl_items_2x.gif", 6, 4),
-		createIAppearance("LAUREL", "crl_items_2x.gif", 7, 4),
-		createIAppearance("VARMOR", "crl_items_2x.gif", 1, 8),
-		createIAppearance("VEST", "crl_items_2x.gif", 2, 8),
-		createIAppearance("STUDDED_LEATHER", "crl_items_2x.gif", 3, 8),
-		createIAppearance("LEATHER_ARMOR", "crl_items_2x.gif", 4, 8),
-		createIAppearance("CLOTH_TUNIC", "crl_items_2x.gif", 5, 8),
-		createIAppearance("FINE_GARMENT", "crl_items_2x.gif", 5, 8),
-		createIAppearance("CUIRASS", "crl_items_2x.gif", 6, 8),
-		createIAppearance("SUIT", "crl_items_2x.gif", 7, 8),
-		createIAppearance("PLATE", "crl_items_2x.gif", 8, 8),
-		createIAppearance("DIAMOND_PLATE", "crl_items_2x.gif", 9, 8),
-		createIAppearance("BOW", "crl_items_2x.gif", 1, 11),
-		createIAppearance("HOLBEIN_DAGGER", "crl_items_2x.gif", 2, 11),
-		createIAppearance("WEREBANE", "crl_items_2x.gif", 3, 11),
-		createIAppearance("SHOTEL", "crl_items_2x.gif", 4, 11),
-		createIAppearance("COMBAT_KNIFE", "crl_items_2x.gif", 5, 11),
-		createIAppearance("STAKE", "crl_items_2x.gif", 6, 11),
-		createIAppearance("BASELARD", "crl_items_2x.gif", 7, 11),
-		createIAppearance("KAISER_KNUCKLE", "crl_items_2x.gif", 1, 12),
-		createIAppearance("MARTIAL_ARMBAND", "crl_items_2x.gif", 2, 12),
-		createIAppearance("TULKAS_FIST", "crl_items_2x.gif", 3, 12),
-		createIAppearance("SPIKY_KNUCKLES", "crl_items_2x.gif", 4, 12),
-		createIAppearance("COMBAT_GAUNTLET", "crl_items_2x.gif", 5, 12),
-		createIAppearance("KNUCKLES", "crl_items_2x.gif", 6, 12),
-		createIAppearance("GAUNTLET", "crl_items_2x.gif", 7, 12),
-		createIAppearance("HAMMER_JUSTICE", "crl_items_2x.gif", 1, 13),
-		createIAppearance("MORNING_STAR", "crl_items_2x.gif", 2, 13),
-		createIAppearance("FLAIL", "crl_items_2x.gif", 3, 13),
-		createIAppearance("MACE", "crl_items_2x.gif", 4, 13),
-		createIAppearance("SILVER_HANDGUN", "crl_items_2x.gif", 1, 14),
-		createIAppearance("REVOLVER", "crl_items_2x.gif", 2, 14),
-		createIAppearance("HANDGUN", "crl_items_2x.gif", 3, 14),
-		createIAppearance("AGUEN", "crl_items_2x.gif", 4, 14),
-		createIAppearance("CROSSBOW", "crl_items_2x.gif", 5, 14),
-		createIAppearance("ROD", "crl_items_2x.gif", 1, 15),
-		createIAppearance("STAFF", "crl_items_2x.gif", 2, 15),
-		createIAppearance("BLADE_RINGSET", "crl_items_2x.gif", 1, 16),
-		createIAppearance("COMBAT_RINGS", "crl_items_2x.gif", 2, 16),
-		createIAppearance("SPIKED_RINGS", "crl_items_2x.gif", 3, 16),
-		createIAppearance("RINGS", "crl_items_2x.gif", 4, 16),
-		createIAppearance("TOWER_SHIELD", "crl_items_2x.gif", 1, 17),
-		createIAppearance("BUCKLER", "crl_items_2x.gif", 2, 17),
-		createIAppearance("WOODEN_SHIELD", "crl_items_2x.gif", 3, 17),
-		createIAppearance("ROUND_SHIELD", "crl_items_2x.gif", 4, 17),
-		createIAppearance("SHIELD", "crl_items_2x.gif", 5, 17),
-		createIAppearance("DUALBLADE_SPEAR", "crl_items_2x.gif", 1, 18),
-		createIAppearance("HALBERD", "crl_items_2x.gif", 2, 18),
-		createIAppearance("ALCARDE_SPEAR", "crl_items_2x.gif", 3, 18),
-		createIAppearance("BATTLE_SPEAR", "crl_items_2x.gif", 4, 18),
-		createIAppearance("LONG_SPEAR", "crl_items_2x.gif", 5, 18),
-		createIAppearance("SHORT_SPEAR", "crl_items_2x.gif", 6, 18),
-		createIAppearance("MASAMUNE", "crl_items_2x.gif", 1, 19),
-		createIAppearance("CRISSAEGRIM", "crl_items_2x.gif", 2, 19),
-		createIAppearance("TERMINUS", "crl_items_2x.gif", 3, 19),
-		createIAppearance("MOURNEBLADE", "crl_items_2x.gif", 4, 19),
-		createIAppearance("OSAFUNE", "crl_items_2x.gif", 5, 19),
-		createIAppearance("MORMEGIL", "crl_items_2x.gif", 6, 19),
-		createIAppearance("GRAM", "crl_items_2x.gif", 7, 19),
-		createIAppearance("RAPIER", "crl_items_2x.gif", 8, 19),
-		createIAppearance("BASTARDSWORD", "crl_items_2x.gif", 9, 19),
-		createIAppearance("BROADSWORD", "crl_items_2x.gif", 1, 22),
-		createIAppearance("VORPAL_BLADE", "crl_items_2x.gif", 1, 20),
-		createIAppearance("FIREBRAND", "crl_items_2x.gif", 2, 20),
-		createIAppearance("ICEBRAND", "crl_items_2x.gif", 3, 20),
-		createIAppearance("GURTHANG", "crl_items_2x.gif", 4, 20),
-		createIAppearance("KATANA", "crl_items_2x.gif", 5, 20),
-		createIAppearance("FALCHION", "crl_items_2x.gif", 6, 20),
-		createIAppearance("HARPER", "crl_items_2x.gif", 7, 20),
-		createIAppearance("HADOR", "crl_items_2x.gif", 8, 20),
-		createIAppearance("GLADIUS", "crl_items_2x.gif", 9, 20),
-		createIAppearance("CUTLASS", "crl_items_2x.gif", 1, 21),
-		createIAppearance("CLAYMORE", "crl_items_2x.gif", 2, 21),
-		createIAppearance("ETHANOS_BLADE", "crl_items_2x.gif", 3, 21),
-		createIAppearance("FLAMBERGE", "crl_items_2x.gif", 4, 21),
-		createIAppearance("SABRE", "crl_items_2x.gif", 5, 21),
-		createIAppearance("MABLUNG", "crl_items_2x.gif", 6, 21),
-		createIAppearance("SCIMITAR", "crl_items_2x.gif", 7, 21),
-		createIAppearance("ESTOC", "crl_items_2x.gif", 8, 21),
-		createIAppearance("SHORT_SWORD", "crl_items_2x.gif", 9, 21),
-		createIAppearance("BWAKA_KNIFE", "crl_items_2x.gif", 1, 24),
-		createIAppearance("CHAKRAM", "crl_items_2x.gif", 2, 24),
-		createIAppearance("BUFFALO_STAR", "crl_items_2x.gif", 3, 24),
-		createIAppearance("SHURIKEN", "crl_items_2x.gif", 4, 24),
-		createIAppearance("THROWING_KNIFE", "crl_items_2x.gif", 5, 24),
-		createIAppearance("LIT_WHIP", "crl_items_2x.gif", 1, 25),
-		createIAppearance("FLAME_WHIP", "crl_items_2x.gif", 2, 25),
-		createIAppearance("VKILLERW", "crl_items_2x.gif", 3, 25),
-		createIAppearance("WHIP", "crl_items_2x.gif", 4, 25),
-		createIAppearance("CHAIN_WHIP", "crl_items_2x.gif", 5, 25),
-		createIAppearance("THORN_WHIP", "crl_items_2x.gif", 6, 25),
-		createIAppearance("LEATHER_WHIP", "crl_items_2x.gif", 7, 25),
+		createIAppearance("ART_CARD_SOL", imgConfig.getItemsImage(), 1, 1),
+		createIAppearance("ART_CARD_MOONS", imgConfig.getItemsImage(), 2, 1),
+		createIAppearance("ART_CARD_DEATH", imgConfig.getItemsImage(), 3, 1),
+		createIAppearance("ART_CARD_LOVE", imgConfig.getItemsImage(), 4, 1),
+		createIAppearance("RED_CARD", imgConfig.getItemsImage(), 5, 1),
+		createIAppearance("GOLDEN_MEDALLION", imgConfig.getItemsImage(), 6, 1),
+		createIAppearance("SILVER_MEDALLION", imgConfig.getItemsImage(), 7, 1),
+		createIAppearance("THORN_BRACELET", imgConfig.getItemsImage(), 8, 1),
+		createIAppearance("LIFE_POTION", imgConfig.getItemsImage(), 9, 1),
+		createIAppearance("FLAME_BOOK", imgConfig.getItemsImage(), 1, 2),
+		createIAppearance("ICE_BOOK", imgConfig.getItemsImage(), 2, 2),
+		createIAppearance("LIT_BOOK", imgConfig.getItemsImage(), 3, 2),
+		createIAppearance("HEART_CONTAINER", imgConfig.getItemsImage(), 4, 2),
+		createIAppearance("MIRACLE_POTION", imgConfig.getItemsImage(), 5, 2),
+		createIAppearance("TEPES_RING", imgConfig.getItemsImage(), 6, 2),
+		createIAppearance("CLUE_PAGE2", imgConfig.getItemsImage(), 8, 2),
+		createIAppearance("CLUE_PAGE3", imgConfig.getItemsImage(), 9, 2),
+		createIAppearance("JUKEBOX", imgConfig.getItemsImage(), 9, 2),
+		createIAppearance("CLUE_PAGE1", imgConfig.getItemsImage(), 7, 2),
+		createIAppearance("JUMPING_WING", imgConfig.getItemsImage(), 1, 3),
+		createIAppearance("FIRE_GEM", imgConfig.getItemsImage(), 2, 3),
+		createIAppearance("FLAME_ITEM", imgConfig.getItemsImage(), 3, 3),
+		createIAppearance("MAGIC_SHIELD", imgConfig.getItemsImage(), 8, 4),
+		createIAppearance("LIGHT_CRYSTAL", imgConfig.getItemsImage(), 4, 3),
+		createIAppearance("LANTERN", imgConfig.getItemsImage(), 5, 3),
+		createIAppearance("SOUL_RECALL", imgConfig.getItemsImage(), 6, 3),
+		createIAppearance("SUN_CARD", imgConfig.getItemsImage(), 7, 3),
+		createIAppearance("MOON_CARD", imgConfig.getItemsImage(), 8, 3),
+		createIAppearance("HEAL_POTION", imgConfig.getItemsImage(), 9, 3),
+		createIAppearance("HEAL_HERB", imgConfig.getItemsImage(), 1, 4),
+		createIAppearance("OXY_HERB", imgConfig.getItemsImage(), 1, 4),
+		createIAppearance("BIBUTI", imgConfig.getItemsImage(), 2, 4),
+		createIAppearance("GARLIC", imgConfig.getItemsImage(), 4, 4),
+		createIAppearance("TORCH", imgConfig.getItemsImage(), 5, 4),
+		createIAppearance("SILK_BAG", imgConfig.getItemsImage(), 6, 4),
+		createIAppearance("LAUREL", imgConfig.getItemsImage(), 7, 4),
+		createIAppearance("VARMOR", imgConfig.getItemsImage(), 1, 8),
+		createIAppearance("VEST", imgConfig.getItemsImage(), 2, 8),
+		createIAppearance("STUDDED_LEATHER", imgConfig.getItemsImage(), 3, 8),
+		createIAppearance("LEATHER_ARMOR", imgConfig.getItemsImage(), 4, 8),
+		createIAppearance("CLOTH_TUNIC", imgConfig.getItemsImage(), 5, 8),
+		createIAppearance("FINE_GARMENT", imgConfig.getItemsImage(), 5, 8),
+		createIAppearance("CUIRASS", imgConfig.getItemsImage(), 6, 8),
+		createIAppearance("SUIT", imgConfig.getItemsImage(), 7, 8),
+		createIAppearance("PLATE", imgConfig.getItemsImage(), 8, 8),
+		createIAppearance("DIAMOND_PLATE", imgConfig.getItemsImage(), 9, 8),
+		createIAppearance("BOW", imgConfig.getItemsImage(), 1, 11),
+		createIAppearance("HOLBEIN_DAGGER", imgConfig.getItemsImage(), 2, 11),
+		createIAppearance("WEREBANE", imgConfig.getItemsImage(), 3, 11),
+		createIAppearance("SHOTEL", imgConfig.getItemsImage(), 4, 11),
+		createIAppearance("COMBAT_KNIFE", imgConfig.getItemsImage(), 5, 11),
+		createIAppearance("STAKE", imgConfig.getItemsImage(), 6, 11),
+		createIAppearance("BASELARD", imgConfig.getItemsImage(), 7, 11),
+		createIAppearance("KAISER_KNUCKLE", imgConfig.getItemsImage(), 1, 12),
+		createIAppearance("MARTIAL_ARMBAND", imgConfig.getItemsImage(), 2, 12),
+		createIAppearance("TULKAS_FIST", imgConfig.getItemsImage(), 3, 12),
+		createIAppearance("SPIKY_KNUCKLES", imgConfig.getItemsImage(), 4, 12),
+		createIAppearance("COMBAT_GAUNTLET", imgConfig.getItemsImage(), 5, 12),
+		createIAppearance("KNUCKLES", imgConfig.getItemsImage(), 6, 12),
+		createIAppearance("GAUNTLET", imgConfig.getItemsImage(), 7, 12),
+		createIAppearance("HAMMER_JUSTICE", imgConfig.getItemsImage(), 1, 13),
+		createIAppearance("MORNING_STAR", imgConfig.getItemsImage(), 2, 13),
+		createIAppearance("FLAIL", imgConfig.getItemsImage(), 3, 13),
+		createIAppearance("MACE", imgConfig.getItemsImage(), 4, 13),
+		createIAppearance("SILVER_HANDGUN", imgConfig.getItemsImage(), 1, 14),
+		createIAppearance("REVOLVER", imgConfig.getItemsImage(), 2, 14),
+		createIAppearance("HANDGUN", imgConfig.getItemsImage(), 3, 14),
+		createIAppearance("AGUEN", imgConfig.getItemsImage(), 4, 14),
+		createIAppearance("CROSSBOW", imgConfig.getItemsImage(), 5, 14),
+		createIAppearance("ROD", imgConfig.getItemsImage(), 1, 15),
+		createIAppearance("STAFF", imgConfig.getItemsImage(), 2, 15),
+		createIAppearance("BLADE_RINGSET", imgConfig.getItemsImage(), 1, 16),
+		createIAppearance("COMBAT_RINGS", imgConfig.getItemsImage(), 2, 16),
+		createIAppearance("SPIKED_RINGS", imgConfig.getItemsImage(), 3, 16),
+		createIAppearance("RINGS", imgConfig.getItemsImage(), 4, 16),
+		createIAppearance("TOWER_SHIELD", imgConfig.getItemsImage(), 1, 17),
+		createIAppearance("BUCKLER", imgConfig.getItemsImage(), 2, 17),
+		createIAppearance("WOODEN_SHIELD", imgConfig.getItemsImage(), 3, 17),
+		createIAppearance("ROUND_SHIELD", imgConfig.getItemsImage(), 4, 17),
+		createIAppearance("SHIELD", imgConfig.getItemsImage(), 5, 17),
+		createIAppearance("DUALBLADE_SPEAR", imgConfig.getItemsImage(), 1, 18),
+		createIAppearance("HALBERD", imgConfig.getItemsImage(), 2, 18),
+		createIAppearance("ALCARDE_SPEAR", imgConfig.getItemsImage(), 3, 18),
+		createIAppearance("BATTLE_SPEAR", imgConfig.getItemsImage(), 4, 18),
+		createIAppearance("LONG_SPEAR", imgConfig.getItemsImage(), 5, 18),
+		createIAppearance("SHORT_SPEAR", imgConfig.getItemsImage(), 6, 18),
+		createIAppearance("MASAMUNE", imgConfig.getItemsImage(), 1, 19),
+		createIAppearance("CRISSAEGRIM", imgConfig.getItemsImage(), 2, 19),
+		createIAppearance("TERMINUS", imgConfig.getItemsImage(), 3, 19),
+		createIAppearance("MOURNEBLADE", imgConfig.getItemsImage(), 4, 19),
+		createIAppearance("OSAFUNE", imgConfig.getItemsImage(), 5, 19),
+		createIAppearance("MORMEGIL", imgConfig.getItemsImage(), 6, 19),
+		createIAppearance("GRAM", imgConfig.getItemsImage(), 7, 19),
+		createIAppearance("RAPIER", imgConfig.getItemsImage(), 8, 19),
+		createIAppearance("BASTARDSWORD", imgConfig.getItemsImage(), 9, 19),
+		createIAppearance("BROADSWORD", imgConfig.getItemsImage(), 1, 22),
+		createIAppearance("VORPAL_BLADE", imgConfig.getItemsImage(), 1, 20),
+		createIAppearance("FIREBRAND", imgConfig.getItemsImage(), 2, 20),
+		createIAppearance("ICEBRAND", imgConfig.getItemsImage(), 3, 20),
+		createIAppearance("GURTHANG", imgConfig.getItemsImage(), 4, 20),
+		createIAppearance("KATANA", imgConfig.getItemsImage(), 5, 20),
+		createIAppearance("FALCHION", imgConfig.getItemsImage(), 6, 20),
+		createIAppearance("HARPER", imgConfig.getItemsImage(), 7, 20),
+		createIAppearance("HADOR", imgConfig.getItemsImage(), 8, 20),
+		createIAppearance("GLADIUS", imgConfig.getItemsImage(), 9, 20),
+		createIAppearance("CUTLASS", imgConfig.getItemsImage(), 1, 21),
+		createIAppearance("CLAYMORE", imgConfig.getItemsImage(), 2, 21),
+		createIAppearance("ETHANOS_BLADE", imgConfig.getItemsImage(), 3, 21),
+		createIAppearance("FLAMBERGE", imgConfig.getItemsImage(), 4, 21),
+		createIAppearance("SABRE", imgConfig.getItemsImage(), 5, 21),
+		createIAppearance("MABLUNG", imgConfig.getItemsImage(), 6, 21),
+		createIAppearance("SCIMITAR", imgConfig.getItemsImage(), 7, 21),
+		createIAppearance("ESTOC", imgConfig.getItemsImage(), 8, 21),
+		createIAppearance("SHORT_SWORD", imgConfig.getItemsImage(), 9, 21),
+		createIAppearance("BWAKA_KNIFE", imgConfig.getItemsImage(), 1, 24),
+		createIAppearance("CHAKRAM", imgConfig.getItemsImage(), 2, 24),
+		createIAppearance("BUFFALO_STAR", imgConfig.getItemsImage(), 3, 24),
+		createIAppearance("SHURIKEN", imgConfig.getItemsImage(), 4, 24),
+		createIAppearance("THROWING_KNIFE", imgConfig.getItemsImage(), 5, 24),
+		createIAppearance("LIT_WHIP", imgConfig.getItemsImage(), 1, 25),
+		createIAppearance("FLAME_WHIP", imgConfig.getItemsImage(), 2, 25),
+		createIAppearance("VKILLERW", imgConfig.getItemsImage(), 3, 25),
+		createIAppearance("WHIP", imgConfig.getItemsImage(), 4, 25),
+		createIAppearance("CHAIN_WHIP", imgConfig.getItemsImage(), 5, 25),
+		createIAppearance("THORN_WHIP", imgConfig.getItemsImage(), 6, 25),
+		createIAppearance("LEATHER_WHIP", imgConfig.getItemsImage(), 7, 25),
 
 		
 
 
 		// Monsters
-		createAppearance("R_SKELETON", "crl_mons32_2x.gif", 1, 1),
-		createAppearance("GZOMBIE", "crl_mons32_2x.gif", 4, 2),
-        createAppearance("ZOMBIE", "crl_mons32_2x.gif", 7, 8),
-        createAppearance("WHITE_SKELETON", "crl_mons32_2x.gif", 1, 1),
-        createAppearance("PANTHER", "crl_mons32_2x.gif", 5, 3),
-        createBAppearance("WARG", "crl_mons48_2x.gif", 7, 1),
-        createAppearance("BLACK_KNIGHT", "crl_mons32_2x.gif", 9, 4),
-        createAppearance("APE_SKELETON", "crl_mons32_2x.gif", 7, 3),
-        createBAppearance("PARANTHROPUS", "crl_mons48_2x.gif", 1, 1),
-        createAppearance("BAT", "crl_mons32_2x.gif", 8, 3),
-        createAppearance("SKULL_HEAD", "crl_mons32_2x.gif", 2, 6),
-        createAppearance("SKULL_LORD", "crl_mons32_2x.gif", 3, 6),
-        createAppearance("MERMAN", "crl_mons32_2x.gif", 9, 5),
-        createAppearance("WEREBEAR", "crl_mons32_2x.gif", 6, 6),
-        createAppearance("HUNCHBACK", "crl_mons32_2x.gif", 6, 7),
-        createAppearance("BONE_ARCHER", "crl_mons32_2x.gif", 2, 1),
-        createAppearance("SKELETON_PANTHER", "crl_mons32_2x.gif", 6, 3),
-        createAppearance("BONE_PILLAR", "crl_mons32_2x.gif", 9, 6),
-        createAppearance("AXE_KNIGHT", "crl_mons32_2x.gif", 1, 5),
-        createAppearance("MEDUSA_HEAD", "crl_mons32_2x.gif", 4, 6),
-        createAppearance("DURGA", "crl_mons32_2x.gif", 1, 4),
-        createAppearance("SKELETON_ATHLETE", "crl_mons32_2x.gif", 3, 1),
-        createAppearance("BLADE_SOLDIER", "crl_mons32_2x.gif", 1, 2),
-        createAppearance("BONE_HALBERD", "crl_mons32_2x.gif", 4, 1),
-        createAppearance("CROW", "crl_mons32_2x.gif", 4, 8),
-        createAppearance("BLOOD_SKELETON", "crl_mons32_2x.gif", 9, 1),
-        createAppearance("LIZARD_SWORDSMAN", "crl_mons32_2x.gif", 7, 5),
-        createBAppearance("COCKATRICE", "crl_mons48_2x.gif", 4, 1),
-        createAppearance("COOPER_ARMOR", "crl_mons32_2x.gif", 10, 4),
-        createAppearance("GHOUL", "crl_mons32_2x.gif", 8, 8),
-        createAppearance("SALOME", "crl_mons32_2x.gif", 7, 4),
-        createAppearance("ECTOPLASM", "crl_mons32_2x.gif", 3, 3),
-        createBAppearance("RULER_SWORD_LV1", "crl_mons48_2x.gif", 2, 2),
-        createBAppearance("BEAST_DEMON", "crl_mons48_2x.gif", 2, 1),
-        createBAppearance("DEVIL", "crl_mons48_2x.gif", 3, 1),
-        createAppearance("BALLOON_POD", "crl_mons32_2x.gif", 5, 7),
-        createAppearance("LILITH", "crl_mons32_2x.gif", 5, 4),
-        createAppearance("BONE_MUSKET", "crl_mons32_2x.gif", 5, 1),
-        createAppearance("KILLER_PLANT", "crl_mons32_2x.gif", 3, 7),
-        createAppearance("VAMPIRE_BAT", "crl_mons32_2x.gif", 9, 3),
-        createBAppearance("DEATH_MANTIS", "crl_mons48_2x.gif", 5, 2),
-        createAppearance("DHURON", "crl_mons32_2x.gif", 7, 2),
-        createAppearance("DRAGON_SKULL_CANNON", "crl_mons32_2x.gif", 10, 6),
-        createAppearance("MUMMY_MAN", "crl_mons32_2x.gif", 5, 2),
-        createAppearance("ZELDO", "crl_mons32_2x.gif", 8, 2),
-        createAppearance("MUD_MAN", "crl_mons32_2x.gif", 2, 3),
-        createAppearance("CAGNAZOO", "crl_mons32_2x.gif", 4, 5),
-        createBAppearance("ALRAUNE", "crl_mons48_2x.gif", 4, 4),
-        createBAppearance("GOLEM", "crl_mons48_2x.gif", 2, 3),
-        createAppearance("ARACHNE", "crl_mons32_2x.gif", 3, 4),
-        createAppearance("SPEAR_SKELETON", "crl_mons32_2x.gif", 8, 1),
+		createAppearance("R_SKELETON", imgConfig.getMonstersImage(), 1, 1),
+		createAppearance("GZOMBIE", imgConfig.getMonstersImage(), 4, 2),
+        createAppearance("ZOMBIE", imgConfig.getMonstersImage(), 7, 8),
+        createAppearance("WHITE_SKELETON", imgConfig.getMonstersImage(), 1, 1),
+        createAppearance("PANTHER", imgConfig.getMonstersImage(), 5, 3),
+        createBAppearance("WARG", imgConfig.getBigMonstersImage(), 7, 1),
+        createAppearance("BLACK_KNIGHT", imgConfig.getMonstersImage(), 9, 4),
+        createAppearance("APE_SKELETON", imgConfig.getMonstersImage(), 7, 3),
+        createBAppearance("PARANTHROPUS", imgConfig.getMonstersImage(), 1, 1),
+        createAppearance("BAT", imgConfig.getMonstersImage(), 8, 3),
+        createAppearance("SKULL_HEAD", imgConfig.getMonstersImage(), 2, 6),
+        createAppearance("SKULL_LORD", imgConfig.getMonstersImage(), 3, 6),
+        createAppearance("MERMAN", imgConfig.getMonstersImage(), 9, 5),
+        createAppearance("WEREBEAR", imgConfig.getMonstersImage(), 6, 6),
+        createAppearance("HUNCHBACK", imgConfig.getMonstersImage(), 6, 7),
+        createAppearance("BONE_ARCHER", imgConfig.getMonstersImage(), 2, 1),
+        createAppearance("SKELETON_PANTHER", imgConfig.getMonstersImage(), 6, 3),
+        createAppearance("BONE_PILLAR", imgConfig.getMonstersImage(), 9, 6),
+        createAppearance("AXE_KNIGHT", imgConfig.getMonstersImage(), 1, 5),
+        createAppearance("MEDUSA_HEAD", imgConfig.getMonstersImage(), 4, 6),
+        createAppearance("DURGA", imgConfig.getMonstersImage(), 1, 4),
+        createAppearance("SKELETON_ATHLETE", imgConfig.getMonstersImage(), 3, 1),
+        createAppearance("BLADE_SOLDIER", imgConfig.getMonstersImage(), 1, 2),
+        createAppearance("BONE_HALBERD", imgConfig.getMonstersImage(), 4, 1),
+        createAppearance("CROW", imgConfig.getMonstersImage(), 4, 8),
+        createAppearance("BLOOD_SKELETON", imgConfig.getMonstersImage(), 9, 1),
+        createAppearance("LIZARD_SWORDSMAN", imgConfig.getMonstersImage(), 7, 5),
+        createBAppearance("COCKATRICE", imgConfig.getBigMonstersImage(), 4, 1),
+        createAppearance("COOPER_ARMOR", imgConfig.getMonstersImage(), 10, 4),
+        createAppearance("GHOUL", imgConfig.getMonstersImage(), 8, 8),
+        createAppearance("SALOME", imgConfig.getMonstersImage(), 7, 4),
+        createAppearance("ECTOPLASM", imgConfig.getMonstersImage(), 3, 3),
+        createBAppearance("RULER_SWORD_LV1", imgConfig.getBigMonstersImage(), 2, 2),
+        createBAppearance("BEAST_DEMON", imgConfig.getBigMonstersImage(), 2, 1),
+        createBAppearance("DEVIL", imgConfig.getBigMonstersImage(), 3, 1),
+        createAppearance("BALLOON_POD", imgConfig.getMonstersImage(), 5, 7),
+        createAppearance("LILITH", imgConfig.getMonstersImage(), 5, 4),
+        createAppearance("BONE_MUSKET", imgConfig.getMonstersImage(), 5, 1),
+        createAppearance("KILLER_PLANT", imgConfig.getMonstersImage(), 3, 7),
+        createAppearance("VAMPIRE_BAT", imgConfig.getMonstersImage(), 9, 3),
+        createBAppearance("DEATH_MANTIS", imgConfig.getBigMonstersImage(), 5, 2),
+        createAppearance("DHURON", imgConfig.getMonstersImage(), 7, 2),
+        createAppearance("DRAGON_SKULL_CANNON", imgConfig.getMonstersImage(), 10, 6),
+        createAppearance("MUMMY_MAN", imgConfig.getMonstersImage(), 5, 2),
+        createAppearance("ZELDO", imgConfig.getMonstersImage(), 8, 2),
+        createAppearance("MUD_MAN", imgConfig.getMonstersImage(), 2, 3),
+        createAppearance("CAGNAZOO", imgConfig.getMonstersImage(), 4, 5),
+        createBAppearance("ALRAUNE", imgConfig.getBigMonstersImage(), 4, 4),
+        createBAppearance("GOLEM", imgConfig.getBigMonstersImage(), 2, 3),
+        createAppearance("ARACHNE", imgConfig.getMonstersImage(), 3, 4),
+        createAppearance("SPEAR_SKELETON", imgConfig.getMonstersImage(), 8, 1),
         
-        createAppearance("KNIFE_MERMAN", "crl_mons32_2x.gif", 10, 5),
-        createAppearance("MASTER_LIZARD", "crl_mons32_2x.gif", 8, 5),
-        createAppearance("WHIP_SKELETON", "crl_mons32_2x.gif", 6, 1),
-        createAppearance("FROZEN_SHADE", "crl_mons32_2x.gif", 10, 2),
-        createAppearance("MINOTAUR", "crl_mons32_2x.gif", 7, 6),
-        createBAppearance("TRITON", "crl_mons48_2x.gif", 6, 2),
-        createAppearance("NOVA_SKELETON", "crl_mons32_2x.gif", 10, 1),
-        createBAppearance("ARMOR_LORD", "crl_mons48_2x.gif", 1, 3),
-        createAppearance("FLEA_ARMOR", "crl_mons32_2x.gif", 7, 7),
-        createAppearance("BUER", "crl_mons32_2x.gif", 4, 7),
-        createAppearance("WIGHT", "crl_mons32_2x.gif", 9, 2),
-        createAppearance("SPECTER", "crl_mons32_2x.gif", 4, 3),
-        createBAppearance("RULER_SWORD_LV2", "crl_mons48_2x.gif", 3, 2),
-        createAppearance("CURLY", "crl_mons32_2x.gif", 2, 4),
-        createBAppearance("FIRE_WARG", "crl_mons48_2x.gif", 1, 2),
-        createAppearance("BONE_ARK", "crl_mons32_2x.gif", 1, 7),
-        createAppearance("MIMIC", "crl_mons32_2x.gif", 5, 6),
-        createBAppearance("MANTICORE", "crl_mons48_2x.gif", 7, 2),
-        createAppearance("FLAME_KNIGHT", "crl_mons32_2x.gif", 2, 5),
-        createBAppearance("ARMOR_GUARDIAN", "crl_mons48_2x.gif", 1, 4),
-        createBAppearance("DEMON_LORD", "crl_mons48_2x.gif", 6, 1),
-        createAppearance("HEAT_SHADE", "crl_mons32_2x.gif", 1, 3),
-        createBAppearance("FLESH_GOLEM", "crl_mons48_2x.gif", 4, 3),
-        createAppearance("WEREWOLF", "crl_mons32_2x.gif", 8, 6),
-        createBAppearance("ALURA_UNE", "crl_mons48_2x.gif", 5, 4),
-        createAppearance("DRAHIGNAZOO", "crl_mons32_2x.gif", 5, 5),
-        createAppearance("SUCCUBUS", "crl_mons32_2x.gif", 6, 4),
-        createAppearance("BLADE_MASTER", "crl_mons32_2x.gif", 2, 2),
-        createBAppearance("BASILISK", "crl_mons48_2x.gif", 5, 1),
-        createAppearance("GARGOYLE", "crl_mons32_2x.gif", 6, 5),
-        createAppearance("HARPY", "crl_mons32_2x.gif", 4, 4),
-        createAppearance("KICKER_SKELETON", "crl_mons32_2x.gif", 7, 1),
-        createBAppearance("BEHEMOTH", "crl_mons48_2x.gif", 6, 3),
-        createBAppearance("DISCUS_LORD", "crl_mons48_2x.gif", 7, 3),
-        createBAppearance("GIANT_ARMOR", "crl_mons48_2x.gif", 2, 4),
-        createAppearance("WITCH", "crl_mons32_2x.gif", 8, 4),
-        createAppearance("MANDRAGORA", "crl_mons32_2x.gif", 8, 7),
-        createBAppearance("IRON_GOLEM", "crl_mons48_2x.gif", 2, 3),
-        createBAppearance("VICTORY_ARMOR", "crl_mons48_2x.gif", 3, 4),
-        createBAppearance("RULER_SWORD_LV3", "crl_mons48_2x.gif", 4, 2),
-        createAppearance("SPEAR_KNIGHT", "crl_mons32_2x.gif", 3, 9),
-        createAppearance("FLYING_SPEAR_SKELETON", "crl_mons32_2x.gif", 4, 9), 
+        createAppearance("KNIFE_MERMAN", imgConfig.getMonstersImage(), 10, 5),
+        createAppearance("MASTER_LIZARD", imgConfig.getMonstersImage(), 8, 5),
+        createAppearance("WHIP_SKELETON", imgConfig.getMonstersImage(), 6, 1),
+        createAppearance("FROZEN_SHADE", imgConfig.getMonstersImage(), 10, 2),
+        createAppearance("MINOTAUR", imgConfig.getMonstersImage(), 7, 6),
+        createBAppearance("TRITON", imgConfig.getBigMonstersImage(), 6, 2),
+        createAppearance("NOVA_SKELETON", imgConfig.getMonstersImage(), 10, 1),
+        createBAppearance("ARMOR_LORD", imgConfig.getBigMonstersImage(), 1, 3),
+        createAppearance("FLEA_ARMOR", imgConfig.getMonstersImage(), 7, 7),
+        createAppearance("BUER", imgConfig.getMonstersImage(), 4, 7),
+        createAppearance("WIGHT", imgConfig.getMonstersImage(), 9, 2),
+        createAppearance("SPECTER", imgConfig.getMonstersImage(), 4, 3),
+        createBAppearance("RULER_SWORD_LV2", imgConfig.getBigMonstersImage(), 3, 2),
+        createAppearance("CURLY", imgConfig.getMonstersImage(), 2, 4),
+        createBAppearance("FIRE_WARG", imgConfig.getBigMonstersImage(), 1, 2),
+        createAppearance("BONE_ARK", imgConfig.getMonstersImage(), 1, 7),
+        createAppearance("MIMIC", imgConfig.getMonstersImage(), 5, 6),
+        createBAppearance("MANTICORE", imgConfig.getBigMonstersImage(), 7, 2),
+        createAppearance("FLAME_KNIGHT", imgConfig.getMonstersImage(), 2, 5),
+        createBAppearance("ARMOR_GUARDIAN", imgConfig.getBigMonstersImage(), 1, 4),
+        createBAppearance("DEMON_LORD", imgConfig.getBigMonstersImage(), 6, 1),
+        createAppearance("HEAT_SHADE", imgConfig.getMonstersImage(), 1, 3),
+        createBAppearance("FLESH_GOLEM", imgConfig.getBigMonstersImage(), 4, 3),
+        createAppearance("WEREWOLF", imgConfig.getMonstersImage(), 8, 6),
+        createBAppearance("ALURA_UNE", imgConfig.getBigMonstersImage(), 5, 4),
+        createAppearance("DRAHIGNAZOO", imgConfig.getMonstersImage(), 5, 5),
+        createAppearance("SUCCUBUS", imgConfig.getMonstersImage(), 6, 4),
+        createAppearance("BLADE_MASTER", imgConfig.getMonstersImage(), 2, 2),
+        createBAppearance("BASILISK", imgConfig.getBigMonstersImage(), 5, 1),
+        createAppearance("GARGOYLE", imgConfig.getMonstersImage(), 6, 5),
+        createAppearance("HARPY", imgConfig.getMonstersImage(), 4, 4),
+        createAppearance("KICKER_SKELETON", imgConfig.getMonstersImage(), 7, 1),
+        createBAppearance("BEHEMOTH", imgConfig.getBigMonstersImage(), 6, 3),
+        createBAppearance("DISCUS_LORD", imgConfig.getBigMonstersImage(), 7, 3),
+        createBAppearance("GIANT_ARMOR", imgConfig.getBigMonstersImage(), 2, 4),
+        createAppearance("WITCH", imgConfig.getMonstersImage(), 8, 4),
+        createAppearance("MANDRAGORA", imgConfig.getMonstersImage(), 8, 7),
+        createBAppearance("IRON_GOLEM", imgConfig.getBigMonstersImage(), 2, 3),
+        createBAppearance("VICTORY_ARMOR", imgConfig.getBigMonstersImage(), 3, 4),
+        createBAppearance("RULER_SWORD_LV3", imgConfig.getBigMonstersImage(), 4, 2),
+        createAppearance("SPEAR_KNIGHT", imgConfig.getMonstersImage(), 3, 9),
+        createAppearance("FLYING_SPEAR_SKELETON", imgConfig.getMonstersImage(), 4, 9), 
 
-        createBAppearance("GIANTBAT", "crl_mons48_2x.gif", 2, 5),
-        createBAppearance("DEATH", "crl_mons48_2x.gif", 3, 5),
-        createAppearance("SICKLE", "crl_mons32_2x.gif", 2, 9),
-        createBAppearance("DRACULA", "crl_mons48_2x.gif", 4, 5),
-        createBAppearance("MEDUSA", "crl_mons48_2x.gif", 1, 5),
-        createAppearance("SNAKE", "crl_mons32_2x.gif", 1, 9),
-        createBAppearance("FRANK", "crl_mons48_2x.gif", 7, 4),
-    	createAppearance("IGOR", "crl_mons32_2x.gif", 10, 8),
-    	createBAppearance("DEMON_DRACULA", "crl_mons48_2x.gif", 5, 5),
-    	createBAppearance("AKMODAN", "crl_mons48_2x.gif", 6, 5),
-    	createBAppearance("DRAGON_KING", "crl_mons48_2x.gif", 1, 6),
-    	createBAppearance("ORLOX", "crl_mons48_2x.gif", 4, 6),
-    	createBAppearance("WATER_DRAGON", "crl_mons48_2x.gif", 2, 6),
-    	createBAppearance("LEGION", "crl_mons48_2x.gif", 7, 5),
-    	createBAppearance("CERBERUS", "crl_mons48_2x.gif", 3, 6),
-    	createAppearance("DOPPELGANGER", "crl_mons32_2x.gif", 6, 5), /*Pending*/
+        createBAppearance("GIANTBAT", imgConfig.getBigMonstersImage(), 2, 5),
+        createBAppearance("DEATH", imgConfig.getBigMonstersImage(), 3, 5),
+        createAppearance("SICKLE", imgConfig.getMonstersImage(), 2, 9),
+        createBAppearance("DRACULA", imgConfig.getBigMonstersImage(), 4, 5),
+        createBAppearance("MEDUSA", imgConfig.getBigMonstersImage(), 1, 5),
+        createAppearance("SNAKE", imgConfig.getMonstersImage(), 1, 9),
+        createBAppearance("FRANK", imgConfig.getBigMonstersImage(), 7, 4),
+    	createAppearance("IGOR", imgConfig.getMonstersImage(), 10, 8),
+    	createBAppearance("DEMON_DRACULA", imgConfig.getBigMonstersImage(), 5, 5),
+    	createBAppearance("AKMODAN", imgConfig.getBigMonstersImage(), 6, 5),
+    	createBAppearance("DRAGON_KING", imgConfig.getBigMonstersImage(), 1, 6),
+    	createBAppearance("ORLOX", imgConfig.getBigMonstersImage(), 4, 6),
+    	createBAppearance("WATER_DRAGON", imgConfig.getBigMonstersImage(), 2, 6),
+    	createBAppearance("LEGION", imgConfig.getBigMonstersImage(), 7, 5),
+    	createBAppearance("CERBERUS", imgConfig.getBigMonstersImage(), 3, 6),
+    	createAppearance("DOPPELGANGER", imgConfig.getMonstersImage(), 6, 5), /*Pending*/
     	
     	
     	
-    	createAppearance("S_CAT", "crl_mons32_2x.gif", 5, 9),
-    	createAppearance("S_BIRD", "crl_mons32_2x.gif", 6, 9),
-    	createAppearance("S_TURTLE", "crl_mons32_2x.gif", 7, 9),
-    	createBAppearance("S_TIGER", "crl_mons32_2x.gif", 8, 9),
-    	createAppearance("S_EAGLE", "crl_mons32_2x.gif", 9, 9),
-    	createAppearance("S_TORTOISE", "crl_mons32_2x.gif", 7, 9), /*Pending*/
-    	createBAppearance("S_DRAGON", "crl_mons32_2x.gif", 6, 5), /*Pending*/
+    	createAppearance("S_CAT", imgConfig.getMonstersImage(), 5, 9),
+    	createAppearance("S_BIRD", imgConfig.getMonstersImage(), 6, 9),
+    	createAppearance("S_TURTLE", imgConfig.getMonstersImage(), 7, 9),
+    	createBAppearance("S_TIGER", imgConfig.getMonstersImage(), 8, 9),
+    	createAppearance("S_EAGLE", imgConfig.getMonstersImage(), 9, 9),
+    	createAppearance("S_TORTOISE", imgConfig.getMonstersImage(), 7, 9), /*Pending*/
+    	createBAppearance("S_DRAGON", imgConfig.getMonstersImage(), 6, 5), /*Pending*/
     	
 		// Features
-		createXAppearance("CANDLE", "crl_features_2x.gif", 0,112,WIDTH_HALF,WIDTH_NORMAL),
-		createIAppearance("SMALLHEART", "crl_features_2x.gif", 2, 1),
-		createIAppearance("DAGGER", "crl_features_2x.gif", 3, 1),
-		createIAppearance("AXE", "crl_features_2x.gif", 4, 1),
-		createIAppearance("VIAL", "crl_features_2x.gif", 8, 1),
-		createIAppearance("CROSS", "crl_features_2x.gif", 5, 1),
-		createIAppearance("CLOCK", "crl_features_2x.gif", 6, 1),
-		createIAppearance("BIGHEART", "crl_features_2x.gif", 1, 2),
-		createIAppearance("KEY", "crl_features_2x.gif", 2, 2),
-		createIAppearance("UPGRADE", "crl_features_2x.gif", 3, 2),
-		createIAppearance("ROSARY", "crl_features_2x.gif", 5, 2),
-		createIAppearance("COIN", "crl_features_2x.gif", 6, 2),
-		createIAppearance("RED_MONEY_BAG", "crl_features_2x.gif", 7, 2),
-		createIAppearance("BLUE_MONEY_BAG", "crl_features_2x.gif", 8, 2),
-		createIAppearance("WHITE_MONEY_BAG", "crl_features_2x.gif", 9, 2),
-		createIAppearance("CROWN", "crl_features_2x.gif", 1, 3),
-		createIAppearance("CHEST", "crl_features_2x.gif", 2, 3),
-		createIAppearance("MOAUI_HEAD", "crl_features_2x.gif", 3, 3),
-		createIAppearance("RAINBOW_MONEY_BAG", "crl_features_2x.gif", 10, 2),
-		createIAppearance("POT_ROAST", "crl_features_2x.gif", 4, 3),
-		createIAppearance("INVISIBILITY_POTION", "crl_features_2x.gif", 5, 3),
-		createIAppearance("BIBLE", "crl_features_2x.gif", 7, 1),
-		createIAppearance("CRYSTAL", "crl_features_2x.gif", 9, 1),
-		createIAppearance("FIST", "crl_features_2x.gif", 10, 1),
-		createIAppearance("REBOUND_CRYSTAL", "crl_features_2x.gif", 9, 1),
-		createIAppearance("MUPGRADE", "crl_features_2x.gif", 4, 2),
-		createXAppearance("URN_FLAME", "crl_features_2x.gif", WIDTH_NORMAL,112,WIDTH_HALF,WIDTH_NORMAL,12),
-		createIAppearance("BLAST_CRYSTAL", "crl_features_2x.gif", 9, 1),
+		createXAppearance("CANDLE", imgConfig.getFeaturesImage(), 0,112,WIDTH_HALF,WIDTH_NORMAL),
+		createIAppearance("SMALLHEART", imgConfig.getFeaturesImage(), 2, 1),
+		createIAppearance("DAGGER", imgConfig.getFeaturesImage(), 3, 1),
+		createIAppearance("AXE", imgConfig.getFeaturesImage(), 4, 1),
+		createIAppearance("VIAL", imgConfig.getFeaturesImage(), 8, 1),
+		createIAppearance("CROSS", imgConfig.getFeaturesImage(), 5, 1),
+		createIAppearance("CLOCK", imgConfig.getFeaturesImage(), 6, 1),
+		createIAppearance("BIGHEART", imgConfig.getFeaturesImage(), 1, 2),
+		createIAppearance("KEY", imgConfig.getFeaturesImage(), 2, 2),
+		createIAppearance("UPGRADE", imgConfig.getFeaturesImage(), 3, 2),
+		createIAppearance("ROSARY", imgConfig.getFeaturesImage(), 5, 2),
+		createIAppearance("COIN", imgConfig.getFeaturesImage(), 6, 2),
+		createIAppearance("RED_MONEY_BAG", imgConfig.getFeaturesImage(), 7, 2),
+		createIAppearance("BLUE_MONEY_BAG", imgConfig.getFeaturesImage(), 8, 2),
+		createIAppearance("WHITE_MONEY_BAG", imgConfig.getFeaturesImage(), 9, 2),
+		createIAppearance("CROWN", imgConfig.getFeaturesImage(), 1, 3),
+		createIAppearance("CHEST", imgConfig.getFeaturesImage(), 2, 3),
+		createIAppearance("MOAUI_HEAD", imgConfig.getFeaturesImage(), 3, 3),
+		createIAppearance("RAINBOW_MONEY_BAG", imgConfig.getFeaturesImage(), 10, 2),
+		createIAppearance("POT_ROAST", imgConfig.getFeaturesImage(), 4, 3),
+		createIAppearance("INVISIBILITY_POTION", imgConfig.getFeaturesImage(), 5, 3),
+		createIAppearance("BIBLE", imgConfig.getFeaturesImage(), 7, 1),
+		createIAppearance("CRYSTAL", imgConfig.getFeaturesImage(), 9, 1),
+		createIAppearance("FIST", imgConfig.getFeaturesImage(), 10, 1),
+		createIAppearance("REBOUND_CRYSTAL", imgConfig.getFeaturesImage(), 9, 1),
+		createIAppearance("MUPGRADE", imgConfig.getFeaturesImage(), 4, 2),
+		createXAppearance("URN_FLAME", imgConfig.getFeaturesImage(), WIDTH_NORMAL,112,WIDTH_HALF,WIDTH_NORMAL,12),
+		createIAppearance("BLAST_CRYSTAL", imgConfig.getFeaturesImage(), 9, 1),
 
-		createXAppearance("FLAME", "crl_effects_2x.gif", 416, 446,WIDTH_NORMAL,WIDTH_NORMAL),
-		createAppearance("MOUND", "crl_effects_2x.gif", 11, 17),
+		createXAppearance("FLAME", imgConfig.getEffectsImage(), 416, 446,WIDTH_NORMAL,WIDTH_NORMAL),
+		createAppearance("MOUND", imgConfig.getEffectsImage(), 11, 17),
 
         //Characters
-		createAppearance("VKILLER", "crl_chars_2x.gif", 1, 1),
-		createAppearance("VANQUISHER", "crl_chars_2x.gif", 3, 1),
-		createAppearance("RENEGADE", "crl_chars_2x.gif", 5, 1),
-        createAppearance("INVOKER", "crl_chars_2x.gif", 1, 2),
-        createAppearance("MANBEAST", "crl_chars_2x.gif", 3, 2),
-        createAppearance("BEAST", "crl_chars_2x.gif", 5, 2),
-        createAppearance("KNIGHT", "crl_chars_2x.gif", 1, 3),
+		createAppearance("VKILLER", imgConfig.getCharactersImage(), 1, 1),
+		createAppearance("VANQUISHER", imgConfig.getCharactersImage(), 3, 1),
+		createAppearance("RENEGADE", imgConfig.getCharactersImage(), 5, 1),
+        createAppearance("INVOKER", imgConfig.getCharactersImage(), 1, 2),
+        createAppearance("MANBEAST", imgConfig.getCharactersImage(), 3, 2),
+        createAppearance("BEAST", imgConfig.getCharactersImage(), 5, 2),
+        createAppearance("KNIGHT", imgConfig.getCharactersImage(), 1, 3),
         
-        createAppearance("VKILLER_W", "crl_chars_2x.gif", 2, 1),
-        createAppearance("SONIA_B", "crl_chars_2x.gif", 2, 1),
-		createAppearance("VANQUISHER_W", "crl_chars_2x.gif", 4, 1),
-		createAppearance("RENEGADE_W", "crl_chars_2x.gif", 6, 1),
-        createAppearance("INVOKER_W", "crl_chars_2x.gif", 2, 2),
-        createAppearance("MANBEAST_W", "crl_chars_2x.gif", 4, 2),
-        createAppearance("BEAST_W", "crl_chars_2x.gif", 6, 2),
-        createAppearance("KNIGHT_W", "crl_chars_2x.gif", 2, 3),
+        createAppearance("VKILLER_W", imgConfig.getCharactersImage(), 2, 1),
+        createAppearance("SONIA_B", imgConfig.getCharactersImage(), 2, 1),
+		createAppearance("VANQUISHER_W", imgConfig.getCharactersImage(), 4, 1),
+		createAppearance("RENEGADE_W", imgConfig.getCharactersImage(), 6, 1),
+        createAppearance("INVOKER_W", imgConfig.getCharactersImage(), 2, 2),
+        createAppearance("MANBEAST_W", imgConfig.getCharactersImage(), 4, 2),
+        createAppearance("BEAST_W", imgConfig.getCharactersImage(), 6, 2),
+        createAppearance("KNIGHT_W", imgConfig.getCharactersImage(), 2, 3),
         
-        createAppearance("MORPHED_WOLF", "crl_mons32_2x.gif", 1, 10), 
-        createAppearance("MORPHED_WOLF2", "crl_mons32_2x.gif", 2, 10), 
-        createAppearance("MORPHED_BAT", "crl_mons32_2x.gif", 3, 10), 
-        createAppearance("MORPHED_BAT2", "crl_mons32_2x.gif", 4, 10), 
-        createAppearance("MORPHED_MYST", "crl_mons32_2x.gif", 5, 10), 
-        createAppearance("MORPHED_MYST2", "crl_mons32_2x.gif", 6, 10), 
-        createAppearance("MORPHED_WEREBEAR", "crl_mons32_2x.gif", 7, 10), 
-        createAppearance("MORPHED_WEREDEMON", "crl_mons32_2x.gif", 8, 10), 
-        createAppearance("MORPHED_WEREWOLF", "crl_mons32_2x.gif", 10, 10), 
-        createAppearance("MORPHED_WEREBEAST", "crl_mons32_2x.gif", 9, 10),
-        createAppearance("MORPHED_LUPINE", "crl_chars_2x.gif", 5, 2), 
+        createAppearance("MORPHED_WOLF", imgConfig.getMonstersImage(), 1, 10), 
+        createAppearance("MORPHED_WOLF2", imgConfig.getMonstersImage(), 2, 10), 
+        createAppearance("MORPHED_BAT", imgConfig.getMonstersImage(), 3, 10), 
+        createAppearance("MORPHED_BAT2", imgConfig.getMonstersImage(), 4, 10), 
+        createAppearance("MORPHED_MYST", imgConfig.getMonstersImage(), 5, 10), 
+        createAppearance("MORPHED_MYST2", imgConfig.getMonstersImage(), 6, 10), 
+        createAppearance("MORPHED_WEREBEAR", imgConfig.getMonstersImage(), 7, 10), 
+        createAppearance("MORPHED_WEREDEMON", imgConfig.getMonstersImage(), 8, 10), 
+        createAppearance("MORPHED_WEREWOLF", imgConfig.getMonstersImage(), 10, 10), 
+        createAppearance("MORPHED_WEREBEAST", imgConfig.getMonstersImage(), 9, 10),
+        createAppearance("MORPHED_LUPINE", imgConfig.getCharactersImage(), 5, 2), 
         
         
-        createAppearance("SOLIEYU_B_KID", "crl_chars_2x.gif", 6, 6),
-   		createAppearance("MAN", "crl_chars_2x.gif", 3, 3),
-        createAppearance("WOMAN", "crl_chars_2x.gif", 4, 3),
-        createAppearance("OLDMAN", "crl_chars_2x.gif", 5, 3),
-        createAppearance("OLDWOMAN", "crl_chars_2x.gif", 6, 3),
-        createAppearance("MERCHANT", "crl_chars_2x.gif", 1, 4),
-        createAppearance("PRIEST", "crl_chars_2x.gif", 2, 4),
-        createAppearance("DOG", "crl_chars_2x.gif", 3, 4),
-        createAppearance("HOSTAGE_GUY", "crl_chars_2x.gif", 4, 4),
-        createAppearance("HOSTAGE_GIRL", "crl_chars_2x.gif", 5, 4),
-        createAppearance("CLARA", "crl_chars_2x.gif", 1, 6),
-        createAppearance("VINDELITH", "crl_chars_2x.gif", 1, 6),
-        createAppearance("CLAW", "crl_chars_2x.gif", 5, 5),
-        createAppearance("MAIDEN", "crl_chars_2x.gif", 4, 5),
-        createAppearance("MELDUCK", "crl_chars_2x.gif", 3, 5),
-        createAppearance("ICEY", "crl_chars_2x.gif", 4, 6),
-        createAppearance("LARDA", "crl_chars_2x.gif", 3, 3),
-        createAppearance("CHRISTOPHER_BELMONT_NPC", "crl_chars_2x.gif", 3, 6),
-        createAppearance("BARRETT", "crl_chars_2x.gif", 5, 6),
+        createAppearance("SOLIEYU_B_KID", imgConfig.getCharactersImage(), 6, 6),
+   		createAppearance("MAN", imgConfig.getCharactersImage(), 3, 3),
+        createAppearance("WOMAN", imgConfig.getCharactersImage(), 4, 3),
+        createAppearance("OLDMAN", imgConfig.getCharactersImage(), 5, 3),
+        createAppearance("OLDWOMAN", imgConfig.getCharactersImage(), 6, 3),
+        createAppearance("MERCHANT", imgConfig.getCharactersImage(), 1, 4),
+        createAppearance("PRIEST", imgConfig.getCharactersImage(), 2, 4),
+        createAppearance("DOG", imgConfig.getCharactersImage(), 3, 4),
+        createAppearance("HOSTAGE_GUY", imgConfig.getCharactersImage(), 4, 4),
+        createAppearance("HOSTAGE_GIRL", imgConfig.getCharactersImage(), 5, 4),
+        createAppearance("CLARA", imgConfig.getCharactersImage(), 1, 6),
+        createAppearance("VINDELITH", imgConfig.getCharactersImage(), 1, 6),
+        createAppearance("CLAW", imgConfig.getCharactersImage(), 5, 5),
+        createAppearance("MAIDEN", imgConfig.getCharactersImage(), 4, 5),
+        createAppearance("MELDUCK", imgConfig.getCharactersImage(), 3, 5),
+        createAppearance("ICEY", imgConfig.getCharactersImage(), 4, 6),
+        createAppearance("LARDA", imgConfig.getCharactersImage(), 3, 3),
+        createAppearance("CHRISTOPHER_BELMONT_NPC", imgConfig.getCharactersImage(), 3, 6),
+        createAppearance("BARRETT", imgConfig.getCharactersImage(), 5, 6),
         
 		// Weapons
         };
+	}
 
 	public Appearance[] getAppearances() {
 		return defs;
 	}
 	
-	
-	private Component TRACKER;
-	
-	public GFXAppearance createAppearance(String ID, String filename, int xpos, int ypos){
+	public GFXAppearance createAppearance(String ID, BufferedImage bigImage, int xpos, int ypos){
 		xpos--;
 		ypos--;
-		filename = "gfx/"+filename;
-		BufferedImage bigImage = (BufferedImage) images.get(filename);
-		if (bigImage == null){
-			try {
-				//bigImage = ImageUtils.crearImagen(filename, TRACKER);
-				bigImage = ImageUtils.createImage(filename);
-			} catch (Exception e){
-				Game.crash("Error loading image "+filename, e);
-			}
-			images.put(filename, bigImage);
-		}
+
 		try {
-			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos*WIDTH_NORMAL, ypos*WIDTH_NORMAL, WIDTH_NORMAL, WIDTH_NORMAL);
+			BufferedImage img = ImageUtils.crearImagen(bigImage, 
+					xpos*WIDTH_NORMAL, ypos*WIDTH_NORMAL, 
+					WIDTH_NORMAL, WIDTH_NORMAL);
 			GFXAppearance ret = new GFXAppearance(ID, img,0,0);
 			return ret;
 		} catch (Exception e){
-			Game.crash("Error loading image "+filename, e);
+			Game.crash("Error loading image ", e);
 		}
 		return null;
 	}
 	
-	public GFXAppearance createAppearance(String ID, String filename, int xpos, int ypos, int width, int height,int superw, int superh){
+	public GFXAppearance createAppearance(String ID, BufferedImage bigImage, int xpos, int ypos, int width, int height,int superw, int superh){
 		xpos--;
 		ypos--;
-		filename = "gfx/"+filename;
-		BufferedImage bigImage = (BufferedImage) images.get(filename);
-		if (bigImage == null){
-			try {
-				//bigImage = ImageUtils.crearImagen(filename, TRACKER);
-				bigImage = ImageUtils.createImage(filename);
-			} catch (Exception e){
-				Game.crash("Error loading image "+filename, e);
-			}
-			images.put(filename, bigImage);
-		}
 		try {
 			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos, ypos, width, height);
 			GFXAppearance ret = new GFXAppearance(ID, img,superw,superh);
 			return ret;
 		} catch (Exception e){
-			Game.crash("Error loading image "+filename, e);
+			Game.crash("Error loading image ", e);
 		}
 		return null;
 	}
 	
-	public GFXAppearance createXAppearance(String ID, String filename, int xpos, int ypos, int width, int height){
-		filename = "gfx/"+filename;
-		BufferedImage bigImage = (BufferedImage) images.get(filename);
-		if (bigImage == null){
-			try {
-				bigImage = ImageUtils.createImage(filename);
-			} catch (Exception e){
-				Game.crash("Error loading image "+filename, e);
-			}
-			images.put(filename, bigImage);
-		}
+	public GFXAppearance createXAppearance(String ID, BufferedImage bigImage, int xpos, int ypos, int width, int height){
 		try {
 			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos, ypos, width, height);
 			GFXAppearance ret = new GFXAppearance(ID, img,(width-WIDTH_NORMAL)/2,height-WIDTH_NORMAL);
 			return ret;
 		} catch (Exception e){
-			Game.crash("Error loading image "+filename, e);
+			Game.crash("Error loading image ", e);
 		}
 		return null;
 	}
 	
-	public GFXAppearance createXAppearance(String ID, String filename, int xpos, int ypos, int width, int height, int yoff){
-		filename = "gfx/"+filename;
-		BufferedImage bigImage = (BufferedImage) images.get(filename);
-		if (bigImage == null){
-			try {
-				bigImage = ImageUtils.createImage(filename);
-			} catch (Exception e){
-				Game.crash("Error loading image "+filename, e);
-			}
-			images.put(filename, bigImage);
-		}
+	public GFXAppearance createXAppearance(String ID, BufferedImage bigImage, int xpos, int ypos, int width, int height, int yoff){
 		try {
 			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos, ypos, width, height);
 			GFXAppearance ret = new GFXAppearance(ID, img,(width-WIDTH_NORMAL)/2,height-WIDTH_NORMAL+yoff);
 			return ret;
 		} catch (Exception e){
-			Game.crash("Error loading image "+filename, e);
+			Game.crash("Error loading image ", e);
 		}
 		return null;
 	}
@@ -681,36 +646,12 @@ public class GFXAppearances {
 	public GFXAppearance createTAppearance(String ID, int xpos, int ypos){
 		xpos--;
 		ypos--;
-		BufferedImage bigImage = (BufferedImage) images.get("gfx/crl_terrain_2x.gif");
-		BufferedImage bigDarkImage = (BufferedImage) images.get("gfx/crl_terrain_d_2x.gif");
-		BufferedImage bigNiteImage = (BufferedImage) images.get("gfx/crl_terrain_night_2x.gif");
-		BufferedImage bigDarkNiteImage = (BufferedImage) images.get("gfx/crl_terrain_night_d_2x.gif");
-		if (bigImage == null){
-			try {
-				bigImage = ImageUtils.createImage("gfx/crl_terrain_2x.gif");
-			} catch (Exception e){
-				Game.crash("Error loading image "+"gfx/crl_terrain_2x.gif", e);
-			}
-			try {
-				bigDarkImage = ImageUtils.createImage("gfx/crl_terrain_d_2x.gif");
-			} catch (Exception e){
-				Game.crash("Error loading image "+"gfx/crl_terrain_d_2x.gif", e);
-			}
-			try {
-				bigNiteImage = ImageUtils.createImage("gfx/crl_terrain_night_2x.gif");
-			} catch (Exception e){
-				Game.crash("Error loading image "+"gfx/crl_terrain_night_2x.gif", e);
-			}
-			try {
-				bigDarkNiteImage = ImageUtils.createImage("gfx/crl_terrain_night_d_2x.gif");
-			} catch (Exception e){
-				Game.crash("Error loading image "+"gfx/crl_terrain_night_d_2x.gif", e);
-			}
-			images.put("gfx/crl_terrain_2x.gif", bigImage);
-			images.put("gfx/crl_terrain_d_2x.gif", bigDarkImage);
-			images.put("gfx/crl_terrain_night_2x.gif", bigNiteImage);
-			images.put("gfx/crl_terrain_night_d_2x.gif", bigDarkNiteImage);
-		}
+		GFXImageConfiguration imgConfig = configuration.getImageConfiguration();
+		BufferedImage bigImage = imgConfig.getTerrainImage();
+		BufferedImage bigDarkImage = imgConfig.getDarkTerrainImage();
+		BufferedImage bigNiteImage = imgConfig.getNightTerrainImage();
+		BufferedImage bigDarkNiteImage = imgConfig.getDarkNightTerrainImage();
+		
 		try {
 			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos*WIDTH_NORMAL, ypos*CELL_HEIGHT, WIDTH_NORMAL, CELL_HEIGHT);
 			BufferedImage darkimg = ImageUtils.crearImagen(bigDarkImage, xpos*WIDTH_NORMAL, ypos*CELL_HEIGHT, WIDTH_NORMAL, CELL_HEIGHT);
@@ -727,36 +668,12 @@ public class GFXAppearances {
 	public GFXAppearance createTAppearance(String ID, int xpos, int ypos, int xoff, int yoff){
 		xpos--;
 		ypos--;
-		BufferedImage bigImage = (BufferedImage) images.get("gfx/crl_terrain.gif");
-		BufferedImage bigDarkImage = (BufferedImage) images.get("gfx/crl_terrain_d.gif");
-		BufferedImage bigNiteImage = (BufferedImage) images.get("gfx/crl_terrain_night.gif");
-		BufferedImage bigDarkNiteImage = (BufferedImage) images.get("gfx/crl_terrain_night_d.gif");
-		if (bigImage == null){
-			try {
-				bigImage = ImageUtils.createImage("gfx/crl_terrain_2x.gif");
-			} catch (Exception e){
-				Game.crash("Error loading image "+"gfx/crl_terrain_2x.gif", e);
-			}
-			try {
-				bigDarkImage = ImageUtils.createImage("gfx/crl_terrain_d_2x.gif");
-			} catch (Exception e){
-				Game.crash("Error loading image "+"gfx/crl_terrain_d_2x.gif", e);
-			}
-			try {
-				bigNiteImage = ImageUtils.createImage("gfx/crl_terrain_night_2x.gif");
-			} catch (Exception e){
-				Game.crash("Error loading image "+"gfx/crl_terrain_night_2x.gif", e);
-			}
-			try {
-				bigDarkNiteImage = ImageUtils.createImage("gfx/crl_terrain_night_d_2x.gif");
-			} catch (Exception e){
-				Game.crash("Error loading image "+"gfx/crl_terrain_night_d_2x.gif", e);
-			}
-			images.put("gfx/crl_terrain_2x.gif", bigImage);
-			images.put("gfx/crl_terrain_d_2x.gif", bigDarkImage);
-			images.put("gfx/crl_terrain_night_2x.gif", bigNiteImage);
-			images.put("gfx/crl_terrain_night_d_2x.gif", bigDarkNiteImage);
-		}
+		GFXImageConfiguration imgConfig = configuration.getImageConfiguration();
+		BufferedImage bigImage = imgConfig.getTerrainImage();
+		BufferedImage bigDarkImage = imgConfig.getDarkTerrainImage();
+		BufferedImage bigNiteImage = imgConfig.getNightTerrainImage();
+		BufferedImage bigDarkNiteImage = imgConfig.getDarkNightTerrainImage();
+		
 		try {
 			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos*WIDTH_NORMAL, ypos*CELL_HEIGHT, WIDTH_NORMAL, CELL_HEIGHT);
 			BufferedImage darkimg = ImageUtils.crearImagen(bigDarkImage, xpos*WIDTH_NORMAL, ypos*CELL_HEIGHT, WIDTH_NORMAL, CELL_HEIGHT);
@@ -770,49 +687,28 @@ public class GFXAppearances {
 		return null;
 	}
 	
-	public GFXAppearance createBAppearance(String ID, String filename, int xpos, int ypos){
+	public GFXAppearance createBAppearance(String ID, BufferedImage bigImage, int xpos, int ypos){
 		xpos--;
 		ypos--;
-		filename = "gfx/"+filename;
-		BufferedImage bigImage = (BufferedImage) images.get(filename);
-		if (bigImage == null){
-			try {
-				bigImage = ImageUtils.createImage(filename);
-			} catch (Exception e){
-				Game.crash("Error loading image "+filename, e);
-			}
-			images.put(filename, bigImage);
-		}
 		try {
 			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos*WIDTH_BIG, ypos*WIDTH_BIG, WIDTH_BIG, WIDTH_BIG);
 			GFXAppearance ret = new GFXAppearance(ID, img,WIDTH_HALF/2,WIDTH_HALF);
 			return ret;
 		} catch (Exception e){
-			Game.crash("Error loading image "+filename, e);
+			Game.crash("Error loading image ", e);
 		}
 		return null;
 	}
 	
-	public GFXAppearance createIAppearance(String ID, String filename, int xpos, int ypos){
+	public GFXAppearance createIAppearance(String ID, BufferedImage bigImage, int xpos, int ypos){
 		xpos--;
 		ypos--;
-		filename = "gfx/"+filename;
-		BufferedImage bigImage = (BufferedImage) images.get(filename);
-		if (bigImage == null){
-			try {
-				bigImage = ImageUtils.createImage(filename);
-			} catch (Exception e){
-				Game.crash("Error loading image "+filename, e);
-			}
-			images.put(filename, bigImage);
-		}
 		try {
 			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos*WIDTH_HALF, ypos*WIDTH_HALF, WIDTH_HALF, WIDTH_HALF);
-			//GFXAppearance ret = new GFXAppearance(ID, img,-8,-16);
 			GFXAppearance ret = new GFXAppearance(ID, img,-8,0);
 			return ret;
 		} catch (Exception e){
-			Game.crash("Error loading image "+filename, e);
+			Game.crash("Error loading image ", e);
 		}
 		return null;
 	}

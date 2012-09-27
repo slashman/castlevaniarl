@@ -30,7 +30,7 @@ public abstract class Display {
 
 	public abstract int showSavedGames(File[] saveFiles);
 	public abstract void showHostageRescue(Hostage h);
-	public abstract Advancement showLevelUp(Vector soulIds);
+	public abstract Advancement showLevelUp(Vector<Advancement> soulIds);
 	public abstract void showChat(String chatID, Game game);
 	public abstract void showScreen(Object screenID);
 	public abstract void showMap(String locationKey, String locationDescription);
