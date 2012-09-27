@@ -4,14 +4,17 @@
 useMouse = false
 TILESET = dragontileset.gif
 TILESET_DARK = dragontileset_dark.gif
-TILESIZE = 32
+TILESIZE = 64
+BIG_TILESIZE = 96
+HALF_TILESIZE = 32
+CELL_HEIGHT = 98
 
 SPRITES_UI_GADGETS = gfx/drashinterface.gif
 GADGETSIZE = 36
 
-PC_POS = 7,6
+PC_POS = 7,5
 XRANGE = 7
-YRANGE = 6
+YRANGE = 5
 UPLEFTBORDER = 0
 
 # Message Box 
@@ -28,8 +31,9 @@ POS_LEVELDESC_Y = 40
 
 
 IMG_STATUSSCR_BGROUND = gfx/barrett-moon.gif
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 600
+WINDOW_WIDTH = 1024
+WINDOW_HEIGHT = 768
+SCREEN_SCALE = 1.28
 
 IMG_ICON = res/crl_icon.png
 
@@ -45,7 +49,8 @@ FNT_TITLE = res/avatar.ttf
 IMG_TITLE = gfx/barrett-title_2x.gif
 IMG_PROLOGUE = gfx/barrett-moon_2x.gif
 IMG_RESUME = gfx/barrett-moon_2x.gif
-IMG_ENDGAME = gfx/barrett-moon_2x.gif	
+IMG_INTERFACE = gfx/barrett-title_2x.gif
+IMG_ENDGAME = gfx/barrett-moon_2x.gif
 IMG_HISCORES = gfx/barrett-moon_2x.gif
 IMG_SAVED = gfx/barrett-moon_2x.gif
 IMG_LEVEL_UP = gfx/barrett-moon_2x.gif
@@ -71,3 +76,15 @@ FNT_MONO_SIZE = 15
 
 SFXSET = gfx/dragon-drashsfx.gif
 SFXSET2 = gfx/tempSlashes.gif
+
+TILES_SHADOW = gfx/shadow_2x.gif
+TILES_CHARACTERS = gfx/crl_chars_2x.gif
+TILES_MONSTERS = gfx/crl_mons32_2x.gif
+TILES_BIG_MONSTERS = gfx/crl_mons48_2x.gif
+TILES_ITEMS = gfx/crl_items_2x.gif
+TILES_TERRAIN = gfx/crl_terrain_2x.gif
+TILES_DARK_TERRAIN = gfx/crl_terrain_d_2x.gif
+TILES_NIGHT_TERRAIN = gfx/crl_terrain_night_2x.gif
+TILES_DARK_NIGHT_TERRAIN = gfx/crl_terrain_night_d_2x.gif
+TILES_FEATURES = gfx/crl_features_2x.gif
+TILES_EFFECTS = gfx/crl_effects_2x.gif
