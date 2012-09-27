@@ -8,6 +8,7 @@ import crl.game.SFXManager;
 import crl.level.Cell;
 import crl.level.Level;
 import crl.monster.Monster;
+import crl.player.Damage;
 import crl.player.Player;
 import crl.ui.effects.EffectFactory;
 
@@ -113,7 +114,7 @@ public class MonsterMissile extends Action{
 				if (hits){
 					aLevel.addBlood(destinationPoint, 1);
 					StringBuffer buff = new StringBuffer("You are hit.");
-					if (aPlayer.damage(buff, aMonster, (damage==0?aMonster.getAttack():damage))) {
+					if (aPlayer.damage(buff, aMonster, new Damage((damage==0?aMonster.getAttack():damage), false))) {
 						aLevel.addMessage(buff.toString());
 						if (statusEffect != null){
 							if (statusEffect.equals(Player.STATUS_STUN)){

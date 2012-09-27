@@ -6,6 +6,7 @@ import crl.action.Action;
 import crl.feature.Feature;
 import crl.level.Level;
 import crl.monster.Monster;
+import crl.player.Damage;
 import crl.player.Player;
 import crl.ui.effects.EffectFactory;
 
@@ -66,7 +67,7 @@ public class ShadowFlare extends Action{
 		}
         if (destinationPoint.equals(aPlayer.getPosition())){
         	StringBuffer buff = new StringBuffer("You are burned by the shadow flare!");
-        	aPlayer.damage(buff, (Monster)performer, 3);
+        	aPlayer.damage(buff, (Monster)performer, new Damage(3, false));
         	aLevel.addMessage(buff.toString());
 		}
         //drawEffect(EffectFactory.getSingleton().createLocatedEffect(destinationPoint, "SFX_SHADOW_FLARE"));

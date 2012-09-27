@@ -7,6 +7,7 @@ import crl.game.SFXManager;
 import crl.level.Cell;
 import crl.level.Level;
 import crl.monster.Monster;
+import crl.player.Damage;
 import crl.player.Player;
 
 public class MonsterCharge extends Action{
@@ -71,7 +72,7 @@ public class MonsterCharge extends Action{
 			if (aPlayer.getPosition().equals(destinationPoint)){
 				if (aPlayer.getStandingHeight() == aMonster.getStandingHeight()){
 					StringBuffer buff = new StringBuffer("You are hit.");
-					if (aPlayer.damage(buff, aMonster, (damage==0?aMonster.getAttack():damage)))
+					if (aPlayer.damage(buff, aMonster, new Damage((damage==0?aMonster.getAttack():damage), false)))
 						aPlayer.bounceBack(var, 1);
 					aLevel.addMessage(buff.toString());
 				} else if (aPlayer.getStandingHeight() > aMonster.getStandingHeight()){

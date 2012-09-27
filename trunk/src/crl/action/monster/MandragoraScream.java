@@ -10,6 +10,7 @@ import crl.monster.Monster;
 import crl.monster.VMonster;
 import crl.npc.Hostage;
 import crl.npc.NPC;
+import crl.player.Damage;
 import crl.ui.effects.EffectFactory;
 
 public class MandragoraScream extends Action {
@@ -61,7 +62,7 @@ public class MandragoraScream extends Action {
 			
 			if (Position.flatDistance(performer.getPosition(), performer.getLevel().getPlayer().getPosition()) < SCREAM_RANGE){
 				StringBuffer messages = new StringBuffer("You hear the mandragora scream!");
-				performer.getLevel().getPlayer().damage(messages, (Monster)performer, SCREAM_DAMAGE);
+				performer.getLevel().getPlayer().damage(messages, (Monster)performer, new Damage(SCREAM_DAMAGE, false));
 				performer.getLevel().addMessage(messages.toString());
 			}
 			

@@ -11,6 +11,7 @@ import crl.level.Level;
 import crl.monster.Monster;
 import crl.npc.Hostage;
 import crl.npc.NPC;
+import crl.player.Damage;
 import crl.player.Player;
 import crl.ui.UserInterface;
 
@@ -123,7 +124,7 @@ public class Walk extends Action{
 														aLevel.addMessage(buff.toString());
 													} else {
 														StringBuffer buff = new StringBuffer("You bump with the "+aMonster.getDescription()+"!"); 
-														if (aPlayer.damage(buff, aMonster, aMonster.getAttack())){
+														if (aPlayer.damage(buff, aMonster, new Damage(aMonster.getAttack(), false))){
 															aLevel.addMessage(buff.toString());
 															aLevel.getPlayer().bounceBack(Position.mul(var, -1), 2);
 															if (aPlayer.getPosition().equals(aMonster.getPosition())){

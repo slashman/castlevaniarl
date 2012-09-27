@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="crl/action/vkiller/Whip.java|crl/swing/|crl/ui/effects/DirectionMissileEffect.java|crl/ui/effects/PCMissileEffect.java|crl/ui/effects/AnimatedLineMissileEffect.java|crl/ui/effects/LineBeamMissileEffect.java|crl/ui/effects/LineIconMissileEffect.java|crl/ui/effects/LineMissileEffect.java|crl/ui/effects/MeleeEffect.java|crl/ui/effects/MissileEffect.java|crl/ui/effects/SequentialEffect.java|crl/ui/effects/SplashEffect.java|crl/ui/effects/StaticAnimEffect.java|crl/ui/effects/TippedMeleeEffect.java|crl/ui/effects/WhipEffect.java|crl/ui/effects/FlashEffect.java|crl/ui/effects/TileEffect.java|crl/action/monster/Arrow.java|crl/action/monster/Fire.java|crl/action/monster/HalberdStab.java|crl/action/monster/SpearStab.java|crl/action/monster/SwordStab.java|crl/action/monster/ThrowBone.java|crl/action/monster/ThrowBoneArc.java|crl/game/Launcher.java|crl/action/monster/JumpOver.java|crl/data/MonsterLoaderXerces.java|crl/deploy/Monsters.java|crl/deploy/MonsterPackager.java|crl/game/MusicManager.java|sz/midi/MidiPlayer.java|sz/mp3/MP3Player.java|sz/mp3/STMP3Player.java|sz/midi/TritonusMidiPlayer.java|crl/levelgen/TowerLevelGenerator.java|crl/levelgen/patterns/TestLevel.java|crl/levelgen/DungeonGenerator.java|crl/levelgen/patterns/Lab.java|crl/levelgen/patterns/Ruins.java|crl/levelgen/LevelPlotter.java" kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="distro/lib/MinML.jar"/>
-	<classpathentry kind="lib" path="yguard.jar"/>
 	<classpathentry kind="lib" path="distro/lib/jcurses-x.jar"/>
 	<classpathentry kind="lib" path="distro/lib/jl1.0.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
+	<classpathentry kind="lib" path="lib/mockito-all-1.9.5-rc1.jar"/>
+	<classpathentry kind="lib" path="lib/yguard.jar"/>
+	<classpathentry kind="lib" path="lib/hamcrest-all-1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

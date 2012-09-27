@@ -362,28 +362,30 @@ public class Player extends Actor {
 		return 0;
 	}
 	
-	private void damage(StringBuffer message, int dam){
+	private void damage(StringBuffer message, Damage dam){
 		if (!level.isDay())
-			dam++;
+			dam.boostDamage(1);
 		if (getFlag(Consts.ENV_THUNDERSTORM))
-			dam += 2;
+			dam.boostDamage(2);
 		if (getFlag(Consts.ENV_SUNNY)){
-			if (dam > 2)
-				dam -= 2;
+			if (dam.getDamage() > 2)
+				dam.reduceDamage(2);
 		}
 		
 		if (hasCounter(Consts.C_ENERGYSHIELD)){
 			level.addMessage("The energy shield covers you!");
-			dam = (int)Math.ceil(dam * 2.0d/3.0d);
+			dam.setDamage((int)Math.ceil(dam.getDamage() * 2.0d/3.0d));
 		}
 		
 		if (hasCounter(Consts.C_TURTLESHELL)){
 			level.addMessage("The turtle soul covers you!");
-			dam = (int)Math.ceil(dam * 2.0d/3.0d);
+			dam.setDamage((int)Math.ceil(dam.getDamage() * 2.0d/3.0d));
 		}
 		
-		dam -= getArmorDefense();
-		dam -= getDefenseBonus();
+		if (!dam.ignoresArmor()) {
+			dam.reduceDamage(getArmorDefense());
+		}
+		dam.reduceDamage(getDefenseBonus());
 		
 		if (hasCounter("REGAIN_SHAPE")){
 			setSelector(originalSelector);
@@ -394,12 +396,12 @@ public class Player extends Actor {
 			land();
 		}
 		
-		if (dam <= 0){
+		if (dam.getDamage() <= 0){
 			if (Util.chance(70)){
 				level.addMessage("You withstand the attack.");
 				return;
 			} 
-			dam = 1;
+			dam.setDamage(1);
 		}
 		if (isInvincible()){
 			level.addMessage("You are invincible!");
@@ -419,15 +421,15 @@ public class Player extends Actor {
 			}
 		}
 		
-		hits -= dam;
-		message.append(" {"+dam+"}");
+		hits -= dam.getDamage();
+		message.append(" {"+dam.getDamage()+"}");
 		if (Util.chance(50))
 			decreaseWhip();
 		if (Util.chance(40))
 			level.addBlood(getPosition(), Util.rand(0,1));
 	}
 
-	public void selfDamage(StringBuffer message, int damageType, int dam){
+	public void selfDamage(StringBuffer message, int damageType, Damage dam){
 		damage(message, dam);
 		if (hits < 0){
 			switch (damageType){
@@ -530,7 +532,7 @@ public class Player extends Actor {
 		}
 	}
 	
-	public boolean damage (StringBuffer message, Monster who, int dam){
+	public boolean damage (StringBuffer message, Monster who, Damage dam){
 		int attackDirection = Action.getGeneralDirection(who.getPosition(), getPosition());
 		if (hasEnergyField()){
 			StringBuffer buff = new StringBuffer("The "+who.getDescription()+" is shocked!");
@@ -579,7 +581,7 @@ public class Player extends Actor {
 			
 			if (Util.chance(coverageChance)){
 				level.addMessage("Your "+getShield().getDescription()+" is hit.");
-				dam -= getShield().getDefense();
+				dam.reduceDamage(getShield().getDefense());
 			}
 		}
 
@@ -988,7 +990,7 @@ public class Player extends Actor {
     	if (isPoisoned()){
     		if (Util.chance(40)){
     			StringBuffer buff = new StringBuffer("You feel the poison coursing through your veins!");
-    			selfDamage(buff, Player.DAMAGE_POISON, 3);
+    			selfDamage(buff, Player.DAMAGE_POISON, new Damage(3, true));
     			level.addMessage(buff.toString());
     		}
     	}
@@ -1154,7 +1156,7 @@ public class Player extends Actor {
 		if (destinationCell.getDamageOnStep() > 0){
 			if (!isInvincible()){
 				StringBuffer buff = new StringBuffer("You are injured by the "+destinationCell.getShortDescription()+"!");
-				selfDamage(buff, Player.DAMAGE_WALKED_ON_LAVA, 2);
+				selfDamage(buff, Player.DAMAGE_WALKED_ON_LAVA, new Damage(2, false));
 				level.addMessage(buff.toString());
 			}
 		}
@@ -2738,7 +2740,7 @@ public class Player extends Actor {
 			if (bigMorph){
 				if (armor.getDefense() > morphStrength){
 					StringBuffer buff = new StringBuffer("Your armor is too strong! You feel trapped! You are injured!");
-					selfDamage(buff, Player.DAMAGE_MORPHED_WITH_STRONG_ARMOR, 10);
+					selfDamage(buff, Player.DAMAGE_MORPHED_WITH_STRONG_ARMOR, new Damage(10, true));
 					level.addMessage(buff.toString());
 					return;
 				}

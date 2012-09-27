@@ -5,6 +5,7 @@ import sz.util.Util;
 import crl.action.Action;
 import crl.level.Level;
 import crl.monster.Monster;
+import crl.player.Damage;
 import crl.player.Player;
 import crl.ui.effects.EffectFactory;
 
@@ -40,7 +41,7 @@ public class ShadowApocalypse extends Action{
         Position destinationPoint = new Position(x,y,z);
 		if (destinationPoint.equals(aPlayer.getPosition())){
 			StringBuffer buff = new StringBuffer("You feel pain all over your body!!");
-        	aPlayer.damage(buff, (Monster)performer, 4);
+        	aPlayer.damage(buff, (Monster)performer, new Damage(4, false));
         	aLevel.addMessage(buff.toString());
 		}
 	}
