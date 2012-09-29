@@ -34,7 +34,7 @@ public class MandragoraScream extends Action {
 			
 
 			VMonster monsters = performer.getLevel().getMonsters();
-			Vector removables = new Vector();
+			Vector<Monster> removables = new Vector<Monster>();
 			for (int i = 0; i < monsters.size(); i++){
 				Monster monster = monsters.elementAt(i);
 				if (monster == performer)
@@ -62,7 +62,7 @@ public class MandragoraScream extends Action {
 			
 			if (Position.flatDistance(performer.getPosition(), performer.getLevel().getPlayer().getPosition()) < SCREAM_RANGE){
 				StringBuffer messages = new StringBuffer("You hear the mandragora scream!");
-				performer.getLevel().getPlayer().damage(messages, (Monster)performer, new Damage(SCREAM_DAMAGE, false));
+				performer.getLevel().getPlayer().damage(messages, (Monster)performer, new Damage(SCREAM_DAMAGE, true));
 				performer.getLevel().addMessage(messages.toString());
 			}
 			
