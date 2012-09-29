@@ -5,8 +5,11 @@ import java.util.*;
 import sz.util.*;
 
 public class VMonster implements java.io.Serializable{
-	private Vector monsters;
-	//private Hashtable mLocs;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8389021604207397015L;
+	private Vector<Monster> monsters;
 
 	public void addMonster(Monster what){
 		monsters.add(what);
@@ -22,11 +25,11 @@ public class VMonster implements java.io.Serializable{
 		return monsters.contains(who);
 	}
 
-	public void removeAll(Collection c){
+	public void removeAll(Collection<Monster> c){
 		monsters.removeAll(c);
 	}
 
-	public Enumeration elements(){
+	public Enumeration<Monster> elements(){
 		return monsters.elements();
 	}
 
@@ -38,10 +41,10 @@ public class VMonster implements java.io.Serializable{
 	}
 
 	public VMonster(int size){
-		monsters = new Vector(size);
+		monsters = new Vector<Monster>(size);
 	}
 
-	public Vector getVector(){
+	public Vector<Monster> getVector(){
 		return monsters;
 	}
 
