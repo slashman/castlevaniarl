@@ -386,7 +386,7 @@ public class GFXAppearances {
         createBAppearance("WARG", imgConfig.getBigMonstersImage(), 7, 1),
         createAppearance("BLACK_KNIGHT", imgConfig.getMonstersImage(), 9, 4),
         createAppearance("APE_SKELETON", imgConfig.getMonstersImage(), 7, 3),
-        createBAppearance("PARANTHROPUS", imgConfig.getMonstersImage(), 1, 1),
+        createBAppearance("PARANTHROPUS", imgConfig.getBigMonstersImage(), 1, 1),
         createAppearance("BAT", imgConfig.getMonstersImage(), 8, 3),
         createAppearance("SKULL_HEAD", imgConfig.getMonstersImage(), 2, 6),
         createAppearance("SKULL_LORD", imgConfig.getMonstersImage(), 3, 6),
