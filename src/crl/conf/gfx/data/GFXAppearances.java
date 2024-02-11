@@ -35,6 +35,10 @@ public class GFXAppearances {
 		defs = new Appearance[]{
 		createTAppearance("VOID", 4,5),
 		new GFXAppearance("NOTHING", null, null,null,null,0,0),
+
+		createAppearance("BLOOD1", imgConfig.getEffectsImage(), 5, 4),
+		createAppearance("BLOOD2", imgConfig.getEffectsImage(), 6, 4),
+		createAppearance("BLOOD3", imgConfig.getEffectsImage(), 7, 4),
 		
 		/*NEEDED*/
 		//createAppearance("COFFIN", imgConfig.getItemsImage(), 1,1),

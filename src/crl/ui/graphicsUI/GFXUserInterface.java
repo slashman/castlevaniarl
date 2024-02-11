@@ -911,8 +911,8 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			/*COLOR_BORDER_IN = new Color(187,161,80);
 			COLOR_BORDER_OUT = new Color(92,78,36);*/
 			
-			BLOOD1 = ImageUtils.crearImagen("gfx/crl_effects.gif", 128,96,STANDARD_WIDTH,STANDARD_WIDTH);
-			BLOOD2 = ImageUtils.crearImagen("gfx/crl_effects.gif", 192,96,STANDARD_WIDTH,STANDARD_WIDTH);
+			BLOOD1 = (BufferedImage)((GFXAppearance)AppearanceFactory.getAppearanceFactory().getAppearance("BLOOD1")).getImage();
+			BLOOD2 = (BufferedImage)((GFXAppearance)AppearanceFactory.getAppearanceFactory().getAppearance("BLOOD2")).getImage();
 			
 			IMG_EXIT_BTN = ImageUtils.crearImagen(INTERFACE_FILE, 65,81,60,26);
 			IMG_OK_BTN = ImageUtils.crearImagen(INTERFACE_FILE, 2,81,60,26);
