@@ -48,6 +48,8 @@ public class GFXConfiguration {
 	protected GFXImageConfiguration imageConfiguration;
 	
 	protected double screenScale;
+
+	protected int slashAnimationScale;
 	
 	/**
 	 * Default constructor
@@ -62,6 +64,7 @@ public class GFXConfiguration {
 	public void LoadConfiguration(Properties p) {	
 		//this.screenScale = 1.28;
 		this.screenScale = PropertyFilters.getDouble(p.getProperty("SCREEN_SCALE"));
+		this.slashAnimationScale = PropertyFilters.inte(p.getProperty("SLASH_ANIMATION_SCALE"));
 		this.bigTileWidth = PropertyFilters.inte(p.getProperty("BIG_TILESIZE"));
 		this.normalTileWidth = PropertyFilters.inte(p.getProperty("TILESIZE"));
 		this.halfTileWidth = PropertyFilters.inte(p.getProperty("HALF_TILESIZE"));

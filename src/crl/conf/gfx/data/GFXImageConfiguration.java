@@ -32,6 +32,11 @@ public class GFXImageConfiguration {
 
 	protected BufferedImage FeaturesImage;
 	protected BufferedImage EffectsImage;
+
+	protected BufferedImage effectsImage;
+	protected BufferedImage slashesImage;
+	protected BufferedImage curvedSlashesImage;
+	protected BufferedImage straightSlashesImage;
 	
 	public void LoadConfiguration(Properties p) {
 		try {
@@ -48,6 +53,11 @@ public class GFXImageConfiguration {
 
 			FeaturesImage = ImageUtils.createImage(p.getProperty("TILES_FEATURES"));
 			EffectsImage = ImageUtils.createImage(p.getProperty("TILES_EFFECTS"));
+
+			effectsImage = ImageUtils.createImage(p.getProperty("SFX_EFFECTS"));
+			slashesImage = ImageUtils.createImage(p.getProperty("SFX_SLASHES"));
+			curvedSlashesImage = ImageUtils.createImage(p.getProperty("SFX_CURVED_SLASHES"));
+			straightSlashesImage = ImageUtils.createImage(p.getProperty("SFX_STRAIGHT_SLASHES"));
 		}
 		catch (Exception e) {
 			Game.crash(e.getMessage(), e);

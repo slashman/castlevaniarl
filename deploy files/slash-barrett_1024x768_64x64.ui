@@ -76,7 +76,7 @@ FNT_MONO = res/v5easter.ttf
 FNT_MONO_SIZE = 15
 
 SFXSET = gfx/dragon-drashsfx.gif
-SFXSET2 = gfx/tempSlashes.gif
+SFXSET2 = gfx/tempSlashes_2x.gif
 
 TILES_SHADOW = gfx/shadow_2x.gif
 TILES_CHARACTERS = gfx/crl_chars_2x.gif
@@ -89,3 +89,9 @@ TILES_NIGHT_TERRAIN = gfx/crl_terrain_night_2x.gif
 TILES_DARK_NIGHT_TERRAIN = gfx/crl_terrain_night_d_2x.gif
 TILES_FEATURES = gfx/crl_features_2x.gif
 TILES_EFFECTS = gfx/crl_effects_2x.gif
+
+SFX_EFFECTS = gfx/crl_effects_2x.gif
+SFX_SLASHES = gfx/tempSlashes_2x.gif
+SFX_CURVED_SLASHES = gfx/crl_slashes1_2x.gif
+SFX_STRAIGHT_SLASHES = gfx/crl_slashes2_2x.gif
+SLASH_ANIMATION_SCALE = 2
