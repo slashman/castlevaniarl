@@ -948,22 +948,22 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		
 		psi.add(messageBox);
 		
-		merchantBox = new MerchantBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH,STANDARD_WIDTH);
+		merchantBox = new MerchantBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, BORDERS_SIZE, BORDERS_SIZE);
 		merchantBox.setBounds(150, 60, 500, 410);
 		merchantBox.setVisible(false);
 		psi.add(merchantBox);
 		
-		multiItemsBox = new MultiItemsBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH,STANDARD_WIDTH);
+		multiItemsBox = new MultiItemsBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, BORDERS_SIZE, BORDERS_SIZE);
 		multiItemsBox.setBounds(250, 235, 300, 260);
 		multiItemsBox.setVisible(false);
 		psi.add(multiItemsBox);
 		
-		helpBox = new HelpBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH,STANDARD_WIDTH);
+		helpBox = new HelpBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, BORDERS_SIZE, BORDERS_SIZE);
 		helpBox.setBounds(12,STANDARD_WIDTH, 770, 450);
 		helpBox.setVisible(false);
 		psi.add(helpBox);
 		
-		persistantMessageBox = new AddornedBorderTextArea(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH,STANDARD_WIDTH);
+		persistantMessageBox = new AddornedBorderTextArea(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, BORDERS_SIZE, BORDERS_SIZE);
 		persistantMessageBox.setBounds(520,90,260,400);
 		persistantMessageBox.setVisible(false);
 		persistantMessageBox.setFont(FNT_PERSISTANTMESSAGEBOX);
