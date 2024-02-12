@@ -1421,7 +1421,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		si.getGraphics2D().setColor(COLOR_BORDER_IN);
 		si.getGraphics2D().drawRect(xx+8,yy+8,ww-18,hh-18);
 		
-  		si.print(xpos+2,ypos+2,  "Inventory", Color.BLUE);
+  		si.print(xpos+2,ypos+2,  "Inventory", GFXDisplay.COLOR_BOLD);
  		si.print(xpos+2,ypos+3,  "1. Weapon:", Color.WHITE);
  		si.print(xpos+2,ypos+4,  "2. Readied", Color.WHITE);
  		si.print(xpos+2,ypos+5,  "3. Armor:", Color.WHITE);
