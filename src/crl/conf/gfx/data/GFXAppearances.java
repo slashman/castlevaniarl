@@ -506,7 +506,29 @@ public class GFXAppearances {
     	createBAppearance("S_DRAGON", imgConfig.getMonstersImage(), 6, 5), /*Pending*/
     	
 		// Features
-		createXAppearance("CANDLE", imgConfig.getFeaturesImage(), 0,112,WIDTH_HALF,WIDTH_NORMAL), // Fix
+		createXAppearance("CANDLE",
+			imgConfig.getFeaturesImage(),
+			0,
+			7 * WIDTH_HALF,
+			WIDTH_HALF,
+			WIDTH_NORMAL
+		), 
+		createXAppearance("URN_FLAME",
+			imgConfig.getFeaturesImage(),
+			2 * WIDTH_HALF,
+			7 * WIDTH_HALF,
+			WIDTH_HALF,
+			WIDTH_NORMAL,
+			(int) Math.floor(WIDTH_HALF / 2)
+		),
+		createXAppearance("FLAME",
+			imgConfig.getEffectsImage(),
+			13 * WIDTH_NORMAL,
+			14 * WIDTH_NORMAL,
+			WIDTH_NORMAL,
+			WIDTH_NORMAL
+		),
+
 		createIAppearance("SMALLHEART", true, 2, 1),
 		createIAppearance("DAGGER", true, 3, 1),
 		createIAppearance("AXE", true, 4, 1),
@@ -532,10 +554,8 @@ public class GFXAppearances {
 		createIAppearance("FIST", true, 10, 1),
 		createIAppearance("REBOUND_CRYSTAL", true, 9, 1),
 		createIAppearance("MUPGRADE", true, 4, 2),
-		createXAppearance("URN_FLAME", imgConfig.getFeaturesImage(), WIDTH_NORMAL,112,WIDTH_HALF,WIDTH_NORMAL,12),
 		createIAppearance("BLAST_CRYSTAL", true, 9, 1),
 
-		createXAppearance("FLAME", imgConfig.getEffectsImage(), 416, 446,WIDTH_NORMAL,WIDTH_NORMAL),
 		createAppearance("MOUND", imgConfig.getEffectsImage(), 11, 17),
 
         //Characters
