@@ -84,7 +84,7 @@ public class GFXDirectionalMissileEffect extends GFXDirectedEffect {
 			Position toPrint = Position.add(ui.PC_POS, relative);
 			if (!ui.insideViewPort(toPrint))
 				break;
-			si.drawImage(toPrint.x()*configuration.getNormalTileWidth(), 
+			ui.drawImageVP(toPrint.x()*configuration.getNormalTileWidth(), 
 					     toPrint.y()*configuration.getNormalTileWidth()-4*height, icon);
 			si.refresh();
 			animationPause();
@@ -93,7 +93,7 @@ public class GFXDirectionalMissileEffect extends GFXDirectedEffect {
 		
 		/*
 		for (int i = 0; i < depth; i++){
-			si.drawImage(next.x(), next.y(), icon);
+			ui.drawImageVP(next.x(), next.y(), icon);
 			si.refresh();
 			animationPause();
 			si.restore();

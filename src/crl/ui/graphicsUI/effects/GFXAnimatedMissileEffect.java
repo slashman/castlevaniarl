@@ -26,7 +26,7 @@ public class GFXAnimatedMissileEffect extends GFXDirectedEffect{
 			Position toPrint = Position.add(ui.PC_POS, relative);
 			if (!ui.insideViewPort(toPrint))
 				continue;
-			si.drawImage(toPrint.x()*configuration.getNormalTileWidth(), 
+			ui.drawImageVP(toPrint.x()*configuration.getNormalTileWidth(), 
 					     toPrint.y()*configuration.getNormalTileWidth()-4*height, missile[too]);
 			si.refresh();
 			animationPause();

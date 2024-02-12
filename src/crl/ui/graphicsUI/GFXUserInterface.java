@@ -184,6 +184,8 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				VP_END = new Position (5,5),
 				PC_POS = new Position (3,3);
 
+	private Position CAMERA = new Position(-32, -32);
+
     public void setFlipFacing(boolean val){
     	flipFacing = val;
     }
@@ -354,7 +356,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				}
 			}
 			messageBox.setText(looked);
-			si.drawImage((PC_POS.x + offset.x)*STANDARD_WIDTH-2, ((PC_POS.y + offset.y)*STANDARD_WIDTH-2)-4*cellHeight, TILE_SCAN);
+			drawImageVP((PC_POS.x + offset.x)*STANDARD_WIDTH-2, ((PC_POS.y + offset.y)*STANDARD_WIDTH-2)-4*cellHeight, TILE_SCAN);
 			si.refresh();
 			CharKey x = new CharKey(CharKey.NONE);
 			while (x.code != CharKey.SPACE && x.code != CharKey.m && x.code != CharKey.ESC &&
@@ -486,9 +488,9 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 						GFXAppearance app = (GFXAppearance)rcells[x][y].getAppearance();
 						try {
 							if (level.isDay())
-								si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-app.getSuperHeight(), app.getDarkImage());
+								drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-app.getSuperHeight(), app.getDarkImage());
 							else
-								si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-app.getSuperHeight(), app.getDarkniteImage());
+								drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-app.getSuperHeight(), app.getDarkniteImage());
 						} catch (NullPointerException npe){
 							Color c = si.getGraphics2D().getColor();
 							si.getGraphics2D().setColor(Color.RED);
@@ -513,20 +515,20 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					}
 					int depthFromPlayer =level.getDepthFromPlayer(player.getPosition().x - xrange + x, player.getPosition().y - yrange + y); 
 					if (depthFromPlayer != 0 ){
-						si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17+depthFromPlayer*10, cellApp.getDarkImage());
+						drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17+depthFromPlayer*10, cellApp.getDarkImage());
 					} else {
 						if (level.isDay())
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-cellApp.getSuperHeight(), cellApp.getImage());
+							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-cellApp.getSuperHeight(), cellApp.getImage());
 						else
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-cellApp.getSuperHeight(), cellApp.getNiteImage());
+							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-cellApp.getSuperHeight(), cellApp.getNiteImage());
 					}
 					if (bloodLevel != null){
 						switch (Integer.parseInt(bloodLevel)){
 						case 0:
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-cellApp.getSuperHeight(), BLOOD1);
+							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-cellApp.getSuperHeight(), BLOOD1);
 							break;
 						case 1:
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-cellApp.getSuperHeight(), BLOOD2);
+							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-cellApp.getSuperHeight(), BLOOD2);
 							break;
 						}
 					}
@@ -542,7 +544,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					if (feat != null){
 						if (feat.isVisible()) {
 							GFXAppearance featApp = (GFXAppearance)feat.getAppearance();
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH-featApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-featApp.getSuperHeight(), featApp.getImage());
+							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH-featApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-featApp.getSuperHeight(), featApp.getImage());
 						}
 					}
 					
@@ -551,7 +553,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 						if (sfeat.isVisible()){
 							GFXAppearance featApp = 
 								(GFXAppearance)sfeat.getAppearance();
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH-featApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-featApp.getSuperHeight(), featApp.getImage());
+							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH-featApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-featApp.getSuperHeight(), featApp.getImage());
 						}
 					}
 
@@ -563,13 +565,13 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					if (item != null){
 						if (item.isVisible()){
 							GFXAppearance itemApp = (GFXAppearance)item.getAppearance();
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH-itemApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight -itemApp.getSuperHeight(), itemApp.getImage());
+							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH-itemApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight -itemApp.getSuperHeight(), itemApp.getImage());
 						}
 					}
 					
-					if (yrange == y && x == xrange){
+					if (yrange == y && x == xrange){// TODO: Fix y offsets
 						if (player.isInvisible()){
-							si.drawImage(PC_POS.x*STANDARD_WIDTH,PC_POS.y*STANDARD_WIDTH-4*cellHeight, ((GFXAppearance)AppearanceFactory.getAppearanceFactory().getAppearance("SHADOW")).getImage());
+							drawImageVP(PC_POS.x*STANDARD_WIDTH,PC_POS.y*STANDARD_WIDTH-4*cellHeight, ((GFXAppearance)AppearanceFactory.getAppearanceFactory().getAppearance("SHADOW")).getImage());
 						}else{
 							GFXAppearance playerAppearance = (GFXAppearance)player.getAppearance();
 							BufferedImage playerImage = (BufferedImage)playerAppearance.getImage();
@@ -579,10 +581,10 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 							}
 							if (level.getMapCell(player.getPosition())!= null && level.getMapCell(player.getPosition()).isShallowWater())
 								//si.drawImage(PC_POS.x*32-playerAppearance.getSuperWidth(),PC_POS.y*32-4*cellHeight-playerAppearance.getSuperHeight()+16/, playerImage);
-								si.drawImage(PC_POS.x*STANDARD_WIDTH-playerAppearance.getSuperWidth(),PC_POS.y*STANDARD_WIDTH-4*player.getStandingHeight()-playerAppearance.getSuperHeight()+16, playerImage);
+								drawImageVP(PC_POS.x*STANDARD_WIDTH-playerAppearance.getSuperWidth(),PC_POS.y*STANDARD_WIDTH-4*player.getStandingHeight()-playerAppearance.getSuperHeight()+16, playerImage);
 							else
 								//si.drawImage(PC_POS.x*32-playerAppearance.getSuperWidth(),PC_POS.y*32-4*cellHeight-playerAppearance.getSuperHeight(), playerImage);
-								si.drawImage(PC_POS.x*STANDARD_WIDTH-playerAppearance.getSuperWidth(),PC_POS.y*STANDARD_WIDTH-4*player.getStandingHeight()-playerAppearance.getSuperHeight(), playerImage);
+								drawImageVP(PC_POS.x*STANDARD_WIDTH-playerAppearance.getSuperWidth(),PC_POS.y*STANDARD_WIDTH-4*player.getStandingHeight()-playerAppearance.getSuperHeight(), playerImage);
 						}
 					}
 					Monster monster = level.getMonsterAt(runner);
@@ -590,16 +592,16 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					if (monster != null && monster.isVisible()){
 						GFXAppearance monsterApp = (GFXAppearance) monster.getAppearance();
 						if (monster.canSwim() && level.getMapCell(runner)!= null && level.getMapCell(runner).isShallowWater()){
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH-monsterApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-monsterApp.getSuperHeight()+16, monsterApp.getImage());
+							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH-monsterApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-monsterApp.getSuperHeight()+16, monsterApp.getImage());
 							//TODO: Overlap water on the monster, draw it lowly
 						}
 						else
 						if (monster.hasCounter(Consts.C_MONSTER_FREEZE)){
 							//TODO: Overlay a cyan layer
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH-monsterApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-monsterApp.getSuperHeight(), monsterApp.getImage());
+							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH-monsterApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-monsterApp.getSuperHeight(), monsterApp.getImage());
 						}
 						else
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH-monsterApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-monsterApp.getSuperHeight(), monsterApp.getImage());
+							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH-monsterApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-monsterApp.getSuperHeight(), monsterApp.getImage());
 					}
 					// Draw Masks
 					Color mask = null;
@@ -615,7 +617,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					}
 					if (mask != null){
 						si.getGraphics2D().setColor(mask);
-						si.getGraphics2D().fillRect((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH, STANDARD_WIDTH, STANDARD_WIDTH);
+						si.getGraphics2D().fillRect((PC_POS.x-xrange+x)*STANDARD_WIDTH + CAMERA.x,(PC_POS.y-yrange+y)*STANDARD_WIDTH + CAMERA.y, STANDARD_WIDTH, STANDARD_WIDTH);
 					}
 				}
 				//runner.y++;
@@ -675,7 +677,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		/*if (isCursorEnabled){
 			si.restore();
 			Cell underlying = player.getLevel().getMapCell(tempCursorPosition);
-			si.drawImage((PC_POS.x+tempCursorPositionScr.x)*32,(PC_POS.y+tempCursorPositionScr.y)*32-4*underlying.getHeight(), TILE_SCAN);
+			drawImageVP((PC_POS.x+tempCursorPositionScr.x)*32,(PC_POS.y+tempCursorPositionScr.y)*32-4*underlying.getHeight(), TILE_SCAN);
 			si.refresh();
 		}
 	}*/
@@ -1088,7 +1090,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			//si.print(PC_POS.x + offset.x, PC_POS.y + offset.y, '_', ConsoleSystemInterface.RED);
 			drawStepsTo(PC_POS.x + offset.x, (PC_POS.y + offset.y), TILE_LINE_STEPS, cellHeight);
 			
-			si.drawImage((PC_POS.x + offset.x)*STANDARD_WIDTH-2, ((PC_POS.y + offset.y)*STANDARD_WIDTH-2) -4*cellHeight, TILE_LINE_AIM);
+			drawImageVP((PC_POS.x + offset.x)*STANDARD_WIDTH-2, ((PC_POS.y + offset.y)*STANDARD_WIDTH-2) -4*cellHeight, TILE_LINE_AIM);
 			si.refresh();
 			CharKey x = new CharKey(CharKey.NONE);
 			while (x.code != CharKey.SPACE && x.code != CharKey.ESC && x.code != fireKeyCode &&
@@ -1865,7 +1867,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		Position tmp = line.next();
 		while (!tmp.equals(target)){
 			tmp = line.next();
-			si.drawImage(tmp.x*STANDARD_WIDTH+13, (tmp.y*STANDARD_WIDTH+13)-4*cellHeight, tile);
+			drawImageVP(tmp.x*STANDARD_WIDTH+13, (tmp.y*STANDARD_WIDTH+13)-4*cellHeight, tile);
 		}
 		
 	}
@@ -2401,6 +2403,10 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		actionSelectedByCommand = null;
 		Debug.exitMethod(ret);
 		return ret;
+	}
+
+	public void drawImageVP(int scrX, int scrY, Image img){
+		si.drawImage(scrX + CAMERA.x, scrY + CAMERA.y, img);
 	}
 }
 

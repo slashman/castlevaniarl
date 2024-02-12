@@ -25,7 +25,7 @@ public class GFXIconEffect extends GFXEffect{
 		Position relative = Position.subs(getPosition(), ui.getPlayer().getPosition());
 		Position center = Position.add(ui.PC_POS, relative);
 		if (ui.insideViewPort(center))
-			si.drawImage(center.x*configuration.getNormalTileWidth(), 
+			ui.drawImageVP(center.x*configuration.getNormalTileWidth(), 
 					     center.y*configuration.getNormalTileWidth()-4*height, tile);
 		si.refresh();
 		animationPause();

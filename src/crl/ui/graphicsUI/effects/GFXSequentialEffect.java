@@ -32,7 +32,7 @@ public class GFXSequentialEffect extends GFXEffect{
 			if (tileIndex == tiles.length)
 				tileIndex = 0;
 			if (ui.insideViewPort(nextPosition))
-				si.drawImage(nextPosition.x*configuration.getNormalTileWidth(), 
+				ui.drawImageVP(nextPosition.x*configuration.getNormalTileWidth(), 
 						     nextPosition.y*configuration.getNormalTileWidth(), tiles[tileIndex]);
 			si.refresh();
 			animationPause();

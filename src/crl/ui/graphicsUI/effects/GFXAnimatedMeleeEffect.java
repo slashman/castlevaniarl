@@ -70,7 +70,7 @@ public class GFXAnimatedMeleeEffect extends GFXDirectionalEffect{
 			toPrint = new Position(toPrint.x()*configuration.getNormalTileWidth(), 
 					               toPrint.y()*configuration.getNormalTileWidth()-4*height);
 			toPrint = Position.add(toPrint, vars[i]);
-			si.drawImage(toPrint.x(), toPrint.y(), sequence[i]);
+			ui.drawImageVP(toPrint.x(), toPrint.y(), sequence[i]);
 			si.refresh();
 			animationPause();
 			si.restore();

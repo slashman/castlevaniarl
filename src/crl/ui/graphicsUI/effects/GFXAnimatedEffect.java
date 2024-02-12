@@ -33,7 +33,7 @@ public class GFXAnimatedEffect extends GFXEffect{
 			return;
 		si.saveBuffer();
 		for (int j = 0; j<frames.length; j++){
-			si.drawImage(absolute.x*configuration.getNormalTileWidth()+xoff, 
+			ui.drawImageVP(absolute.x*configuration.getNormalTileWidth()+xoff, 
 					     absolute.y*configuration.getNormalTileWidth()-4*height+yoff, frames[j]);
 			si.refresh();
 			animationPause();
