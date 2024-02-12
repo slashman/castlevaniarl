@@ -9,6 +9,7 @@ public class GFXAppearance extends Appearance{
 	private Image darkImage;
 	private Image niteImage;
 	private Image darkniteImage;
+	private Image iconImage;
 	private int superWidth, superHeight;
 	
 	public int getSuperHeight() {
@@ -24,6 +25,11 @@ public class GFXAppearance extends Appearance{
 		img = pimg;
 		this.superHeight = superHeight;
 		this.superWidth = superWidth;
+	}
+
+	public GFXAppearance(String ID, Image pimg, Image iconImage, int superWidth, int superHeight) {
+		this(ID, pimg, superWidth, superHeight);
+		this.iconImage = iconImage;
 	}
 	
 	public GFXAppearance(String ID, Image pimg, Image darkImage, Image niteImage, Image darkniteImage, int superWidth, int superHeight) {
@@ -52,6 +58,11 @@ public class GFXAppearance extends Appearance{
 		return darkniteImage;
 	}
 
-	
+	public Image getIconImage() {
+		if (iconImage != null) {
+			return iconImage;
+		};
+		return img;
+	}
 
 }

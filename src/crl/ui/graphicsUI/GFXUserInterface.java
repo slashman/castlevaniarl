@@ -779,7 +779,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
     			si.drawImage(18,38, getImageForMystic(player.getMysticWeapon()));
     	}else
     	if (player.getWeapon() != null){
-    		si.drawImage(18,38, ((GFXAppearance)player.getWeapon().getAppearance()).getImage());
+    		si.drawImage(18,38, ((GFXAppearance)player.getWeapon().getAppearance()).getIconImage());
     	}
     	if (player.getLevel().getLevelNumber() != -1)
     		si.printAtPixel(524,50,"STAGE  "+player.getLevel().getLevelNumber()+" "+player.getLevel().getDescription(), Color.WHITE);
@@ -2113,7 +2113,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			}
 			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 				Item smi = (Item) value;
-				ren.setIcon(new ImageIcon(((GFXAppearance)smi.getAppearance()).getImage()));
+				ren.setIcon(new ImageIcon(((GFXAppearance)smi.getAppearance()).getIconImage()));
 				//ren.setText(smi.getMenuDescription());
 				ren.setText(smi.getAttributesDescription() + " ["+smi.getDefinition().getMenuDescription()+"] ($"+smi.getGoldPrice()+")");
 				ren.setOpaque(isSelected);
@@ -2265,11 +2265,11 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				if (value instanceof Equipment){
 					Equipment smi = (Equipment) value;
 					ren.setText(smi.getMenuDescription());
-					ren.setIcon(new ImageIcon(((GFXAppearance)smi.getItem().getAppearance()).getImage()));
+					ren.setIcon(new ImageIcon(((GFXAppearance)smi.getItem().getAppearance()).getIconImage()));
 				} else {
 					Item smi = (Item) value;
 					ren.setText(smi.getMenuDescription());
-					ren.setIcon(new ImageIcon(((GFXAppearance)smi.getAppearance()).getImage()));
+					ren.setIcon(new ImageIcon(((GFXAppearance)smi.getAppearance()).getIconImage()));
 				}
 					
 				ren.setOpaque(isSelected);

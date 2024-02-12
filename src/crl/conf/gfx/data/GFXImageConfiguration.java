@@ -24,6 +24,7 @@ public class GFXImageConfiguration {
 	protected BufferedImage BigMonstersImage;
 	protected BufferedImage MonstersImage;
 	protected BufferedImage ItemsImage;
+	protected BufferedImage ItemIconsImage;
 
 	protected BufferedImage TerrainImage;
 	protected BufferedImage DarkTerrainImage;
@@ -31,6 +32,7 @@ public class GFXImageConfiguration {
 	protected BufferedImage DarkNightTerrainImage;
 
 	protected BufferedImage FeaturesImage;
+	protected BufferedImage FeatureIconsImage;
 	protected BufferedImage EffectsImage;
 
 	protected BufferedImage effectsImage;
@@ -45,6 +47,7 @@ public class GFXImageConfiguration {
 			BigMonstersImage = ImageUtils.createImage(p.getProperty("TILES_BIG_MONSTERS"));
 			MonstersImage = ImageUtils.createImage(p.getProperty("TILES_MONSTERS"));
 			ItemsImage = ImageUtils.createImage(p.getProperty("TILES_ITEMS"));
+			ItemIconsImage = ImageUtils.createImage(p.getProperty("TILES_ITEM_ICONS"));
 
 			TerrainImage = ImageUtils.createImage(p.getProperty("TILES_TERRAIN"));
 			DarkTerrainImage = ImageUtils.createImage(p.getProperty("TILES_DARK_TERRAIN"));
@@ -52,6 +55,7 @@ public class GFXImageConfiguration {
 			DarkNightTerrainImage = ImageUtils.createImage(p.getProperty("TILES_DARK_NIGHT_TERRAIN"));
 
 			FeaturesImage = ImageUtils.createImage(p.getProperty("TILES_FEATURES"));
+			FeatureIconsImage = ImageUtils.createImage(p.getProperty("TILES_FEATURE_ICONS"));
 			EffectsImage = ImageUtils.createImage(p.getProperty("TILES_EFFECTS"));
 
 			effectsImage = ImageUtils.createImage(p.getProperty("SFX_EFFECTS"));

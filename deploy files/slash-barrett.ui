@@ -83,11 +83,13 @@ TILES_CHARACTERS = gfx/crl_chars_2x.gif
 TILES_MONSTERS = gfx/crl_mons32_2x.gif
 TILES_BIG_MONSTERS = gfx/crl_mons48_2x.gif
 TILES_ITEMS = gfx/crl_items_2x.gif
+TILES_ITEM_ICONS = gfx/crl_items.gif
 TILES_TERRAIN = gfx/crl_terrain_2x.gif
 TILES_DARK_TERRAIN = gfx/crl_terrain_d_2x.gif
 TILES_NIGHT_TERRAIN = gfx/crl_terrain_night_2x.gif
 TILES_DARK_NIGHT_TERRAIN = gfx/crl_terrain_night_d_2x.gif
 TILES_FEATURES = gfx/crl_features_2x.gif
+TILES_FEATURE_ICONS = gfx/crl_features.gif
 TILES_EFFECTS = gfx/crl_effects_2x.gif
 
 SFX_EFFECTS = gfx/crl_effects_2x.gif
