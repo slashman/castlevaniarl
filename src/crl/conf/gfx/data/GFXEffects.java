@@ -23,7 +23,6 @@ import crl.ui.graphicsUI.effects.GFXSplashEffect;
 public class GFXEffects {
 	private Vector<Position> SFX_BIBLE_STEPS = new Vector<Position>(10);
 	private BufferedImage IMG_EFFECTS;
-	private BufferedImage IMG_SLASHES;
 	
 	private BufferedImage[][] CURVED_FRAMES;
 	private BufferedImage[][] STR_FRAMES;
@@ -34,7 +33,6 @@ public class GFXEffects {
 	public GFXEffects(GFXConfiguration configuration) {
 		this.configuration = configuration;
 		IMG_EFFECTS = configuration.imageConfiguration.effectsImage;
-		IMG_SLASHES = configuration.imageConfiguration.slashesImage;
 		InitAnimations(configuration.imageConfiguration);
 		LoadEffects();
 	}
@@ -42,17 +40,17 @@ public class GFXEffects {
 	private BufferedImage[][] readSlashes(BufferedImage source){
 		BufferedImage[][] ret = new BufferedImage[8][5];
 		try {
-		ret[4][0] = ImageUtils.crearImagen(source, 0,72,29,12);
-		ret[4][1] = ImageUtils.crearImagen(source, 0,57,55,15);
-		ret[4][2] = ImageUtils.crearImagen(source, 0,41,85,16);
-		ret[4][3] = ImageUtils.crearImagen(source, 0,22,117,19);
-		ret[4][4] = ImageUtils.crearImagen(source, 0,0,147,22);
+		ret[4][0] = createSlashFrame(source, 0,72,29,12);
+		ret[4][1] = createSlashFrame(source, 0,57,55,15);
+		ret[4][2] = createSlashFrame(source, 0,41,85,16);
+		ret[4][3] = createSlashFrame(source, 0,22,117,19);
+		ret[4][4] = createSlashFrame(source, 0,0,147,22);
 		
-		ret[2][0] = ImageUtils.crearImagen(source, 0,495,27,30);
-		ret[2][1] = ImageUtils.crearImagen(source, 0,435,52,60);
-		ret[2][2] = ImageUtils.crearImagen(source, 0,352,78,83);
-		ret[2][3] = ImageUtils.crearImagen(source, 0,230,112,121);
-		ret[2][4] = ImageUtils.crearImagen(source, 0,84,143,145);
+		ret[2][0] = createSlashFrame(source, 0,495,27,30);
+		ret[2][1] = createSlashFrame(source, 0,435,52,60);
+		ret[2][2] = createSlashFrame(source, 0,352,78,83);
+		ret[2][3] = createSlashFrame(source, 0,230,112,121);
+		ret[2][4] = createSlashFrame(source, 0,84,143,145);
 		} catch (Exception e){
 			Game.crash("Error loading the effects", e);
 		}
@@ -96,14 +94,14 @@ public class GFXEffects {
 	}
 
 	private BufferedImage createSlashFrame(BufferedImage tileset, int baseX, int baseY, int baseWidth, int baseHeight) {
-		int slashAnimationScale = this.configuration.slashAnimationScale;
+		int effectsScale = this.configuration.effectsScale;
 		try {
 			return ImageUtils.crearImagen(
 				tileset,
-				baseX * slashAnimationScale,
-				baseY * slashAnimationScale,
-				baseWidth * slashAnimationScale,
-				baseHeight * slashAnimationScale);
+				baseX * effectsScale,
+				baseY * effectsScale,
+				baseWidth * effectsScale,
+				baseHeight * effectsScale);
 		} catch (Exception e) {
 			Game.crash("Error loading the effects",e);
 			return null;
@@ -111,7 +109,7 @@ public class GFXEffects {
 	}
 
 	private Position getScaledSlashPosition(int baseX, int baseY) {
-		int slashAnimationScale = this.configuration.slashAnimationScale;
+		int slashAnimationScale = this.configuration.effectsScale;
 		return new Position(baseX * slashAnimationScale, baseY * slashAnimationScale);
 	}
 
@@ -325,10 +323,16 @@ public class GFXEffects {
 	}	
 	
 	private BufferedImage[] load(int frames, int xpos, int ypos) {
+		int effectsScale = this.configuration.effectsScale;
 		BufferedImage[] ret = new BufferedImage[frames];
 		for (int x = 0; x < frames; x++){
 			try {
-				ret[x] = ImageUtils.crearImagen(IMG_EFFECTS, (xpos+x)*32, ypos * 32, 32,32);
+				ret[x] = ImageUtils.crearImagen(
+					IMG_EFFECTS,
+					(xpos+x) * 32 * effectsScale,
+					ypos * 32 * effectsScale,
+					32 * effectsScale,
+					32 * effectsScale);
 			} catch (Exception e){
 				Game.crash("Error loading effect", e);
 			}
@@ -336,11 +340,13 @@ public class GFXEffects {
 		return ret;
 	}
 	
-	private BufferedImage[] loadSame(String file, int times, int xpos, int ypos) {
+	private BufferedImage[] loadSame(BufferedImage file, int times, int xpos, int ypos) {
+		int effectsScale = this.configuration.effectsScale;
 		BufferedImage[] ret = new BufferedImage[times];
 		for (int x = 0; x < times; x++){
 			try {
-				ret[x] = ImageUtils.crearImagen(file, xpos*32, ypos * 32, 32,32);
+				ret[x] = ImageUtils.crearImagen(file, 
+				xpos*32 * effectsScale, ypos * 32 * effectsScale, 32 * effectsScale,32 * effectsScale);
 			} catch (Exception e){
 				Game.crash("Error loading effect", e);
 			}
@@ -350,11 +356,12 @@ public class GFXEffects {
 
 	
 	private BufferedImage[] loadMaterialize() {
+		int effectsScale = this.configuration.effectsScale;
 		try {
 			BufferedImage[] ret = new BufferedImage[]{
-				ImageUtils.crearImagen(IMG_EFFECTS, 0, 485, 40,59),
-				ImageUtils.crearImagen(IMG_EFFECTS, 44, 485, 40,59),
-				ImageUtils.crearImagen(IMG_EFFECTS, 88, 485, 40,59)
+				ImageUtils.crearImagen(IMG_EFFECTS, 0 * effectsScale, 485 * effectsScale, 40 * effectsScale,59 * effectsScale),
+				ImageUtils.crearImagen(IMG_EFFECTS, 44 * effectsScale, 485 * effectsScale, 40 * effectsScale,59 * effectsScale),
+				ImageUtils.crearImagen(IMG_EFFECTS, 88 * effectsScale, 485 * effectsScale, 40 * effectsScale,59 * effectsScale)
 			};
 			return ret;
 		} catch (Exception e){
@@ -364,11 +371,12 @@ public class GFXEffects {
 	}
 	
 	private BufferedImage[] loadVanish() {
+		int effectsScale = this.configuration.effectsScale;
 		try {
 			BufferedImage[] ret = new BufferedImage[]{
-				ImageUtils.crearImagen(IMG_EFFECTS, 129, 485, 40,59),
-				ImageUtils.crearImagen(IMG_EFFECTS, 172, 485, 40,59),
-				ImageUtils.crearImagen(IMG_EFFECTS, 215, 485, 40,59)
+				ImageUtils.crearImagen(IMG_EFFECTS, 129 * effectsScale, 485 * effectsScale, 40 * effectsScale,59 * effectsScale),
+				ImageUtils.crearImagen(IMG_EFFECTS, 172 * effectsScale, 485 * effectsScale, 40 * effectsScale,59 * effectsScale),
+				ImageUtils.crearImagen(IMG_EFFECTS, 215 * effectsScale, 485 * effectsScale, 40 * effectsScale,59 * effectsScale)
 			};
 			return ret;
 		} catch (Exception e){
@@ -383,19 +391,6 @@ public class GFXEffects {
 	
 	private Image[] load8(int xpos, int ypos){
 		return load(8, xpos, ypos);
-	}
-	
-	@SuppressWarnings("unused")
-	private Image[] load8x(){
-		BufferedImage[] ret = new BufferedImage[8];
-		for (int x = 0; x < 8; x++){
-			try {
-				ret[x] = ImageUtils.crearImagen(IMG_SLASHES, x*16, 0, 16,16);
-			} catch (Exception e){
-				Game.crash("Error loading effect", e);
-			}
-		}
-		return ret;
 	}
 	
 	private Image[] load4(int xpos, int ypos){
@@ -466,7 +461,7 @@ public class GFXEffects {
 			new GFXSplashEffect("SFX_SHADOW_APOCALYPSE",load2(10,15),70, configuration), /*load 5 frames*/
 			new GFXSplashEffect("SFX_SHADOW_EXTINCTION",load2(12,15),70, configuration), /*load 4 frames*/
 			new GFXSplashEffect("SFX_HOLY_FLAME",load2(12,14),20, configuration), /*loead 3 frames*/
-			new GFXSplashEffect("SFX_MANDRAGORA_SCREAM",loadSame("gfx/crl_mons32.gif", MandragoraScream.SCREAM_RANGE, 8,6),120, configuration),
+			new GFXSplashEffect("SFX_MANDRAGORA_SCREAM",loadSame(configuration.getImageConfiguration().MonstersImage, MandragoraScream.SCREAM_RANGE, 8,6),120, configuration),
 			new GFXSplashEffect("SFX_HOLY_RAINSPLASH",new Image[]{load1(4,0)[0], load1(5,0)[0],load1(4,0)[0],load1(5,0)[0]},50, configuration), /*loead 3 frames*/
 			new GFXSplashEffect("SFX_DOVE_BLAST",load8(8,13),20, configuration), 
 			new GFXSplashEffect("SFX_CRYSTAL_BLAST",load2(10,14),30, configuration), /*load 4 frames*/

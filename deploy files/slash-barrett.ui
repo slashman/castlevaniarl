@@ -96,4 +96,4 @@ SFX_EFFECTS = gfx/crl_effects_2x.gif
 SFX_SLASHES = gfx/tempSlashes_2x.gif
 SFX_CURVED_SLASHES = gfx/crl_slashes1_2x.gif
 SFX_STRAIGHT_SLASHES = gfx/crl_slashes2_2x.gif
-SLASH_ANIMATION_SCALE = 2
+EFFECTS_SCALE = 2
