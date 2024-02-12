@@ -10,9 +10,6 @@ BIG_TILESIZE = 96
 HALF_TILESIZE = 32
 CELL_HEIGHT = 98
 
-SPRITES_UI_GADGETS = gfx/drashinterface.gif
-GADGETSIZE = 36
-
 PC_POS = 7,5
 XRANGE = 7
 YRANGE = 5
@@ -97,3 +94,7 @@ SFX_SLASHES = gfx/tempSlashes_2x.gif
 SFX_CURVED_SLASHES = gfx/crl_slashes1_2x.gif
 SFX_STRAIGHT_SLASHES = gfx/crl_slashes2_2x.gif
 EFFECTS_SCALE = 2
+
+UI_TILES = gfx/barrett-interface.gif
+VIEWPORT_UI_TILES = gfx/barrett-interface_2x.gif
+VIEWPORT_UI_SCALE = 2

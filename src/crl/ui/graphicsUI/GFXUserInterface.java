@@ -51,7 +51,6 @@ import crl.ui.*;
  */
 
 public class GFXUserInterface extends UserInterface implements Runnable {
-	private static final String INTERFACE_FILE = "gfx/barrett-interface.gif";
 	private static final String BORDERS_FILE = "gfx/barrett-interface.gif"; //TODO: Move to GFXConfiguration
 	private static final int BORDERS_SCALE = 1; //TODO: Move to GFXConfiguration
 	private static final int BORDERS_SIZE = 32; //TODO: Move to GFXConfiguration
@@ -138,7 +137,6 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		IMG_NO_BTN,
 		
 		IMG_ICON;
-	private int GADGETSIZE;
 	private Color 
 		COLOR_BORDER_OUT, COLOR_BORDER_IN, COLOR_WINDOW_BACKGROUND;
 	private Color
@@ -356,7 +354,12 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				}
 			}
 			messageBox.setText(looked);
-			drawImageVP((PC_POS.x + offset.x)*STANDARD_WIDTH-2, ((PC_POS.y + offset.y)*STANDARD_WIDTH-2)-4*cellHeight, TILE_SCAN);
+			drawImageVP(
+				(PC_POS.x + offset.x) * STANDARD_WIDTH - 2 * this.configuration.getViewportUserInterfaceScale(),
+				(PC_POS.y + offset.y) * STANDARD_WIDTH - 2 * this.configuration.getViewportUserInterfaceScale()
+					- 4 * cellHeight * this.configuration.getViewportUserInterfaceScale(),
+				TILE_SCAN
+			);
 			si.refresh();
 			CharKey x = new CharKey(CharKey.NONE);
 			while (x.code != CharKey.SPACE && x.code != CharKey.m && x.code != CharKey.ESC &&
@@ -830,10 +833,6 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		FNT_MESSAGEBOX = this.configuration.getMessageBoxFont();
 		FNT_PERSISTANTMESSAGEBOX = this.configuration.getPersistantMessageBoxFont();
 		IMG_STATUSSCR_BGROUND = this.configuration.getStatusScreenBackground();
-		GADGETSIZE = this.configuration.getGadgetSize();		
-		TILE_LINE_AIM  = this.configuration.getAimLineTile();
-		TILE_SCAN  = this.configuration.getScanTile();
-		TILE_LINE_STEPS  = this.configuration.getStepsTile();	
 	}
     
 	public void init(SwingSystemInterface psi, UserCommand[] gameCommands, Action target){
@@ -861,40 +860,43 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		
 		/*-- Load UI Images */
 		try {
-			HEALTH_WHITE = ImageUtils.crearImagen(INTERFACE_FILE, 198, 1, 5, 16);
+			BufferedImage userInterfaceTileset = this.configuration.getImageConfiguration().getUserInterfaceTileset();
+			BufferedImage viewportUserInterfaceTileset = this.configuration.getImageConfiguration().getViewportUserInterfaceTileset();
+			int viewportUserInterfaceScale = this.configuration.getViewportUserInterfaceScale();
+			HEALTH_WHITE = ImageUtils.crearImagen(userInterfaceTileset, 198, 1, 5, 16);
 			/*HEALTH_BLUE? unneeded*/
-			HEALTH_RED = ImageUtils.crearImagen(INTERFACE_FILE, 210, 1, 5, 16); 
-			HEALTH_DARK_RED = ImageUtils.crearImagen(INTERFACE_FILE, 216, 1, 5, 16);
-			HEALTH_MAGENTA = ImageUtils.crearImagen(INTERFACE_FILE, 222, 1, 5, 16); 
+			HEALTH_RED = ImageUtils.crearImagen(userInterfaceTileset, 210, 1, 5, 16); 
+			HEALTH_DARK_RED = ImageUtils.crearImagen(userInterfaceTileset, 216, 1, 5, 16);
+			HEALTH_MAGENTA = ImageUtils.crearImagen(userInterfaceTileset, 222, 1, 5, 16); 
 			 
-			HEALTH_YELLOW = ImageUtils.crearImagen(INTERFACE_FILE, 228, 1, 5, 16);
-			HEALTH_BROWN = ImageUtils.crearImagen(INTERFACE_FILE, 234, 1, 5, 16); 
-			HEALTH_PURPLE = ImageUtils.crearImagen(INTERFACE_FILE, 240, 1, 5, 16);
+			HEALTH_YELLOW = ImageUtils.crearImagen(userInterfaceTileset, 228, 1, 5, 16);
+			HEALTH_BROWN = ImageUtils.crearImagen(userInterfaceTileset, 234, 1, 5, 16); 
+			HEALTH_PURPLE = ImageUtils.crearImagen(userInterfaceTileset, 240, 1, 5, 16);
 
-			HEART_TILE = ImageUtils.crearImagen(INTERFACE_FILE, 199, 20, 14, 12);
-			GOLD_TILE = ImageUtils.crearImagen(INTERFACE_FILE, 214, 19, 9, 13);
-			KEY_TILE = ImageUtils.crearImagen(INTERFACE_FILE, 224, 20, 13, 13);
+			HEART_TILE = ImageUtils.crearImagen(userInterfaceTileset, 199, 20, 14, 12);
+			GOLD_TILE = ImageUtils.crearImagen(userInterfaceTileset, 214, 19, 9, 13);
+			KEY_TILE = ImageUtils.crearImagen(userInterfaceTileset, 224, 20, 13, 13);
 	    	
 	    	
-			TILE_MORNING_TIME = ImageUtils.crearImagen(INTERFACE_FILE, 1, 109, 49, 24);
-			TILE_NOON_TIME = ImageUtils.crearImagen(INTERFACE_FILE, 52, 109, 49, 24);
-	    	TILE_AFTERNOON_TIME = ImageUtils.crearImagen(INTERFACE_FILE, 103, 109, 49, 24);
-	    	TILE_DUSK_TIME = ImageUtils.crearImagen(INTERFACE_FILE, 154, 109, 49, 24);
-	    	TILE_NIGHT_TIME = ImageUtils.crearImagen(INTERFACE_FILE, 205, 109, 49, 24);
-	    	TILE_DAWN_TIME = ImageUtils.crearImagen(INTERFACE_FILE, 256, 109, 49, 24);
+			TILE_MORNING_TIME = ImageUtils.crearImagen(userInterfaceTileset, 1, 109, 49, 24);
+			TILE_NOON_TIME = ImageUtils.crearImagen(userInterfaceTileset, 52, 109, 49, 24);
+	    	TILE_AFTERNOON_TIME = ImageUtils.crearImagen(userInterfaceTileset, 103, 109, 49, 24);
+	    	TILE_DUSK_TIME = ImageUtils.crearImagen(userInterfaceTileset, 154, 109, 49, 24);
+	    	TILE_NIGHT_TIME = ImageUtils.crearImagen(userInterfaceTileset, 205, 109, 49, 24);
+	    	TILE_DAWN_TIME = ImageUtils.crearImagen(userInterfaceTileset, 256, 109, 49, 24);
 	    	
 	    	
 	    	//TILE_NO_SHO;
-	    	TILE_SHOT_II  = ImageUtils.crearImagen(INTERFACE_FILE, 300, 3, 16, 16);
-	    	TILE_SHOT_III  = ImageUtils.crearImagen(INTERFACE_FILE, 300, 20, 16, 16);
+	    	TILE_SHOT_II  = ImageUtils.crearImagen(userInterfaceTileset, 300, 3, 16, 16);
+	    	TILE_SHOT_III  = ImageUtils.crearImagen(userInterfaceTileset, 300, 20, 16, 16);
 
-			TILE_LINE_STEPS  = ImageUtils.crearImagen(INTERFACE_FILE, 280, 25, 6, 5);
-			TILE_LINE_AIM  = ImageUtils.crearImagen(INTERFACE_FILE, 265, 37, 36, 36);
-			TILE_SCAN  = ImageUtils.crearImagen(INTERFACE_FILE, 302, 37, 36, 36);
+			TILE_LINE_STEPS  = ImageUtils.crearImagen(viewportUserInterfaceTileset, 280 * viewportUserInterfaceScale, 25* viewportUserInterfaceScale, 6* viewportUserInterfaceScale, 5* viewportUserInterfaceScale);
+			TILE_LINE_AIM  = ImageUtils.crearImagen(viewportUserInterfaceTileset, 265* viewportUserInterfaceScale, 37* viewportUserInterfaceScale, 36* viewportUserInterfaceScale, 36* viewportUserInterfaceScale);
+			TILE_SCAN  = ImageUtils.crearImagen(viewportUserInterfaceTileset, 302* viewportUserInterfaceScale, 37* viewportUserInterfaceScale, 36* viewportUserInterfaceScale, 36* viewportUserInterfaceScale);
 			
-			TILE_WEAPON_BACK = ImageUtils.crearImagen(INTERFACE_FILE, 173, 1, 24, 24);
-			TILE_HEALTH_BACK = ImageUtils.crearImagen(INTERFACE_FILE, 3, 34, 261, 24);
-			TILE_TIME_BACK  = ImageUtils.crearImagen(INTERFACE_FILE, 246, 1, 22, 21);
+			TILE_WEAPON_BACK = ImageUtils.crearImagen(userInterfaceTileset, 173, 1, 24, 24);
+			TILE_HEALTH_BACK = ImageUtils.crearImagen(userInterfaceTileset, 3, 34, 261, 24);
+			TILE_TIME_BACK  = ImageUtils.crearImagen(userInterfaceTileset, 246, 1, 22, 21);
 			
 			IMG_STATUSSCR_BGROUND = configuration.getUserInterfaceBackgroundImage(); 
 					//ImageUtils.createImage("gfx/barrett-moon_2x.gif");
@@ -919,11 +921,11 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			BLOOD1 = (BufferedImage)((GFXAppearance)AppearanceFactory.getAppearanceFactory().getAppearance("BLOOD1")).getImage();
 			BLOOD2 = (BufferedImage)((GFXAppearance)AppearanceFactory.getAppearanceFactory().getAppearance("BLOOD2")).getImage();
 			
-			IMG_EXIT_BTN = ImageUtils.crearImagen(INTERFACE_FILE, 65,81,60,26);
-			IMG_OK_BTN = ImageUtils.crearImagen(INTERFACE_FILE, 2,81,60,26);
-			IMG_BUY_BTN = ImageUtils.crearImagen(INTERFACE_FILE, 128,81,60,26);
-			IMG_YES_BTN = ImageUtils.crearImagen(INTERFACE_FILE, 191,81,60,26);
-			IMG_NO_BTN = ImageUtils.crearImagen(INTERFACE_FILE, 254,81,60,26);
+			IMG_EXIT_BTN = ImageUtils.crearImagen(userInterfaceTileset, 65,81,60,26);
+			IMG_OK_BTN = ImageUtils.crearImagen(userInterfaceTileset, 2,81,60,26);
+			IMG_BUY_BTN = ImageUtils.crearImagen(userInterfaceTileset, 128,81,60,26);
+			IMG_YES_BTN = ImageUtils.crearImagen(userInterfaceTileset, 191,81,60,26);
+			IMG_NO_BTN = ImageUtils.crearImagen(userInterfaceTileset, 254,81,60,26);
 			
 			IMG_ICON = ImageUtils.createImage("res/crl_icon.png");
 		} catch (Exception e){
@@ -1090,7 +1092,13 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			//si.print(PC_POS.x + offset.x, PC_POS.y + offset.y, '_', ConsoleSystemInterface.RED);
 			drawStepsTo(PC_POS.x + offset.x, (PC_POS.y + offset.y), TILE_LINE_STEPS, cellHeight);
 			
-			drawImageVP((PC_POS.x + offset.x)*STANDARD_WIDTH-2, ((PC_POS.y + offset.y)*STANDARD_WIDTH-2) -4*cellHeight, TILE_LINE_AIM);
+			drawImageVP(
+				(PC_POS.x + offset.x) * STANDARD_WIDTH - 2 * this.configuration.getViewportUserInterfaceScale(),
+				(PC_POS.y + offset.y) * STANDARD_WIDTH - 2 * this.configuration.getViewportUserInterfaceScale()
+					- 4 * cellHeight * this.configuration.getViewportUserInterfaceScale(),
+				TILE_LINE_AIM
+			);
+
 			si.refresh();
 			CharKey x = new CharKey(CharKey.NONE);
 			while (x.code != CharKey.SPACE && x.code != CharKey.ESC && x.code != fireKeyCode &&
@@ -1867,7 +1875,12 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		Position tmp = line.next();
 		while (!tmp.equals(target)){
 			tmp = line.next();
-			drawImageVP(tmp.x*STANDARD_WIDTH+13, (tmp.y*STANDARD_WIDTH+13)-4*cellHeight, tile);
+			drawImageVP(
+				tmp.x * STANDARD_WIDTH + 13 * this.configuration.getViewportUserInterfaceScale(),
+				tmp.y * STANDARD_WIDTH + 14 * this.configuration.getViewportUserInterfaceScale()
+					- 4 * cellHeight * this.configuration.getViewportUserInterfaceScale(),
+				tile
+			);
 		}
 		
 	}

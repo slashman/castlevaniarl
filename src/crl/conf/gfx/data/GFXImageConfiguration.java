@@ -39,6 +39,9 @@ public class GFXImageConfiguration {
 	protected BufferedImage slashesImage;
 	protected BufferedImage curvedSlashesImage;
 	protected BufferedImage straightSlashesImage;
+
+	protected BufferedImage UserInterfaceTileset;
+	protected BufferedImage ViewportUserInterfaceTileset;
 	
 	public void LoadConfiguration(Properties p) {
 		try {
@@ -62,10 +65,21 @@ public class GFXImageConfiguration {
 			slashesImage = ImageUtils.createImage(p.getProperty("SFX_SLASHES"));
 			curvedSlashesImage = ImageUtils.createImage(p.getProperty("SFX_CURVED_SLASHES"));
 			straightSlashesImage = ImageUtils.createImage(p.getProperty("SFX_STRAIGHT_SLASHES"));
+
+			UserInterfaceTileset = ImageUtils.createImage(p.getProperty("UI_TILES"));
+			ViewportUserInterfaceTileset = ImageUtils.createImage(p.getProperty("VIEWPORT_UI_TILES"));
 		}
 		catch (Exception e) {
 			Game.crash(e.getMessage(), e);
 		}		
+	}
+
+	public BufferedImage getUserInterfaceTileset() {
+		return UserInterfaceTileset;
+	}
+
+	public BufferedImage getViewportUserInterfaceTileset() {
+		return ViewportUserInterfaceTileset;
 	}
 	
 	public BufferedImage getShadowImage() {
