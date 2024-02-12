@@ -1,6 +1,5 @@
 package crl.conf.gfx.data;
 import java.awt.image.BufferedImage;
-import java.util.Hashtable;
 
 import sz.util.ImageUtils;
 
@@ -11,6 +10,7 @@ import crl.ui.graphicsUI.*;
 public class GFXAppearances {
 	private int WIDTH_BIG;
 	private int WIDTH_HALF;
+	private int WIDTH_QUARTER;
 	private final static int ICON_SIZE = 16;
 	private int CELL_HEIGHT;
 	private int WIDTH_NORMAL;
@@ -22,6 +22,7 @@ public class GFXAppearances {
 		
 		WIDTH_BIG = configuration.getBigTileWidth();
 		WIDTH_HALF = configuration.getHalfTileWidth();
+		WIDTH_QUARTER = (int) Math.floor(configuration.getHalfTileWidth() / 2);
 		CELL_HEIGHT = configuration.getCellHeight();
 		WIDTH_NORMAL = configuration.getNormalTileWidth();
 		
@@ -734,7 +735,7 @@ public class GFXAppearances {
 			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos*WIDTH_HALF, ypos*WIDTH_HALF, WIDTH_HALF, WIDTH_HALF);
 			BufferedImage iconImg = ImageUtils.crearImagen(
 				iconImage, xpos * ICON_SIZE, ypos * ICON_SIZE, ICON_SIZE, ICON_SIZE);
-			GFXAppearance ret = new GFXAppearance(ID, img, iconImg, -8,0);
+			GFXAppearance ret = new GFXAppearance(ID, img, iconImg, -WIDTH_QUARTER, -WIDTH_QUARTER);
 			return ret;
 		} catch (Exception e){
 			Game.crash("Error loading image ", e);
