@@ -52,6 +52,9 @@ import crl.ui.*;
 
 public class GFXUserInterface extends UserInterface implements Runnable {
 	private static final String INTERFACE_FILE = "gfx/barrett-interface.gif";
+	private static final String BORDERS_FILE = "gfx/barrett-interface.gif"; //TODO: Move to GFXConfiguration
+	private static final int BORDERS_SCALE = 1; //TODO: Move to GFXConfiguration
+	private static final int BORDERS_SIZE = 32; //TODO: Move to GFXConfiguration
 
 	private int STANDARD_WIDTH;
 	//Attributes
@@ -894,10 +897,10 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			IMG_STATUSSCR_BGROUND = configuration.getUserInterfaceBackgroundImage(); 
 					//ImageUtils.createImage("gfx/barrett-moon_2x.gif");
 			
-			BORDER1 = ImageUtils.crearImagen(INTERFACE_FILE, 34,1,STANDARD_WIDTH,STANDARD_WIDTH);
-			BORDER2 = ImageUtils.crearImagen(INTERFACE_FILE, 1,1,STANDARD_WIDTH,STANDARD_WIDTH);
-			BORDER3 = ImageUtils.crearImagen(INTERFACE_FILE, 100, 1, STANDARD_WIDTH,STANDARD_WIDTH);
-			BORDER4 = ImageUtils.crearImagen(INTERFACE_FILE, 67,1,STANDARD_WIDTH,STANDARD_WIDTH);
+			BORDER1 = ImageUtils.crearImagen(BORDERS_FILE, 34 * BORDERS_SCALE, 1 * BORDERS_SCALE, BORDERS_SIZE, BORDERS_SIZE);
+			BORDER2 = ImageUtils.crearImagen(BORDERS_FILE, 1 * BORDERS_SCALE, 1 * BORDERS_SCALE, BORDERS_SIZE, BORDERS_SIZE);
+			BORDER3 = ImageUtils.crearImagen(BORDERS_FILE, 100 * BORDERS_SCALE, 1 * BORDERS_SCALE, BORDERS_SIZE, BORDERS_SIZE);
+			BORDER4 = ImageUtils.crearImagen(BORDERS_FILE, 67 * BORDERS_SCALE, 1 * BORDERS_SCALE, BORDERS_SIZE, BORDERS_SIZE);
 			
 			IMG_AXE = ImageUtils.crearImagen("gfx/crl_features.gif", 48,0,16,16);
 			IMG_BIBLE = ImageUtils.crearImagen("gfx/crl_features.gif", 96,0,16,16);
@@ -1156,7 +1159,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			throw ret;
   		}
   		
-  		BorderedMenuBox menuBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, TILE_WEAPON_BACK);
+  		BorderedMenuBox menuBox = GetMenuBox();
   		menuBox.setGap(35);
   		
   		//menuBox.setBounds(26,6,30,11);
@@ -1182,7 +1185,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 	private Item pickItem(String prompt) throws ActionCancelException{
 		enterScreen();
   		Vector inventory = player.getInventory();
-  		BorderedMenuBox menuBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, TILE_WEAPON_BACK);
+  		BorderedMenuBox menuBox = GetMenuBox();
   		menuBox.setGap(35);
   		menuBox.setPosition(6,4);
   		menuBox.setWidth(70);
@@ -1211,7 +1214,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 	private Vector pickMultiItems(String prompt) throws ActionCancelException{
 		//Equipment.eqMode = true;
 		Vector inventory = player.getInventory();
-		BorderedMenuBox menuBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, TILE_WEAPON_BACK);
+		BorderedMenuBox menuBox = GetMenuBox();
   		menuBox.setBounds(25,3,40,18);
   		//menuBox.setPromptSize(2);
   		menuBox.setMenuItems(inventory);
@@ -1219,7 +1222,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
   		//menuBox.setForeColor(ConsoleSystemInterface.RED);
   		//menuBox.setBorder(true);
   		Vector ret = new Vector();
-  		BorderedMenuBox selectedBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, TILE_WEAPON_BACK);
+  		BorderedMenuBox selectedBox = GetMenuBox();
   		selectedBox.setBounds(5,3,20,18);
   		//selectedBox.setPromptSize(2);
   		selectedBox.setTitle("Selected Items");
@@ -1344,7 +1347,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
   			return null;
   		if (items.size() == 1)
   			return (Item) items.elementAt(0);
-  		BorderedMenuBox menuBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, TILE_WEAPON_BACK);
+  		BorderedMenuBox menuBox = GetMenuBox();
   		menuBox.setGap(35);
   		menuBox.setBounds(6,4,70,12);
   		menuBox.setMenuItems(items);
@@ -1389,7 +1392,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		Equipment.menuDetail = true;
   		Vector inventory = player.getInventory();
 		int xpos = 1, ypos = 0;
-		BorderedMenuBox menuBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, TILE_WEAPON_BACK);
+		BorderedMenuBox menuBox = GetMenuBox();
   		menuBox.setGap(35);
   		menuBox.setItemsPerPage(10);
   		menuBox.setWidth(75);
@@ -1669,13 +1672,21 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		leaveScreen();
 	}
 	
+	private BorderedMenuBox GetMenuBox() {
+		return GetMenuBox(false);
+	}
+
+	private BorderedMenuBox GetMenuBox(boolean nullBox) {
+		BufferedImage box = nullBox ? null : TILE_WEAPON_BACK;
+		return new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, BORDERS_SIZE, box);
+	}
 
     public Action showSkills() throws ActionCancelException {
     	Debug.enterMethod(this, "showSkills");
     	enterScreen();
     	si.saveBuffer();
 		Vector skills = player.getAvailableSkills();
-		BorderedMenuBox menuBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, null);
+		BorderedMenuBox menuBox = GetMenuBox(true);
   		menuBox.setItemsPerPage(14);
   		menuBox.setWidth(48);
   		menuBox.setPosition(6,4);
