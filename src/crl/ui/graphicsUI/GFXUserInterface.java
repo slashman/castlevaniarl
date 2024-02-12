@@ -2298,7 +2298,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				int borderWidth, int borderHeight) {
 			super(UPRIGHT, UPLEFT, DOWNRIGHT, DOWNLEFT, OUT_COLOR, IN_COLOR, borderWidth, borderHeight);
 			setOpaque(false);
-			setBorder(new EmptyBorder(STANDARD_WIDTH,STANDARD_WIDTH,STANDARD_WIDTH,STANDARD_WIDTH));
+			setBorder(new EmptyBorder(BORDERS_SIZE,BORDERS_SIZE,BORDERS_SIZE,BORDERS_SIZE));
 			
 			btnOk = new GFXButton(IMG_OK_BTN);
 			setLayout(new BorderLayout());
