@@ -143,7 +143,7 @@ public class GFXDisplay extends Display{
 		si.drawImage(IMG_TITLE);
 
 		si.printAtPixelCentered(middlePoint, (int)(530*scale), "'CastleVania' is a trademark of Konami Corporation.", GFXDisplay.COLOR_BOLD);
-		si.printAtPixelCentered(middlePoint, (int)(555*scale), "CastlevaniaRL v"+Game.getVersion()+", Developed by Santiago Zapata 2005-2010", Color.WHITE);
+		si.printAtPixelCentered(middlePoint, (int)(555*scale), "CastlevaniaRL v"+Game.getVersion()+", Developed by Santiago Zapata 2005-2007, 2010, 2024", Color.WHITE);
 		si.printAtPixelCentered(middlePoint, (int)(570*scale), "Artwork by Christopher Barrett, 2006-2007", Color.WHITE);
 		si.printAtPixelCentered(middlePoint, (int)(585*scale), "Midi Tracks by Jorge E. Fuentes, JiLost, Nicholas and Tom Kim", Color.WHITE);
 		CharKey x = new CharKey(CharKey.NONE);
@@ -588,9 +588,9 @@ public class GFXDisplay extends Display{
 		GFXAppearance app = (GFXAppearance)who.getAppearance();
 		//si.saveBuffer();
 		si.drawImage(IMG_LEVEL_UP);
-		si.print(6,3, who.getDescription(), GFXDisplay.COLOR_BOLD);
+		si.print(8,2, who.getDescription(), GFXDisplay.COLOR_BOLD);
 		si.drawImage(15,40,app.getImage());
-		JTextArea t1 = createTempArea(20,125,700,400);
+		JTextArea t1 = createTempArea(80,64,700,400);
 		t1.setForeground(Color.WHITE);
 		t1.setText(who.getLongDescription());
 		si.add(t1);

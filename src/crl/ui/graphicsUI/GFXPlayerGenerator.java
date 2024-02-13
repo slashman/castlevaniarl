@@ -89,8 +89,8 @@ public class GFXPlayerGenerator extends PlayerGenerator{
     		txtClassDescription.setText(CLASS_DESCRIPTIONS[choice]);
     		si.drawImage(70,158+18*choice,IMG_FLAME);
     		si.printAtPixel(80,173+18*choice, CLASS_NAMES[choice], Color.WHITE);
-    		si.printAtPixel(398,142, CLASS_NAMES[choice], Color.WHITE);
-    		si.drawImage(353,113,apps[choice].getImage());
+    		si.printAtPixel(353 + 64 + 16,142, CLASS_NAMES[choice], Color.WHITE);
+    		si.drawImage(353,90,apps[choice].getImage());
     		
     		si.printAtPixel(440,260,"+"+CLASS_STATS[choice][0], Color.WHITE);
     		si.printAtPixel(440,280,"+"+CLASS_STATS[choice][1], Color.WHITE);
