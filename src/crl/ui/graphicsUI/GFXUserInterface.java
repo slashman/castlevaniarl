@@ -1045,7 +1045,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		psi.add(helpBox);
 		
 		persistantMessageBox = new AddornedBorderTextArea(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, BORDERS_SIZE, BORDERS_SIZE);
-		persistantMessageBox.setBounds(520,90,260,400);
+		persistantMessageBox.setBounds(this.configuration.getScreenWidth() - 280,90,260,400);
 		persistantMessageBox.setVisible(false);
 		persistantMessageBox.setFont(FNT_PERSISTANTMESSAGEBOX);
 		persistantMessageBox.setForeground(Color.WHITE);

@@ -47,6 +47,7 @@ public class GFXDisplay extends Display{
 	private String IMG_LEVEL_UP;
 	public static String IMG_FRAME;
 	public static Font FNT_TEXT;
+	public static Font FNT_PROLOGUE;
 	public static Font FNT_TITLE;
 	public static Font FNT_DIALOGUEIN;
 	public static Font FNT_MONO;
@@ -78,6 +79,7 @@ public class GFXDisplay extends Display{
 			IMG_BORDERS = PropertyFilters.getImage(p.getProperty("IMG_BORDERS"), p.getProperty("IMG_BORDERS_BOUNDS"));
 			FNT_TITLE = PropertyFilters.getFont(p.getProperty("FNT_TITLE"), p.getProperty("FNT_TITLE_SIZE"));
 			FNT_TEXT = PropertyFilters.getFont(p.getProperty("FNT_TEXT"), p.getProperty("FNT_TEXT_SIZE"));
+			FNT_PROLOGUE = PropertyFilters.getFont(p.getProperty("FNT_PROLOGUE"), p.getProperty("FNT_PROLOGUE_SIZE"));
 			FNT_DIALOGUEIN  = FNT_TEXT;
 			FNT_MONO = PropertyFilters.getFont(p.getProperty("FNT_MONO"), p.getProperty("FNT_MONO_SIZE"));
 		} catch (FontFormatException ffe){
@@ -208,8 +210,9 @@ public class GFXDisplay extends Display{
 		//si.drawImage(311,64, IMG_GBAT);
 		si.setFont(FNT_TEXT);
 		si.setColor(Color.GRAY);
-		JTextArea t1 = createTempArea(150,170,510,300);
-		t1.setForeground(Color.LIGHT_GRAY);
+		JTextArea t1 = createTempArea(150,170,this.configuration.getScreenWidth() - 300,400);
+		t1.setFont(FNT_PROLOGUE);
+		t1.setForeground(Color.WHITE);
 		t1.setText("In the year of 1691, a dark castle emerges from the cursed soils of the plains of Transylvannia. "+
 		"Chaos and death spread along the land, as the evil count Dracula unleases his powers, "+ 
 		"turning its forests and lakes into a pool of blood. \n\n"+
@@ -221,7 +224,7 @@ public class GFXDisplay extends Display{
 		player.getPlot2() +" and the fate running through his veins being the sole hope for mankind.");
 		
 		si.add(t1);
-		si.printAtPixel(156,490, "[Space] to continue", COLOR_BOLD);
+		si.printAtPixel(156,590, "[Space] to continue", COLOR_BOLD);
 		si.refresh();
 		si.waitKey(CharKey.SPACE);
 		si.remove(t1);
@@ -495,7 +498,7 @@ public class GFXDisplay extends Display{
 	public void showScreen(Object pScreen){
 		si.saveBuffer();
 		String screenText = (String) pScreen;
-		showTextBox(screenText, 430, 70,340,375);
+		showTextBox(screenText, this.configuration.getScreenWidth() - 370, 70,340,375);
 		//si.waitKey(CharKey.SPACE);
 		si.restore();
 	}
