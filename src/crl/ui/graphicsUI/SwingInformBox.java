@@ -27,7 +27,7 @@ public class SwingInformBox extends JTextArea{
 		boolean wait = false;
 		do {
 			try {
-				setText(getText()+txt+". ");
+				setText(getText()+txt+".\n");
 				wait = false;
 			}  catch (Error e){
 				wait = true;

@@ -1017,7 +1017,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		/*-- Init Components*/
 		messageBox = new SwingInformBox();
 		/*idList = new ListBox(psi);*/
-		messageBox.setBounds(16, this.configuration.getScreenHeight() - 2*24, this.configuration.getScreenWidth() - 32, 2*24);
+		messageBox.setBounds(16, this.configuration.getScreenHeight() - 10 * 24, this.configuration.getScreenWidth() - 32, 10 * 24);
 		messageBox.setForeground(COLOR_LAST_MESSAGE);
 		messageBox.setBackground(Color.BLACK);
 		messageBox.setFont(FNT_MESSAGEBOX);
