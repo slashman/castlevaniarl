@@ -656,7 +656,7 @@ public class GFXAppearances {
 	public GFXAppearance createXAppearance(String ID, BufferedImage bigImage, int xpos, int ypos, int width, int height, int yoff){
 		try {
 			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos, ypos, width, height);
-			GFXAppearance ret = new GFXAppearance(ID, img,(width-32)/2,height-32+yoff);
+			GFXAppearance ret = new GFXAppearance(ID, img,(width-48)/2,(height-64)/2+yoff);
 			return ret;
 		} catch (Exception e){
 			Game.crash("Error loading image ", e);
