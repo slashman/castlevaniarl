@@ -69,6 +69,9 @@ FNT_TITLE_SIZE = 32
 FNT_TEXT = res/v5easter.ttf
 FNT_TEXT_SIZE = 16
 
+FNT_PROLOGUE = res/v5easter.ttf
+FNT_PROLOGUE_SIZE = 24
+
 FNT_MONO = res/v5easter.ttf
 FNT_MONO_SIZE = 15
 
