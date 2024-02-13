@@ -804,11 +804,9 @@ public class GFXUserInterface extends UserInterface implements Runnable {
     	    
     	    int restB = ((sixthiedBossHits-1) % 20) + 1;
     		
-    		for (int i = 0; i < 20; i++)
-    			if (i+1 <= restB)
-    				si.drawImage(665+ (i*6),540, foreColorB);
-    			else
-    				si.drawImage(665+ (i*6),540, backColorB);
+    		for (int i = 0; i < 20; i++) {
+				si.drawImage(this.configuration.getScreenWidth() - 135 + (i*6), this.configuration.getScreenHeight() - 60, i + 1 <= restB ? foreColorB : backColorB);
+			}
     	}
     	
     	//TODO: Add the background
@@ -820,23 +818,24 @@ public class GFXUserInterface extends UserInterface implements Runnable {
     		si.drawImage(18,38, ((GFXAppearance)player.getWeapon().getAppearance()).getIconImage());
     	}
     	if (player.getLevel().getLevelNumber() != -1)
-    		si.printAtPixel(524,50,"STAGE  "+player.getLevel().getLevelNumber()+" "+player.getLevel().getDescription(), Color.WHITE);
+    		si.printAtPixel(this.configuration.getScreenWidth() - 276,50,"STAGE  "+player.getLevel().getLevelNumber()+" "+player.getLevel().getDescription(), Color.WHITE);
     	else
-    		si.printAtPixel(524,50,player.getLevel().getDescription(), Color.WHITE);
+    		si.printAtPixel(this.configuration.getScreenWidth() - 276,50,player.getLevel().getDescription(), Color.WHITE);
     	
     	
     	
     	
     	//si.drawImage(759, 35, TILE_TIME_BACK);
-    	si.drawImage(723, 38, timeTile);
+		int timeTilePosition = this.configuration.getScreenWidth() - 77;
+    	si.drawImage(timeTilePosition, 38, timeTile);
     	if (player.getFlag(Consts.ENV_FOG))
-    		si.printAtPixel (723,30,"FOG",Color.GRAY);
+    		si.printAtPixel (timeTilePosition,30,"FOG",Color.GRAY);
     	if (player.getFlag(Consts.ENV_RAIN))
-    		si.printAtPixel (723,30,"RAIN",Color.BLUE);
+    		si.printAtPixel (timeTilePosition,30,"RAIN",Color.BLUE);
     	if (player.getFlag(Consts.ENV_SUNNY))
-    		si.printAtPixel (723,30,"SUNNY",Color.YELLOW);
+    		si.printAtPixel (timeTilePosition,30,"SUNNY",Color.YELLOW);
     	if (player.getFlag(Consts.ENV_THUNDERSTORM))
-    		si.printAtPixel (723,30,"STORM",Color.WHITE);
+    		si.printAtPixel (timeTilePosition,30,"STORM",Color.WHITE);
     	
 		si.drawImage(166, 42,HEART_TILE);
 		si.printAtPixel(182,51,""+player.getHearts(), Color.WHITE);
@@ -971,7 +970,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		/*-- Init Components*/
 		messageBox = new SwingInformBox();
 		/*idList = new ListBox(psi);*/
-		messageBox.setBounds(1*10,22*24,78*10,2*24);
+		messageBox.setBounds(16, this.configuration.getScreenHeight() - 2*24, this.configuration.getScreenWidth() - 32, 2*24);
 		messageBox.setForeground(COLOR_LAST_MESSAGE);
 		messageBox.setBackground(Color.BLACK);
 		messageBox.setFont(FNT_MESSAGEBOX);
