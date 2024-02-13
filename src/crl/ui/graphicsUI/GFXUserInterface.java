@@ -216,9 +216,9 @@ public class GFXUserInterface extends UserInterface implements Runnable {
     
     
     private Color TRANSPARENT_GRAY = new Color(20,20,20,180);
-    private Color MAP_NOSOLID_LOS = new Color(98,96,85,150);
-    private Color MAP_NOSOLID = new Color(86,77,65,150);
-    private Color MAP_SOLID = new Color(83,83,83);
+    private Color MAP_NOSOLID_LOS = new Color(204,182,116);
+    private Color MAP_NOSOLID = new Color(148,122,60);
+    private Color MAP_SOLID = new Color(180,154,68);
     private void examineLevelMap(){
 		messageBox.setVisible(false);
 		isCursorEnabled = false;
@@ -281,6 +281,49 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		si.restore();
 		si.refresh();
 		
+	}
+
+	/*
+	 * Expensively render the minimap as part of the HUD instead of
+	 * being a separete mode.
+	 */
+	private void renderMiniMap(){
+		int lw = level.getWidth();
+		int lh = level.getHeight();
+		int sw = this.configuration.getScreenWidth();
+		int sh = this.configuration.getScreenHeight();
+		int mapX = sw - 60 - (lw * 3); 
+		int mapY = sh - 60 - (lh * 3); 
+		Graphics2D g = si.getGraphics2D();
+		Color cellColor = null;
+		Position runner = new Position(0,0,player.getPosition().z);
+		for (int x = 0; x < level.getWidth(); x++, runner.x++, runner.y = 0) {
+			for (int y = 0; y < level.getHeight(); y++, runner.y++){
+				if (player.getPosition().x == x && player.getPosition().y == y) {
+					cellColor = Color.RED;
+				} else if (!level.remembers(x,y)) {
+					continue;
+				} else {
+					Cell current = level.getMapCell(runner);
+					if (current == null)
+						continue;
+					if (level.getExitOn(runner) != null) {
+						cellColor = Color.RED;
+					} else {
+						Feature currentF = level.getFeatureAt(runner);
+						if (current.isSolid() || (currentF != null && currentF.isSolid())) {
+							cellColor = MAP_SOLID;
+						} else if (level.isVisible(x,y)){
+							cellColor = MAP_NOSOLID_LOS;
+						} else {
+							cellColor = MAP_NOSOLID;
+						}
+					}
+				}
+				g.setColor(cellColor);
+				g.fillRect(mapX + x * 3, mapY + y * 3, 3,3);
+			}
+		}
 	}
     
     private void enterScreen(){
@@ -849,6 +892,8 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			Hostage h = player.getHostage();
 			si.drawImage(18,64, ((GFXAppearance)h.getAppearance()).getImage());
 		}
+
+		renderMiniMap();
 		
 		//si.printAtPixel(18,80,""+player.getHoverHeight(), Color.WHITE);
   		Debug.exitMethod();
@@ -1880,7 +1925,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				}
 				break;
 			case CommandListener.EXAMINELEVELMAP:
-				examineLevelMap();
+				// examineLevelMap(); Disabled, we have minimap on HUD
 				break;
 			case CommandListener.CHARDUMP:
 				GameFiles.saveChardump(player);
@@ -2411,7 +2456,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			print(g, 41,5 , "("+CharKey.getString(Display.getKeyBindings().getProperty("LOOK_KEY"))+")", GFXDisplay.COLOR_BOLD);
 			print(g, 41,6 , "("+CharKey.getString(Display.getKeyBindings().getProperty("SHOW_MESSAGE_HISTORY_KEY"))+")", GFXDisplay.COLOR_BOLD);
 			print(g, 41,7, "("+CharKey.getString(Display.getKeyBindings().getProperty("SHOW_MAP_KEY"))+")", GFXDisplay.COLOR_BOLD);
-			print(g, 41,8, "("+CharKey.getString(Display.getKeyBindings().getProperty("EXAMINE_LEVEL_MAP_KEY"))+")", GFXDisplay.COLOR_BOLD);
+			//print(g, 41,8, "("+CharKey.getString(Display.getKeyBindings().getProperty("EXAMINE_LEVEL_MAP_KEY"))+")", GFXDisplay.COLOR_BOLD);
 			print(g, 41,9, "("+CharKey.getString(Display.getKeyBindings().getProperty("QUIT_KEY"))+")", GFXDisplay.COLOR_BOLD);
 			print(g, 41,10, "("+CharKey.getString(Display.getKeyBindings().getProperty("PROMPT_SAVE_KEY"))+")", GFXDisplay.COLOR_BOLD);
 			print(g, 41,11, "("+CharKey.getString(Display.getKeyBindings().getProperty("SWITCH_MUSIC_KEY"))+")", GFXDisplay.COLOR_BOLD);
@@ -2421,7 +2466,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			print(g, 44,5, "Look: Identifies map symbols and monsters", Color.WHITE);
 			print(g, 44,6, "Messages: Shows the latest messages", Color.WHITE);
 			print(g, 44,7, "Castle Map: Shows the castle map", Color.WHITE);
-			print(g, 44,8, "Area Map: Show the current area map", Color.WHITE);
+			//print(g, 44,8, "Area Map: Show the current area map", Color.WHITE);
 			print(g, 44,9, "Quit: Exits game", Color.WHITE);
 			print(g, 44,10, "Save: Saves game", Color.WHITE);
 			print(g, 44,11, "Switch Music: Turns music on/off", Color.WHITE);			
