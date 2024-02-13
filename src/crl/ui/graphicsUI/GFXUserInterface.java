@@ -226,11 +226,13 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		//si.drawImage(GFXDisplay.IMG_FRAME);
 		int lw = level.getWidth();
 		int lh = level.getHeight();
-		int remnantx = (int)((740 - (lw * 3))/2.0d); 
-		int remnanty = (int)((480 - (lh * 3))/2.0d);
+		int sw = this.configuration.getScreenWidth();
+		int sh = this.configuration.getScreenHeight();
+		int remnantx = (int)((sw - 60 - (lw * 3))/2.0d); 
+		int remnanty = (int)((sh - 120 - (lh * 3))/2.0d);
 		Graphics2D g = si.getGraphics2D();
 		g.setColor(TRANSPARENT_GRAY);
-		g.fillRect(0,0,800,600);
+		g.fillRect(0,0,sw,sh);
 		Color cellColor = null;
 		Position runner = new Position(0,0,player.getPosition().z);
 		for (int x = 0; x < level.getWidth(); x++, runner.x++, runner.y = 0)
