@@ -109,8 +109,7 @@ public class GFXEffects {
 	}
 
 	private Position getScaledSlashPosition(int baseX, int baseY) {
-		int slashAnimationScale = this.configuration.effectsScale;
-		return new Position(baseX * slashAnimationScale, baseY * slashAnimationScale);
+		return new Position(baseX, baseY);
 	}
 
 	private void InitAnimations(GFXImageConfiguration configuration) {

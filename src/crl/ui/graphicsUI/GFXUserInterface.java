@@ -182,7 +182,8 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				VP_END = new Position (5,5),
 				PC_POS = new Position (3,3);
 
-	private Position CAMERA = new Position(-32, -32);
+	private Position CAMERA = new Position(-32, -32); // TODO: Read from configuration
+	private int cameraScale = 2; // TODO: Read from configuration
 
     public void setFlipFacing(boolean val){
     	flipFacing = val;
@@ -355,9 +356,8 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			}
 			messageBox.setText(looked);
 			drawImageVP(
-				(PC_POS.x + offset.x) * STANDARD_WIDTH - 2 * this.configuration.getViewportUserInterfaceScale(),
-				(PC_POS.y + offset.y) * STANDARD_WIDTH - 2 * this.configuration.getViewportUserInterfaceScale()
-					- 4 * cellHeight * this.configuration.getViewportUserInterfaceScale(),
+				(PC_POS.x + offset.x) * 32 - 2,
+				(PC_POS.y + offset.y) * 32 - 2 - 4 * cellHeight,
 				TILE_SCAN
 			);
 			si.refresh();
@@ -490,10 +490,15 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					if (rcells[x][y] != null && !rcells[x][y].getAppearance().getID().equals("NOTHING")){
 						GFXAppearance app = (GFXAppearance)rcells[x][y].getAppearance();
 						try {
+							Image cellImage;
 							if (level.isDay())
-								drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-app.getSuperHeight(), app.getDarkImage());
+								cellImage = app.getDarkImage();
 							else
-								drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-app.getSuperHeight(), app.getDarkniteImage());
+								cellImage = app.getDarkniteImage();
+							drawImageVP(
+								(PC_POS.x-xrange+x) * 32,
+								(PC_POS.y-yrange+y) * 32 - 17 - app.getSuperHeight(),
+								cellImage);
 						} catch (NullPointerException npe){
 							Color c = si.getGraphics2D().getColor();
 							si.getGraphics2D().setColor(Color.RED);
@@ -518,21 +523,39 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					}
 					int depthFromPlayer =level.getDepthFromPlayer(player.getPosition().x - xrange + x, player.getPosition().y - yrange + y); 
 					if (depthFromPlayer != 0 ){
-						drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17+depthFromPlayer*10, cellApp.getDarkImage());
+						drawImageVP(
+							(PC_POS.x-xrange+x) * 32,
+							(PC_POS.y-yrange+y) * 32 + depthFromPlayer * 10 - 17,
+							cellApp.getDarkImage()
+						);
 					} else {
+						Image img;
 						if (level.isDay())
-							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-cellApp.getSuperHeight(), cellApp.getImage());
+							img = cellApp.getImage();
 						else
-							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-cellApp.getSuperHeight(), cellApp.getNiteImage());
+							img = cellApp.getNiteImage();
+						drawImageVP(
+							(PC_POS.x-xrange+x) * 32,
+							(PC_POS.y-yrange+y) * 32 - 17 - cellApp.getSuperHeight(),
+							img
+						);
 					}
 					if (bloodLevel != null){
+						Image img = null;
 						switch (Integer.parseInt(bloodLevel)){
 						case 0:
-							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-cellApp.getSuperHeight(), BLOOD1);
+							img = BLOOD1;
 							break;
 						case 1:
-							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-cellApp.getSuperHeight(), BLOOD2);
+							img = BLOOD2;
 							break;
+						}
+						if (img != null) {
+							drawImageVP(
+								(PC_POS.x-xrange+x) * 32,
+								(PC_POS.y-yrange+y) * 32 - 4 * cellHeight - cellApp.getSuperHeight(),
+								img
+							);
 						}
 					}
 				}
@@ -547,7 +570,11 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					if (feat != null){
 						if (feat.isVisible()) {
 							GFXAppearance featApp = (GFXAppearance)feat.getAppearance();
-							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH-featApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-featApp.getSuperHeight(), featApp.getImage());
+							drawImageVP(
+								(PC_POS.x - xrange + x) * 32 - featApp.getSuperWidth(),
+								(PC_POS.y - yrange + y) * 32 - 4 * cellHeight - featApp.getSuperHeight(),
+								featApp.getImage()
+							);
 						}
 					}
 					
@@ -556,7 +583,11 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 						if (sfeat.isVisible()){
 							GFXAppearance featApp = 
 								(GFXAppearance)sfeat.getAppearance();
-							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH-featApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-featApp.getSuperHeight(), featApp.getImage());
+							drawImageVP(
+								(PC_POS.x-xrange+x) * 32 - featApp.getSuperWidth(),
+								(PC_POS.y-yrange+y) * 32 - 4 * cellHeight - featApp.getSuperHeight(),
+								featApp.getImage()
+							);
 						}
 					}
 
@@ -568,13 +599,20 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					if (item != null){
 						if (item.isVisible()){
 							GFXAppearance itemApp = (GFXAppearance)item.getAppearance();
-							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH-itemApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight -itemApp.getSuperHeight(), itemApp.getImage());
+							drawImageVP((PC_POS.x-xrange+x) * 32 - itemApp.getSuperWidth(),
+								(PC_POS.y-yrange+y) * 32 - 4 * cellHeight - itemApp.getSuperHeight(),
+								itemApp.getImage()
+							);
 						}
 					}
 					
-					if (yrange == y && x == xrange){// TODO: Fix y offsets
+					if (yrange == y && x == xrange){
 						if (player.isInvisible()){
-							drawImageVP(PC_POS.x*STANDARD_WIDTH,PC_POS.y*STANDARD_WIDTH-4*cellHeight, ((GFXAppearance)AppearanceFactory.getAppearanceFactory().getAppearance("SHADOW")).getImage());
+							drawImageVP(
+								PC_POS.x * 32,
+								PC_POS.y * 32 - 4 * cellHeight,
+								((GFXAppearance)AppearanceFactory.getAppearanceFactory().getAppearance("SHADOW")).getImage()
+							);
 						}else{
 							GFXAppearance playerAppearance = (GFXAppearance)player.getAppearance();
 							BufferedImage playerImage = (BufferedImage)playerAppearance.getImage();
@@ -582,29 +620,24 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 								playerImage = ImageUtils.vFlip(playerImage);
 								//flipFacing = false;
 							}
-							if (level.getMapCell(player.getPosition())!= null && level.getMapCell(player.getPosition()).isShallowWater())
-								//si.drawImage(PC_POS.x*32-playerAppearance.getSuperWidth(),PC_POS.y*32-4*cellHeight-playerAppearance.getSuperHeight()+16/, playerImage);
-								drawImageVP(PC_POS.x*STANDARD_WIDTH-playerAppearance.getSuperWidth(),PC_POS.y*STANDARD_WIDTH-4*player.getStandingHeight()-playerAppearance.getSuperHeight()+16, playerImage);
-							else
-								//si.drawImage(PC_POS.x*32-playerAppearance.getSuperWidth(),PC_POS.y*32-4*cellHeight-playerAppearance.getSuperHeight(), playerImage);
-								drawImageVP(PC_POS.x*STANDARD_WIDTH-playerAppearance.getSuperWidth(),PC_POS.y*STANDARD_WIDTH-4*player.getStandingHeight()-playerAppearance.getSuperHeight(), playerImage);
+							int waterBonus = (level.getMapCell(player.getPosition())!= null && level.getMapCell(player.getPosition()).isShallowWater()) ? 16 : 0;
+							drawImageVP(
+								PC_POS.x * 32 - playerAppearance.getSuperWidth(),
+								PC_POS.y * 32 - 4 * player.getStandingHeight() - playerAppearance.getSuperHeight() + waterBonus,
+								playerImage
+							);
 						}
 					}
 					Monster monster = level.getMonsterAt(runner);
 					
 					if (monster != null && monster.isVisible()){
 						GFXAppearance monsterApp = (GFXAppearance) monster.getAppearance();
-						if (monster.canSwim() && level.getMapCell(runner)!= null && level.getMapCell(runner).isShallowWater()){
-							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH-monsterApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-monsterApp.getSuperHeight()+16, monsterApp.getImage());
-							//TODO: Overlap water on the monster, draw it lowly
-						}
-						else
-						if (monster.hasCounter(Consts.C_MONSTER_FREEZE)){
-							//TODO: Overlay a cyan layer
-							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH-monsterApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-monsterApp.getSuperHeight(), monsterApp.getImage());
-						}
-						else
-							drawImageVP((PC_POS.x-xrange+x)*STANDARD_WIDTH-monsterApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-monsterApp.getSuperHeight(), monsterApp.getImage());
+						int swimBonus = (monster.canSwim() && level.getMapCell(runner)!= null && level.getMapCell(runner).isShallowWater()) ? 16 : 0; //TODO: Overlap water on the monster, draw it lowly
+						drawImageVP(
+							(PC_POS.x - xrange + x) * 32 - monsterApp.getSuperWidth(),
+							(PC_POS.y - yrange + y) * 32 - 4 * cellHeight - monsterApp.getSuperHeight() + swimBonus,
+							monsterApp.getImage()
+						);
 					}
 					// Draw Masks
 					Color mask = null;
@@ -909,7 +942,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			IMG_AXE = ImageUtils.crearImagen("gfx/crl_features.gif", 48,0,16,16);
 			IMG_BIBLE = ImageUtils.crearImagen("gfx/crl_features.gif", 96,0,16,16);
 			IMG_CROSS = ImageUtils.crearImagen("gfx/crl_features.gif", 64,0,16,16);
-			IMG_DAGGER = ImageUtils.crearImagen("gfx/crl_features.gif", STANDARD_WIDTH,0,16,16);
+			IMG_DAGGER = ImageUtils.crearImagen("gfx/crl_features.gif", 32,0,16,16);
 			IMG_HOLY = ImageUtils.crearImagen("gfx/crl_features.gif", 112,0,16,16);
 			IMG_CRYSTAL = ImageUtils.crearImagen("gfx/crl_features.gif", 128,0,16,16);
 			IMG_FIST = ImageUtils.crearImagen("gfx/crl_features.gif", 136,0,16,16);
@@ -961,7 +994,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		psi.add(multiItemsBox);
 		
 		helpBox = new HelpBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, BORDERS_SIZE, BORDERS_SIZE);
-		helpBox.setBounds(12,STANDARD_WIDTH, 770, 450);
+		helpBox.setBounds(12, 32, 770, 450);
 		helpBox.setVisible(false);
 		psi.add(helpBox);
 		
@@ -1093,9 +1126,8 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			drawStepsTo(PC_POS.x + offset.x, (PC_POS.y + offset.y), TILE_LINE_STEPS, cellHeight);
 			
 			drawImageVP(
-				(PC_POS.x + offset.x) * STANDARD_WIDTH - 2 * this.configuration.getViewportUserInterfaceScale(),
-				(PC_POS.y + offset.y) * STANDARD_WIDTH - 2 * this.configuration.getViewportUserInterfaceScale()
-					- 4 * cellHeight * this.configuration.getViewportUserInterfaceScale(),
+				(PC_POS.x + offset.x) * 32 - 2,
+				(PC_POS.y + offset.y) * 32 - 2 - 4 * cellHeight,
 				TILE_LINE_AIM
 			);
 
@@ -1876,9 +1908,8 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		while (!tmp.equals(target)){
 			tmp = line.next();
 			drawImageVP(
-				tmp.x * STANDARD_WIDTH + 13 * this.configuration.getViewportUserInterfaceScale(),
-				tmp.y * STANDARD_WIDTH + 14 * this.configuration.getViewportUserInterfaceScale()
-					- 4 * cellHeight * this.configuration.getViewportUserInterfaceScale(),
+				tmp.x * 32 + 13,
+				tmp.y * 32 + 14 - 4 * cellHeight,
 				tile
 			);
 		}
@@ -2419,7 +2450,11 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 	}
 
 	public void drawImageVP(int scrX, int scrY, Image img){
-		si.drawImage(scrX + CAMERA.x, scrY + CAMERA.y, img);
+		si.drawImage(
+			CAMERA.x + scrX * cameraScale,
+			CAMERA.y + scrY * cameraScale,
+			img
+		);
 	}
 }
 

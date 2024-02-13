@@ -250,7 +250,7 @@ public class GFXAppearances {
 		createTAppearance("VOID_STAR", 1, 9),
 		createTAppearance("VOID_SUN", 2, 9),
 		
-		createAppearance("TELEPORT", imgConfig.getTerrainImage(), 193,99,WIDTH_NORMAL,CELL_HEIGHT,0,WIDTH_HALF),
+		createAppearance("TELEPORT", imgConfig.getTerrainImage(), 193,99,WIDTH_NORMAL,CELL_HEIGHT,0, 16),
 		
 		// Sacred weapons
 		createIAppearance("ART_CARD_SOL", false, 1, 1),
@@ -520,14 +520,16 @@ public class GFXAppearances {
 			7 * WIDTH_HALF,
 			WIDTH_HALF,
 			WIDTH_NORMAL,
-			(int) Math.floor(WIDTH_HALF / 2)
+			12
 		),
-		createXAppearance("FLAME",
+		createAppearance("FLAME",
 			imgConfig.getEffectsImage(),
 			13 * WIDTH_NORMAL,
 			14 * WIDTH_NORMAL,
 			WIDTH_NORMAL,
-			WIDTH_NORMAL
+			WIDTH_NORMAL,
+			0,
+			0
 		),
 
 		createIAppearance("SMALLHEART", true, 2, 1),
@@ -648,20 +650,13 @@ public class GFXAppearances {
 	}
 	
 	public GFXAppearance createXAppearance(String ID, BufferedImage bigImage, int xpos, int ypos, int width, int height){
-		try {
-			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos, ypos, width, height);
-			GFXAppearance ret = new GFXAppearance(ID, img,(width-WIDTH_NORMAL)/2,height-WIDTH_NORMAL);
-			return ret;
-		} catch (Exception e){
-			Game.crash("Error loading image ", e);
-		}
-		return null;
+		return createXAppearance(ID, bigImage, xpos, ypos, width, height, 0);
 	}
 	
 	public GFXAppearance createXAppearance(String ID, BufferedImage bigImage, int xpos, int ypos, int width, int height, int yoff){
 		try {
 			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos, ypos, width, height);
-			GFXAppearance ret = new GFXAppearance(ID, img,(width-WIDTH_NORMAL)/2,height-WIDTH_NORMAL+yoff);
+			GFXAppearance ret = new GFXAppearance(ID, img,(width-32)/2,height-32+yoff);
 			return ret;
 		} catch (Exception e){
 			Game.crash("Error loading image ", e);
@@ -718,7 +713,7 @@ public class GFXAppearances {
 		ypos--;
 		try {
 			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos*WIDTH_BIG, ypos*WIDTH_BIG, WIDTH_BIG, WIDTH_BIG);
-			GFXAppearance ret = new GFXAppearance(ID, img,WIDTH_HALF/2,WIDTH_HALF);
+			GFXAppearance ret = new GFXAppearance(ID, img, 8, 16);
 			return ret;
 		} catch (Exception e){
 			Game.crash("Error loading image ", e);
@@ -735,7 +730,7 @@ public class GFXAppearances {
 			BufferedImage img = ImageUtils.crearImagen(bigImage, xpos*WIDTH_HALF, ypos*WIDTH_HALF, WIDTH_HALF, WIDTH_HALF);
 			BufferedImage iconImg = ImageUtils.crearImagen(
 				iconImage, xpos * ICON_SIZE, ypos * ICON_SIZE, ICON_SIZE, ICON_SIZE);
-			GFXAppearance ret = new GFXAppearance(ID, img, iconImg, -WIDTH_QUARTER, -WIDTH_QUARTER);
+			GFXAppearance ret = new GFXAppearance(ID, img, iconImg, -8, -8);
 			return ret;
 		} catch (Exception e){
 			Game.crash("Error loading image ", e);
