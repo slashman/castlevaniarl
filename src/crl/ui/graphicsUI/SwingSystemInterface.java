@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.DisplayMode;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
@@ -20,6 +23,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.Hashtable;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
@@ -124,6 +128,28 @@ public class SwingSystemInterface implements Runnable{
 
 			public void mouseReleased(MouseEvent e) {}
         });
+		int n = JOptionPane.showConfirmDialog(frameMain, "Activate Full Screen Mode?", "Welcome to CastlevaniaRL", JOptionPane.YES_NO_OPTION);
+		if (n == 0) {
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			GraphicsDevice gs = ge.getDefaultScreenDevice();
+			if (gs.isFullScreenSupported()){
+				DisplayMode[] modes = gs.getDisplayModes();
+				for (int i = 0; i < modes.length; i++) {
+					System.out.println(modes[i].getWidth() + "x" + modes[i].getHeight() );
+				}
+				int screenWidth = 1024;
+				int screenHeight = 768;
+				DisplayMode displayMode = gs.getDisplayMode();
+				displayMode = new DisplayMode(
+					screenWidth, screenHeight, displayMode.getBitDepth(), displayMode.getRefreshRate());
+				gs.setFullScreenWindow(frameMain);
+				try {
+					gs.setDisplayMode(displayMode);
+				} catch (Exception e) {
+					gs.setFullScreenWindow(null);
+				}
+			}
+		}
 	}
 	
 	

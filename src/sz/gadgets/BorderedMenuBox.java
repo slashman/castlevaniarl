@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
+import crl.ui.graphicsUI.GFXDisplay;
 import crl.ui.graphicsUI.SwingSystemInterface;
 
 
@@ -96,14 +97,14 @@ public class BorderedMenuBox {
 		pages = (int)(Math.floor((items.size()-1) / (double)(itemsPerPage)) +1);
 		/*System.out.println("items.size() "+items.size());
 		System.out.println("inHeight "+inHeight);*/
-		si.print(xpos, ypos, title, Color.BLUE);
+		si.print(xpos, ypos, title, GFXDisplay.COLOR_BOLD);
 		Vector shownItems = Util.page(items, itemsPerPage, currentPage);
 		
 		int i = 0;
 		for (; i < shownItems.size(); i++){
 			
 			GFXMenuItem item = (GFXMenuItem) shownItems.elementAt(i);
-			si.printAtPixel(xpos*10, (ypos+1)*24+i*gap, ((char) (97 + i))+"." , Color.BLUE);
+			si.printAtPixel(xpos*10, (ypos+1)*24+i*gap, ((char) (97 + i))+"." , GFXDisplay.COLOR_BOLD);
 			if (box != null){
 				si.drawImage((xpos+2)*10+1, ypos*24+ i * gap + (int)(gap * 0.3D)-4, box);
 			}

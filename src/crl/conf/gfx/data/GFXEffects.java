@@ -23,9 +23,6 @@ import crl.ui.graphicsUI.effects.GFXSplashEffect;
 public class GFXEffects {
 	private Vector<Position> SFX_BIBLE_STEPS = new Vector<Position>(10);
 	private BufferedImage IMG_EFFECTS;
-	private BufferedImage IMG_SLASHES;
-	private BufferedImage IMG_CURVEDSLASHES;
-	private BufferedImage IMG_STRSLASHES;
 	
 	private BufferedImage[][] CURVED_FRAMES;
 	private BufferedImage[][] STR_FRAMES;
@@ -35,24 +32,25 @@ public class GFXEffects {
 	
 	public GFXEffects(GFXConfiguration configuration) {
 		this.configuration = configuration;
-		
+		IMG_EFFECTS = configuration.imageConfiguration.effectsImage;
+		InitAnimations(configuration.imageConfiguration);
 		LoadEffects();
 	}
 	
 	private BufferedImage[][] readSlashes(BufferedImage source){
 		BufferedImage[][] ret = new BufferedImage[8][5];
 		try {
-		ret[4][0] = ImageUtils.crearImagen(source, 0,72,29,12);
-		ret[4][1] = ImageUtils.crearImagen(source, 0,57,55,15);
-		ret[4][2] = ImageUtils.crearImagen(source, 0,41,85,16);
-		ret[4][3] = ImageUtils.crearImagen(source, 0,22,117,19);
-		ret[4][4] = ImageUtils.crearImagen(source, 0,0,147,22);
+		ret[4][0] = createSlashFrame(source, 0,72,29,12);
+		ret[4][1] = createSlashFrame(source, 0,57,55,15);
+		ret[4][2] = createSlashFrame(source, 0,41,85,16);
+		ret[4][3] = createSlashFrame(source, 0,22,117,19);
+		ret[4][4] = createSlashFrame(source, 0,0,147,22);
 		
-		ret[2][0] = ImageUtils.crearImagen(source, 0,495,27,30);
-		ret[2][1] = ImageUtils.crearImagen(source, 0,435,52,60);
-		ret[2][2] = ImageUtils.crearImagen(source, 0,352,78,83);
-		ret[2][3] = ImageUtils.crearImagen(source, 0,230,112,121);
-		ret[2][4] = ImageUtils.crearImagen(source, 0,84,143,145);
+		ret[2][0] = createSlashFrame(source, 0,495,27,30);
+		ret[2][1] = createSlashFrame(source, 0,435,52,60);
+		ret[2][2] = createSlashFrame(source, 0,352,78,83);
+		ret[2][3] = createSlashFrame(source, 0,230,112,121);
+		ret[2][4] = createSlashFrame(source, 0,84,143,145);
 		} catch (Exception e){
 			Game.crash("Error loading the effects", e);
 		}
@@ -94,167 +92,176 @@ public class GFXEffects {
 		ret[7][4] = ImageUtils.hFlip(ret[2][4]);
 		return ret;
 	}
-	{
+
+	private BufferedImage createSlashFrame(BufferedImage tileset, int baseX, int baseY, int baseWidth, int baseHeight) {
+		int effectsScale = this.configuration.effectsScale;
 		try {
-			IMG_EFFECTS = ImageUtils.createImage("gfx/crl_effects.gif");
-			IMG_SLASHES = ImageUtils.createImage("gfx/tempSlashes.gif");
-			IMG_CURVEDSLASHES = ImageUtils.createImage("gfx/crl_slashes1.gif");
-			IMG_STRSLASHES = ImageUtils.createImage("gfx/crl_slashes2.gif");
-			
-		} catch (Exception e){
-			Game.crash("Error loading the effects file",e);
-		}
-		try {
-			CURVED_FRAMES = new BufferedImage[8][5];
-			CURVED_FRAMES[4][0] = ImageUtils.crearImagen(IMG_CURVEDSLASHES, 0,72,29,12);
-			CURVED_FRAMES[4][1] = ImageUtils.crearImagen(IMG_CURVEDSLASHES, 0,57,55,15);
-			CURVED_FRAMES[4][2] = ImageUtils.crearImagen(IMG_CURVEDSLASHES, 0,41,85,16);
-			CURVED_FRAMES[4][3] = ImageUtils.crearImagen(IMG_CURVEDSLASHES, 0,22,117,19);
-			CURVED_FRAMES[4][4] = ImageUtils.crearImagen(IMG_CURVEDSLASHES, 0,0,147,22);
-			
-			CURVED_FRAMES[2][0] = ImageUtils.crearImagen(IMG_CURVEDSLASHES, 0,495,27,30);
-			CURVED_FRAMES[2][1] = ImageUtils.crearImagen(IMG_CURVEDSLASHES, 0,435,52,60);
-			CURVED_FRAMES[2][2] = ImageUtils.crearImagen(IMG_CURVEDSLASHES, 0,352,78,83);
-			CURVED_FRAMES[2][3] = ImageUtils.crearImagen(IMG_CURVEDSLASHES, 0,230,112,121);
-			CURVED_FRAMES[2][4] = ImageUtils.crearImagen(IMG_CURVEDSLASHES, 0,84,143,145);
-			
-			CURVED_FRAMES[3][0] = ImageUtils.vFlip(CURVED_FRAMES[4][0]);
-			CURVED_FRAMES[3][1] = ImageUtils.vFlip(CURVED_FRAMES[4][1]);
-			CURVED_FRAMES[3][2] = ImageUtils.vFlip(CURVED_FRAMES[4][2]);
-			CURVED_FRAMES[3][3] = ImageUtils.vFlip(CURVED_FRAMES[4][3]);
-			CURVED_FRAMES[3][4] = ImageUtils.vFlip(CURVED_FRAMES[4][4]);
-			
-			CURVED_FRAMES[6][0] = ImageUtils.vFlip(ImageUtils.rotate(CURVED_FRAMES[4][0], Math.PI / 2));
-			CURVED_FRAMES[6][1] = ImageUtils.vFlip(ImageUtils.rotate(CURVED_FRAMES[4][1], Math.PI / 2));
-			CURVED_FRAMES[6][2] = ImageUtils.vFlip(ImageUtils.rotate(CURVED_FRAMES[4][2], Math.PI / 2));
-			CURVED_FRAMES[6][3] = ImageUtils.vFlip(ImageUtils.rotate(CURVED_FRAMES[4][3], Math.PI / 2));
-			CURVED_FRAMES[6][4] = ImageUtils.vFlip(ImageUtils.rotate(CURVED_FRAMES[4][4], Math.PI / 2));
-			
-			CURVED_FRAMES[1][0] = ImageUtils.hFlip(CURVED_FRAMES[6][0]);
-			CURVED_FRAMES[1][1] = ImageUtils.hFlip(CURVED_FRAMES[6][1]);
-			CURVED_FRAMES[1][2] = ImageUtils.hFlip(CURVED_FRAMES[6][2]);
-			CURVED_FRAMES[1][3] = ImageUtils.hFlip(CURVED_FRAMES[6][3]);
-			CURVED_FRAMES[1][4] = ImageUtils.hFlip(CURVED_FRAMES[6][4]);
-			
-			CURVED_FRAMES[0][0] = ImageUtils.vFlip(CURVED_FRAMES[2][0]);
-			CURVED_FRAMES[0][1] = ImageUtils.vFlip(CURVED_FRAMES[2][1]);
-			CURVED_FRAMES[0][2] = ImageUtils.vFlip(CURVED_FRAMES[2][2]);
-			CURVED_FRAMES[0][3] = ImageUtils.vFlip(CURVED_FRAMES[2][3]);
-			CURVED_FRAMES[0][4] = ImageUtils.vFlip(CURVED_FRAMES[2][4]);
-			
-			CURVED_FRAMES[5][0] = ImageUtils.hFlip(CURVED_FRAMES[0][0]);
-			CURVED_FRAMES[5][1] = ImageUtils.hFlip(CURVED_FRAMES[0][1]);
-			CURVED_FRAMES[5][2] = ImageUtils.hFlip(CURVED_FRAMES[0][2]);
-			CURVED_FRAMES[5][3] = ImageUtils.hFlip(CURVED_FRAMES[0][3]);
-			CURVED_FRAMES[5][4] = ImageUtils.hFlip(CURVED_FRAMES[0][4]);
-			
-			CURVED_FRAMES[7][0] = ImageUtils.hFlip(CURVED_FRAMES[2][0]);
-			CURVED_FRAMES[7][1] = ImageUtils.hFlip(CURVED_FRAMES[2][1]);
-			CURVED_FRAMES[7][2] = ImageUtils.hFlip(CURVED_FRAMES[2][2]);
-			CURVED_FRAMES[7][3] = ImageUtils.hFlip(CURVED_FRAMES[2][3]);
-			CURVED_FRAMES[7][4] = ImageUtils.hFlip(CURVED_FRAMES[2][4]);
-			
-			CURVED_VARS = new Position[8][5];
-			CURVED_VARS[4][0] = new Position(32,0);
-			CURVED_VARS[4][1] = new Position(32,0);
-			CURVED_VARS[4][2] = new Position(32,0);
-			CURVED_VARS[4][3] = new Position(32,0);
-			CURVED_VARS[4][4] = new Position(32,0);
-			
-			CURVED_VARS[2][0] = new Position(32,-30);
-			CURVED_VARS[2][1] = new Position(32,-60);
-			CURVED_VARS[2][2] = new Position(32,-90);
-			CURVED_VARS[2][3] = new Position(32,-113);
-			CURVED_VARS[2][4] = new Position(32,-151);
-			
-			CURVED_VARS[3][0] = new Position(-29,0);
-			CURVED_VARS[3][1] = new Position(-55,0);
-			CURVED_VARS[3][2] = new Position(-85,0);
-			CURVED_VARS[3][3] = new Position(-117,0);
-			CURVED_VARS[3][4] = new Position(-147,0);
-			
-			CURVED_VARS[6][0] = new Position(16,30);
-			CURVED_VARS[6][1] = new Position(16,60);
-			CURVED_VARS[6][2] = new Position(16,90);
-			CURVED_VARS[6][3] = new Position(16,113);
-			CURVED_VARS[6][4] = new Position(16,151);
-			
-			CURVED_VARS[1][0] = new Position(16,-30);
-			CURVED_VARS[1][1] = new Position(16,-60);
-			CURVED_VARS[1][2] = new Position(16,-90);
-			CURVED_VARS[1][3] = new Position(16,-113);
-			CURVED_VARS[1][4] = new Position(16,-151);
-			
-			CURVED_VARS[0][0] = new Position(-29,-30);
-			CURVED_VARS[0][1] = new Position(-55,-60);
-			CURVED_VARS[0][2] = new Position(-85,-90);
-			CURVED_VARS[0][3] = new Position(-117,-113);
-			CURVED_VARS[0][4] = new Position(-147,-151);
-			
-			CURVED_VARS[5][0] = new Position(-29,30);
-			CURVED_VARS[5][1] = new Position(-55,30);
-			CURVED_VARS[5][2] = new Position(-85,30);
-			CURVED_VARS[5][3] = new Position(-117,30);
-			CURVED_VARS[5][4] = new Position(-147,30);
-			
-			CURVED_VARS[7][0] = new Position(32,32);
-			CURVED_VARS[7][1] = new Position(32,32);
-			CURVED_VARS[7][2] = new Position(32,32);
-			CURVED_VARS[7][3] = new Position(32,32);
-			CURVED_VARS[7][4] = new Position(32,32);
-			
-			STR_FRAMES = new BufferedImage[8][5];
-			STR_FRAMES[4][0] = ImageUtils.crearImagen(IMG_STRSLASHES, 0,72,29,12);
-			STR_FRAMES[4][1] = ImageUtils.crearImagen(IMG_STRSLASHES, 0,57,55,15);
-			STR_FRAMES[4][2] = ImageUtils.crearImagen(IMG_STRSLASHES, 0,41,85,16);
-			STR_FRAMES[4][3] = ImageUtils.crearImagen(IMG_STRSLASHES, 0,22,117,19);
-			STR_FRAMES[4][4] = ImageUtils.crearImagen(IMG_STRSLASHES, 0,0,147,22);
-			
-			STR_FRAMES[2][0] = ImageUtils.crearImagen(IMG_STRSLASHES, 0,495,27,30);
-			STR_FRAMES[2][1] = ImageUtils.crearImagen(IMG_STRSLASHES, 0,435,52,60);
-			STR_FRAMES[2][2] = ImageUtils.crearImagen(IMG_STRSLASHES, 0,352,78,83);
-			STR_FRAMES[2][3] = ImageUtils.crearImagen(IMG_STRSLASHES, 0,230,112,121);
-			STR_FRAMES[2][4] = ImageUtils.crearImagen(IMG_STRSLASHES, 0,84,143,145);
-			
-			STR_FRAMES[3][0] = ImageUtils.vFlip(STR_FRAMES[4][0]);
-			STR_FRAMES[3][1] = ImageUtils.vFlip(STR_FRAMES[4][1]);
-			STR_FRAMES[3][2] = ImageUtils.vFlip(STR_FRAMES[4][2]);
-			STR_FRAMES[3][3] = ImageUtils.vFlip(STR_FRAMES[4][3]);
-			STR_FRAMES[3][4] = ImageUtils.vFlip(STR_FRAMES[4][4]);
-			
-			STR_FRAMES[6][0] = ImageUtils.vFlip(ImageUtils.rotate(STR_FRAMES[4][0], Math.PI / 2));
-			STR_FRAMES[6][1] = ImageUtils.vFlip(ImageUtils.rotate(STR_FRAMES[4][1], Math.PI / 2));
-			STR_FRAMES[6][2] = ImageUtils.vFlip(ImageUtils.rotate(STR_FRAMES[4][2], Math.PI / 2));
-			STR_FRAMES[6][3] = ImageUtils.vFlip(ImageUtils.rotate(STR_FRAMES[4][3], Math.PI / 2));
-			STR_FRAMES[6][4] = ImageUtils.vFlip(ImageUtils.rotate(STR_FRAMES[4][4], Math.PI / 2));
-			
-			STR_FRAMES[1][0] = ImageUtils.hFlip(STR_FRAMES[6][0]);
-			STR_FRAMES[1][1] = ImageUtils.hFlip(STR_FRAMES[6][1]);
-			STR_FRAMES[1][2] = ImageUtils.hFlip(STR_FRAMES[6][2]);
-			STR_FRAMES[1][3] = ImageUtils.hFlip(STR_FRAMES[6][3]);
-			STR_FRAMES[1][4] = ImageUtils.hFlip(STR_FRAMES[6][4]);
-			
-			STR_FRAMES[0][0] = ImageUtils.vFlip(STR_FRAMES[2][0]);
-			STR_FRAMES[0][1] = ImageUtils.vFlip(STR_FRAMES[2][1]);
-			STR_FRAMES[0][2] = ImageUtils.vFlip(STR_FRAMES[2][2]);
-			STR_FRAMES[0][3] = ImageUtils.vFlip(STR_FRAMES[2][3]);
-			STR_FRAMES[0][4] = ImageUtils.vFlip(STR_FRAMES[2][4]);
-			
-			STR_FRAMES[5][0] = ImageUtils.hFlip(STR_FRAMES[0][0]);
-			STR_FRAMES[5][1] = ImageUtils.hFlip(STR_FRAMES[0][1]);
-			STR_FRAMES[5][2] = ImageUtils.hFlip(STR_FRAMES[0][2]);
-			STR_FRAMES[5][3] = ImageUtils.hFlip(STR_FRAMES[0][3]);
-			STR_FRAMES[5][4] = ImageUtils.hFlip(STR_FRAMES[0][4]);
-			
-			STR_FRAMES[7][0] = ImageUtils.hFlip(STR_FRAMES[2][0]);
-			STR_FRAMES[7][1] = ImageUtils.hFlip(STR_FRAMES[2][1]);
-			STR_FRAMES[7][2] = ImageUtils.hFlip(STR_FRAMES[2][2]);
-			STR_FRAMES[7][3] = ImageUtils.hFlip(STR_FRAMES[2][3]);
-			STR_FRAMES[7][4] = ImageUtils.hFlip(STR_FRAMES[2][4]);
-			
-		} catch (Exception e){
+			return ImageUtils.crearImagen(
+				tileset,
+				baseX * effectsScale,
+				baseY * effectsScale,
+				baseWidth * effectsScale,
+				baseHeight * effectsScale);
+		} catch (Exception e) {
 			Game.crash("Error loading the effects",e);
+			return null;
 		}
+	}
+
+	private Position getScaledSlashPosition(int baseX, int baseY) {
+		return new Position(baseX, baseY);
+	}
+
+	private void InitAnimations(GFXImageConfiguration configuration) {
+		BufferedImage IMG_CURVEDSLASHES = configuration.curvedSlashesImage;
+		BufferedImage IMG_STRSLASHES = configuration.straightSlashesImage;
+		
+		CURVED_FRAMES = new BufferedImage[8][5];
+		CURVED_FRAMES[4][0] = createSlashFrame(IMG_CURVEDSLASHES, 0,72,29,12);
+		CURVED_FRAMES[4][1] = createSlashFrame(IMG_CURVEDSLASHES, 0,57,55,15);
+		CURVED_FRAMES[4][2] = createSlashFrame(IMG_CURVEDSLASHES, 0,41,85,16);
+		CURVED_FRAMES[4][3] = createSlashFrame(IMG_CURVEDSLASHES, 0,22,117,19);
+		CURVED_FRAMES[4][4] = createSlashFrame(IMG_CURVEDSLASHES, 0,0,147,22);
+		
+		CURVED_FRAMES[2][0] = createSlashFrame(IMG_CURVEDSLASHES, 0,495,27,30);
+		CURVED_FRAMES[2][1] = createSlashFrame(IMG_CURVEDSLASHES, 0,435,52,60);
+		CURVED_FRAMES[2][2] = createSlashFrame(IMG_CURVEDSLASHES, 0,352,78,83);
+		CURVED_FRAMES[2][3] = createSlashFrame(IMG_CURVEDSLASHES, 0,230,112,121);
+		CURVED_FRAMES[2][4] = createSlashFrame(IMG_CURVEDSLASHES, 0,84,143,145);
+		
+		CURVED_FRAMES[3][0] = ImageUtils.vFlip(CURVED_FRAMES[4][0]);
+		CURVED_FRAMES[3][1] = ImageUtils.vFlip(CURVED_FRAMES[4][1]);
+		CURVED_FRAMES[3][2] = ImageUtils.vFlip(CURVED_FRAMES[4][2]);
+		CURVED_FRAMES[3][3] = ImageUtils.vFlip(CURVED_FRAMES[4][3]);
+		CURVED_FRAMES[3][4] = ImageUtils.vFlip(CURVED_FRAMES[4][4]);
+		
+		CURVED_FRAMES[6][0] = ImageUtils.vFlip(ImageUtils.rotate(CURVED_FRAMES[4][0], Math.PI / 2));
+		CURVED_FRAMES[6][1] = ImageUtils.vFlip(ImageUtils.rotate(CURVED_FRAMES[4][1], Math.PI / 2));
+		CURVED_FRAMES[6][2] = ImageUtils.vFlip(ImageUtils.rotate(CURVED_FRAMES[4][2], Math.PI / 2));
+		CURVED_FRAMES[6][3] = ImageUtils.vFlip(ImageUtils.rotate(CURVED_FRAMES[4][3], Math.PI / 2));
+		CURVED_FRAMES[6][4] = ImageUtils.vFlip(ImageUtils.rotate(CURVED_FRAMES[4][4], Math.PI / 2));
+		
+		CURVED_FRAMES[1][0] = ImageUtils.hFlip(CURVED_FRAMES[6][0]);
+		CURVED_FRAMES[1][1] = ImageUtils.hFlip(CURVED_FRAMES[6][1]);
+		CURVED_FRAMES[1][2] = ImageUtils.hFlip(CURVED_FRAMES[6][2]);
+		CURVED_FRAMES[1][3] = ImageUtils.hFlip(CURVED_FRAMES[6][3]);
+		CURVED_FRAMES[1][4] = ImageUtils.hFlip(CURVED_FRAMES[6][4]);
+		
+		CURVED_FRAMES[0][0] = ImageUtils.vFlip(CURVED_FRAMES[2][0]);
+		CURVED_FRAMES[0][1] = ImageUtils.vFlip(CURVED_FRAMES[2][1]);
+		CURVED_FRAMES[0][2] = ImageUtils.vFlip(CURVED_FRAMES[2][2]);
+		CURVED_FRAMES[0][3] = ImageUtils.vFlip(CURVED_FRAMES[2][3]);
+		CURVED_FRAMES[0][4] = ImageUtils.vFlip(CURVED_FRAMES[2][4]);
+		
+		CURVED_FRAMES[5][0] = ImageUtils.hFlip(CURVED_FRAMES[0][0]);
+		CURVED_FRAMES[5][1] = ImageUtils.hFlip(CURVED_FRAMES[0][1]);
+		CURVED_FRAMES[5][2] = ImageUtils.hFlip(CURVED_FRAMES[0][2]);
+		CURVED_FRAMES[5][3] = ImageUtils.hFlip(CURVED_FRAMES[0][3]);
+		CURVED_FRAMES[5][4] = ImageUtils.hFlip(CURVED_FRAMES[0][4]);
+		
+		CURVED_FRAMES[7][0] = ImageUtils.hFlip(CURVED_FRAMES[2][0]);
+		CURVED_FRAMES[7][1] = ImageUtils.hFlip(CURVED_FRAMES[2][1]);
+		CURVED_FRAMES[7][2] = ImageUtils.hFlip(CURVED_FRAMES[2][2]);
+		CURVED_FRAMES[7][3] = ImageUtils.hFlip(CURVED_FRAMES[2][3]);
+		CURVED_FRAMES[7][4] = ImageUtils.hFlip(CURVED_FRAMES[2][4]);
+		
+		CURVED_VARS = new Position[8][5];
+		CURVED_VARS[4][0] = getScaledSlashPosition(32,0);
+		CURVED_VARS[4][1] = getScaledSlashPosition(32,0);
+		CURVED_VARS[4][2] = getScaledSlashPosition(32,0);
+		CURVED_VARS[4][3] = getScaledSlashPosition(32,0);
+		CURVED_VARS[4][4] = getScaledSlashPosition(32,0);
+		
+		CURVED_VARS[2][0] = getScaledSlashPosition(32,-30);
+		CURVED_VARS[2][1] = getScaledSlashPosition(32,-60);
+		CURVED_VARS[2][2] = getScaledSlashPosition(32,-90);
+		CURVED_VARS[2][3] = getScaledSlashPosition(32,-113);
+		CURVED_VARS[2][4] = getScaledSlashPosition(32,-151);
+		
+		CURVED_VARS[3][0] = getScaledSlashPosition(-29,0);
+		CURVED_VARS[3][1] = getScaledSlashPosition(-55,0);
+		CURVED_VARS[3][2] = getScaledSlashPosition(-85,0);
+		CURVED_VARS[3][3] = getScaledSlashPosition(-117,0);
+		CURVED_VARS[3][4] = getScaledSlashPosition(-147,0);
+		
+		CURVED_VARS[6][0] = getScaledSlashPosition(16,30);
+		CURVED_VARS[6][1] = getScaledSlashPosition(16,60);
+		CURVED_VARS[6][2] = getScaledSlashPosition(16,90);
+		CURVED_VARS[6][3] = getScaledSlashPosition(16,113);
+		CURVED_VARS[6][4] = getScaledSlashPosition(16,151);
+		
+		CURVED_VARS[1][0] = getScaledSlashPosition(16,-30);
+		CURVED_VARS[1][1] = getScaledSlashPosition(16,-60);
+		CURVED_VARS[1][2] = getScaledSlashPosition(16,-90);
+		CURVED_VARS[1][3] = getScaledSlashPosition(16,-113);
+		CURVED_VARS[1][4] = getScaledSlashPosition(16,-151);
+		
+		CURVED_VARS[0][0] = getScaledSlashPosition(-29,-30);
+		CURVED_VARS[0][1] = getScaledSlashPosition(-55,-60);
+		CURVED_VARS[0][2] = getScaledSlashPosition(-85,-90);
+		CURVED_VARS[0][3] = getScaledSlashPosition(-117,-113);
+		CURVED_VARS[0][4] = getScaledSlashPosition(-147,-151);
+		
+		CURVED_VARS[5][0] = getScaledSlashPosition(-29,30);
+		CURVED_VARS[5][1] = getScaledSlashPosition(-55,30);
+		CURVED_VARS[5][2] = getScaledSlashPosition(-85,30);
+		CURVED_VARS[5][3] = getScaledSlashPosition(-117,30);
+		CURVED_VARS[5][4] = getScaledSlashPosition(-147,30);
+		
+		CURVED_VARS[7][0] = getScaledSlashPosition(32,32);
+		CURVED_VARS[7][1] = getScaledSlashPosition(32,32);
+		CURVED_VARS[7][2] = getScaledSlashPosition(32,32);
+		CURVED_VARS[7][3] = getScaledSlashPosition(32,32);
+		CURVED_VARS[7][4] = getScaledSlashPosition(32,32);
+		
+		STR_FRAMES = new BufferedImage[8][5];
+		STR_FRAMES[4][0] = createSlashFrame(IMG_STRSLASHES, 0,72,29,12);
+		STR_FRAMES[4][1] = createSlashFrame(IMG_STRSLASHES, 0,57,55,15);
+		STR_FRAMES[4][2] = createSlashFrame(IMG_STRSLASHES, 0,41,85,16);
+		STR_FRAMES[4][3] = createSlashFrame(IMG_STRSLASHES, 0,22,117,19);
+		STR_FRAMES[4][4] = createSlashFrame(IMG_STRSLASHES, 0,0,147,22);
+		
+		STR_FRAMES[2][0] = createSlashFrame(IMG_STRSLASHES, 0,495,27,30);
+		STR_FRAMES[2][1] = createSlashFrame(IMG_STRSLASHES, 0,435,52,60);
+		STR_FRAMES[2][2] = createSlashFrame(IMG_STRSLASHES, 0,352,78,83);
+		STR_FRAMES[2][3] = createSlashFrame(IMG_STRSLASHES, 0,230,112,121);
+		STR_FRAMES[2][4] = createSlashFrame(IMG_STRSLASHES, 0,84,143,145);
+		
+		STR_FRAMES[3][0] = ImageUtils.vFlip(STR_FRAMES[4][0]);
+		STR_FRAMES[3][1] = ImageUtils.vFlip(STR_FRAMES[4][1]);
+		STR_FRAMES[3][2] = ImageUtils.vFlip(STR_FRAMES[4][2]);
+		STR_FRAMES[3][3] = ImageUtils.vFlip(STR_FRAMES[4][3]);
+		STR_FRAMES[3][4] = ImageUtils.vFlip(STR_FRAMES[4][4]);
+		
+		STR_FRAMES[6][0] = ImageUtils.vFlip(ImageUtils.rotate(STR_FRAMES[4][0], Math.PI / 2));
+		STR_FRAMES[6][1] = ImageUtils.vFlip(ImageUtils.rotate(STR_FRAMES[4][1], Math.PI / 2));
+		STR_FRAMES[6][2] = ImageUtils.vFlip(ImageUtils.rotate(STR_FRAMES[4][2], Math.PI / 2));
+		STR_FRAMES[6][3] = ImageUtils.vFlip(ImageUtils.rotate(STR_FRAMES[4][3], Math.PI / 2));
+		STR_FRAMES[6][4] = ImageUtils.vFlip(ImageUtils.rotate(STR_FRAMES[4][4], Math.PI / 2));
+		
+		STR_FRAMES[1][0] = ImageUtils.hFlip(STR_FRAMES[6][0]);
+		STR_FRAMES[1][1] = ImageUtils.hFlip(STR_FRAMES[6][1]);
+		STR_FRAMES[1][2] = ImageUtils.hFlip(STR_FRAMES[6][2]);
+		STR_FRAMES[1][3] = ImageUtils.hFlip(STR_FRAMES[6][3]);
+		STR_FRAMES[1][4] = ImageUtils.hFlip(STR_FRAMES[6][4]);
+		
+		STR_FRAMES[0][0] = ImageUtils.vFlip(STR_FRAMES[2][0]);
+		STR_FRAMES[0][1] = ImageUtils.vFlip(STR_FRAMES[2][1]);
+		STR_FRAMES[0][2] = ImageUtils.vFlip(STR_FRAMES[2][2]);
+		STR_FRAMES[0][3] = ImageUtils.vFlip(STR_FRAMES[2][3]);
+		STR_FRAMES[0][4] = ImageUtils.vFlip(STR_FRAMES[2][4]);
+		
+		STR_FRAMES[5][0] = ImageUtils.hFlip(STR_FRAMES[0][0]);
+		STR_FRAMES[5][1] = ImageUtils.hFlip(STR_FRAMES[0][1]);
+		STR_FRAMES[5][2] = ImageUtils.hFlip(STR_FRAMES[0][2]);
+		STR_FRAMES[5][3] = ImageUtils.hFlip(STR_FRAMES[0][3]);
+		STR_FRAMES[5][4] = ImageUtils.hFlip(STR_FRAMES[0][4]);
+		
+		STR_FRAMES[7][0] = ImageUtils.hFlip(STR_FRAMES[2][0]);
+		STR_FRAMES[7][1] = ImageUtils.hFlip(STR_FRAMES[2][1]);
+		STR_FRAMES[7][2] = ImageUtils.hFlip(STR_FRAMES[2][2]);
+		STR_FRAMES[7][3] = ImageUtils.hFlip(STR_FRAMES[2][3]);
+		STR_FRAMES[7][4] = ImageUtils.hFlip(STR_FRAMES[2][4]);
 		
 		SFX_BIBLE_STEPS.add(new Position(1,0));
 		SFX_BIBLE_STEPS.add(new Position(2,-1));
@@ -315,10 +322,16 @@ public class GFXEffects {
 	}	
 	
 	private BufferedImage[] load(int frames, int xpos, int ypos) {
+		int effectsScale = this.configuration.effectsScale;
 		BufferedImage[] ret = new BufferedImage[frames];
 		for (int x = 0; x < frames; x++){
 			try {
-				ret[x] = ImageUtils.crearImagen(IMG_EFFECTS, (xpos+x)*32, ypos * 32, 32,32);
+				ret[x] = ImageUtils.crearImagen(
+					IMG_EFFECTS,
+					(xpos+x) * 32 * effectsScale,
+					ypos * 32 * effectsScale,
+					32 * effectsScale,
+					32 * effectsScale);
 			} catch (Exception e){
 				Game.crash("Error loading effect", e);
 			}
@@ -326,11 +339,13 @@ public class GFXEffects {
 		return ret;
 	}
 	
-	private BufferedImage[] loadSame(String file, int times, int xpos, int ypos) {
+	private BufferedImage[] loadSame(BufferedImage file, int times, int xpos, int ypos) {
+		int effectsScale = this.configuration.effectsScale;
 		BufferedImage[] ret = new BufferedImage[times];
 		for (int x = 0; x < times; x++){
 			try {
-				ret[x] = ImageUtils.crearImagen(file, xpos*32, ypos * 32, 32,32);
+				ret[x] = ImageUtils.crearImagen(file, 
+				xpos*32 * effectsScale, ypos * 32 * effectsScale, 32 * effectsScale,32 * effectsScale);
 			} catch (Exception e){
 				Game.crash("Error loading effect", e);
 			}
@@ -340,11 +355,12 @@ public class GFXEffects {
 
 	
 	private BufferedImage[] loadMaterialize() {
+		int effectsScale = this.configuration.effectsScale;
 		try {
 			BufferedImage[] ret = new BufferedImage[]{
-				ImageUtils.crearImagen(IMG_EFFECTS, 0, 485, 40,59),
-				ImageUtils.crearImagen(IMG_EFFECTS, 44, 485, 40,59),
-				ImageUtils.crearImagen(IMG_EFFECTS, 88, 485, 40,59)
+				ImageUtils.crearImagen(IMG_EFFECTS, 0 * effectsScale, 485 * effectsScale, 40 * effectsScale,59 * effectsScale),
+				ImageUtils.crearImagen(IMG_EFFECTS, 44 * effectsScale, 485 * effectsScale, 40 * effectsScale,59 * effectsScale),
+				ImageUtils.crearImagen(IMG_EFFECTS, 88 * effectsScale, 485 * effectsScale, 40 * effectsScale,59 * effectsScale)
 			};
 			return ret;
 		} catch (Exception e){
@@ -354,11 +370,12 @@ public class GFXEffects {
 	}
 	
 	private BufferedImage[] loadVanish() {
+		int effectsScale = this.configuration.effectsScale;
 		try {
 			BufferedImage[] ret = new BufferedImage[]{
-				ImageUtils.crearImagen(IMG_EFFECTS, 129, 485, 40,59),
-				ImageUtils.crearImagen(IMG_EFFECTS, 172, 485, 40,59),
-				ImageUtils.crearImagen(IMG_EFFECTS, 215, 485, 40,59)
+				ImageUtils.crearImagen(IMG_EFFECTS, 129 * effectsScale, 485 * effectsScale, 40 * effectsScale,59 * effectsScale),
+				ImageUtils.crearImagen(IMG_EFFECTS, 172 * effectsScale, 485 * effectsScale, 40 * effectsScale,59 * effectsScale),
+				ImageUtils.crearImagen(IMG_EFFECTS, 215 * effectsScale, 485 * effectsScale, 40 * effectsScale,59 * effectsScale)
 			};
 			return ret;
 		} catch (Exception e){
@@ -373,19 +390,6 @@ public class GFXEffects {
 	
 	private Image[] load8(int xpos, int ypos){
 		return load(8, xpos, ypos);
-	}
-	
-	@SuppressWarnings("unused")
-	private Image[] load8x(){
-		BufferedImage[] ret = new BufferedImage[8];
-		for (int x = 0; x < 8; x++){
-			try {
-				ret[x] = ImageUtils.crearImagen(IMG_SLASHES, x*16, 0, 16,16);
-			} catch (Exception e){
-				Game.crash("Error loading effect", e);
-			}
-		}
-		return ret;
 	}
 	
 	private Image[] load4(int xpos, int ypos){
@@ -456,7 +460,7 @@ public class GFXEffects {
 			new GFXSplashEffect("SFX_SHADOW_APOCALYPSE",load2(10,15),70, configuration), /*load 5 frames*/
 			new GFXSplashEffect("SFX_SHADOW_EXTINCTION",load2(12,15),70, configuration), /*load 4 frames*/
 			new GFXSplashEffect("SFX_HOLY_FLAME",load2(12,14),20, configuration), /*loead 3 frames*/
-			new GFXSplashEffect("SFX_MANDRAGORA_SCREAM",loadSame("gfx/crl_mons32.gif", MandragoraScream.SCREAM_RANGE, 8,6),120, configuration),
+			new GFXSplashEffect("SFX_MANDRAGORA_SCREAM",loadSame(configuration.getImageConfiguration().MonstersImage, MandragoraScream.SCREAM_RANGE, 8,6),120, configuration),
 			new GFXSplashEffect("SFX_HOLY_RAINSPLASH",new Image[]{load1(4,0)[0], load1(5,0)[0],load1(4,0)[0],load1(5,0)[0]},50, configuration), /*loead 3 frames*/
 			new GFXSplashEffect("SFX_DOVE_BLAST",load8(8,13),20, configuration), 
 			new GFXSplashEffect("SFX_CRYSTAL_BLAST",load2(10,14),30, configuration), /*load 4 frames*/

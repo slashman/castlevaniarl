@@ -1,5 +1,6 @@
-# CastlevaniaRL 1.26 UI Configuration File
+# CastlevaniaRL UI Configuration File
 # Slash - Christopher Barrett UI
+# 1024x768, 64x64 "big" sprites
 
 useMouse = false
 TILESET = dragontileset.gif
@@ -9,12 +10,9 @@ BIG_TILESIZE = 96
 HALF_TILESIZE = 32
 CELL_HEIGHT = 98
 
-SPRITES_UI_GADGETS = gfx/drashinterface.gif
-GADGETSIZE = 36
-
-PC_POS = 7,5
-XRANGE = 7
-YRANGE = 5
+PC_POS = 8,6
+XRANGE = 8
+YRANGE = 6
 UPLEFTBORDER = 0
 
 # Message Box 
@@ -49,7 +47,7 @@ FNT_TITLE = res/avatar.ttf
 IMG_TITLE = gfx/barrett-title_2x.gif
 IMG_PROLOGUE = gfx/barrett-moon_2x.gif
 IMG_RESUME = gfx/barrett-moon_2x.gif
-IMG_INTERFACE = gfx/barrett-title_2x.gif
+IMG_INTERFACE = gfx/barrett-moon_2x.gif
 IMG_ENDGAME = gfx/barrett-moon_2x.gif
 IMG_HISCORES = gfx/barrett-moon_2x.gif
 IMG_SAVED = gfx/barrett-moon_2x.gif
@@ -71,20 +69,35 @@ FNT_TITLE_SIZE = 32
 FNT_TEXT = res/v5easter.ttf
 FNT_TEXT_SIZE = 16
 
+FNT_PROLOGUE = res/v5easter.ttf
+FNT_PROLOGUE_SIZE = 24
+
 FNT_MONO = res/v5easter.ttf
 FNT_MONO_SIZE = 15
 
 SFXSET = gfx/dragon-drashsfx.gif
-SFXSET2 = gfx/tempSlashes.gif
+SFXSET2 = gfx/tempSlashes_2x.gif
 
 TILES_SHADOW = gfx/shadow_2x.gif
 TILES_CHARACTERS = gfx/crl_chars_2x.gif
 TILES_MONSTERS = gfx/crl_mons32_2x.gif
 TILES_BIG_MONSTERS = gfx/crl_mons48_2x.gif
 TILES_ITEMS = gfx/crl_items_2x.gif
+TILES_ITEM_ICONS = gfx/crl_items.gif
 TILES_TERRAIN = gfx/crl_terrain_2x.gif
 TILES_DARK_TERRAIN = gfx/crl_terrain_d_2x.gif
 TILES_NIGHT_TERRAIN = gfx/crl_terrain_night_2x.gif
 TILES_DARK_NIGHT_TERRAIN = gfx/crl_terrain_night_d_2x.gif
 TILES_FEATURES = gfx/crl_features_2x.gif
+TILES_FEATURE_ICONS = gfx/crl_features.gif
 TILES_EFFECTS = gfx/crl_effects_2x.gif
+
+SFX_EFFECTS = gfx/crl_effects_2x.gif
+SFX_SLASHES = gfx/tempSlashes_2x.gif
+SFX_CURVED_SLASHES = gfx/crl_slashes1_2x.gif
+SFX_STRAIGHT_SLASHES = gfx/crl_slashes2_2x.gif
+EFFECTS_SCALE = 2
+
+UI_TILES = gfx/barrett-interface.gif
+VIEWPORT_UI_TILES = gfx/barrett-interface_2x.gif
+VIEWPORT_UI_SCALE = 2

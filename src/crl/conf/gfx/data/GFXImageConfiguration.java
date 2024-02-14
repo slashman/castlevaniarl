@@ -24,6 +24,7 @@ public class GFXImageConfiguration {
 	protected BufferedImage BigMonstersImage;
 	protected BufferedImage MonstersImage;
 	protected BufferedImage ItemsImage;
+	protected BufferedImage ItemIconsImage;
 
 	protected BufferedImage TerrainImage;
 	protected BufferedImage DarkTerrainImage;
@@ -31,7 +32,16 @@ public class GFXImageConfiguration {
 	protected BufferedImage DarkNightTerrainImage;
 
 	protected BufferedImage FeaturesImage;
+	protected BufferedImage FeatureIconsImage;
 	protected BufferedImage EffectsImage;
+
+	protected BufferedImage effectsImage;
+	protected BufferedImage slashesImage;
+	protected BufferedImage curvedSlashesImage;
+	protected BufferedImage straightSlashesImage;
+
+	protected BufferedImage UserInterfaceTileset;
+	protected BufferedImage ViewportUserInterfaceTileset;
 	
 	public void LoadConfiguration(Properties p) {
 		try {
@@ -40,6 +50,7 @@ public class GFXImageConfiguration {
 			BigMonstersImage = ImageUtils.createImage(p.getProperty("TILES_BIG_MONSTERS"));
 			MonstersImage = ImageUtils.createImage(p.getProperty("TILES_MONSTERS"));
 			ItemsImage = ImageUtils.createImage(p.getProperty("TILES_ITEMS"));
+			ItemIconsImage = ImageUtils.createImage(p.getProperty("TILES_ITEM_ICONS"));
 
 			TerrainImage = ImageUtils.createImage(p.getProperty("TILES_TERRAIN"));
 			DarkTerrainImage = ImageUtils.createImage(p.getProperty("TILES_DARK_TERRAIN"));
@@ -47,11 +58,28 @@ public class GFXImageConfiguration {
 			DarkNightTerrainImage = ImageUtils.createImage(p.getProperty("TILES_DARK_NIGHT_TERRAIN"));
 
 			FeaturesImage = ImageUtils.createImage(p.getProperty("TILES_FEATURES"));
+			FeatureIconsImage = ImageUtils.createImage(p.getProperty("TILES_FEATURE_ICONS"));
 			EffectsImage = ImageUtils.createImage(p.getProperty("TILES_EFFECTS"));
+
+			effectsImage = ImageUtils.createImage(p.getProperty("SFX_EFFECTS"));
+			slashesImage = ImageUtils.createImage(p.getProperty("SFX_SLASHES"));
+			curvedSlashesImage = ImageUtils.createImage(p.getProperty("SFX_CURVED_SLASHES"));
+			straightSlashesImage = ImageUtils.createImage(p.getProperty("SFX_STRAIGHT_SLASHES"));
+
+			UserInterfaceTileset = ImageUtils.createImage(p.getProperty("UI_TILES"));
+			ViewportUserInterfaceTileset = ImageUtils.createImage(p.getProperty("VIEWPORT_UI_TILES"));
 		}
 		catch (Exception e) {
 			Game.crash(e.getMessage(), e);
 		}		
+	}
+
+	public BufferedImage getUserInterfaceTileset() {
+		return UserInterfaceTileset;
+	}
+
+	public BufferedImage getViewportUserInterfaceTileset() {
+		return ViewportUserInterfaceTileset;
 	}
 	
 	public BufferedImage getShadowImage() {

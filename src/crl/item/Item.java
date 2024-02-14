@@ -295,8 +295,7 @@ public class Item implements Serializable, MenuItem, GFXMenuItem{
 	}
 
 	public Image getMenuImage() {
-		return ((GFXAppearance)getAppearance()).getImage();
-		
+		return ((GFXAppearance)getAppearance()).getIconImage();
 	}
 	
 	public void addPreModifier(Modifier pre){

@@ -39,15 +39,14 @@ public class GFXConfiguration {
 	protected Font persistantMessageBoxFont;
 	
 	protected BufferedImage statusScreenBackground;
-	protected int gadgetSize;
-	protected BufferedImage aimLineTile;
-	protected BufferedImage scanTile;
-	protected BufferedImage stepsTile;
 
 	protected BufferedImage UserInterfaceBackgroundImage;
 	protected GFXImageConfiguration imageConfiguration;
 	
 	protected double screenScale;
+
+	protected int effectsScale;
+	protected int viewportUserInterfaceScale;
 	
 	/**
 	 * Default constructor
@@ -62,6 +61,8 @@ public class GFXConfiguration {
 	public void LoadConfiguration(Properties p) {	
 		//this.screenScale = 1.28;
 		this.screenScale = PropertyFilters.getDouble(p.getProperty("SCREEN_SCALE"));
+		this.effectsScale = PropertyFilters.inte(p.getProperty("EFFECTS_SCALE"));
+		this.viewportUserInterfaceScale = PropertyFilters.inte(p.getProperty("VIEWPORT_UI_SCALE"));
 		this.bigTileWidth = PropertyFilters.inte(p.getProperty("BIG_TILESIZE"));
 		this.normalTileWidth = PropertyFilters.inte(p.getProperty("TILESIZE"));
 		this.halfTileWidth = PropertyFilters.inte(p.getProperty("HALF_TILESIZE"));
@@ -91,12 +92,6 @@ public class GFXConfiguration {
 		/*-- Load UI Images */
 		try {
 			this.statusScreenBackground = ImageUtils.createImage(p.getProperty("IMG_STATUSSCR_BGROUND"));
-			this.gadgetSize = PropertyFilters.inte(p.getProperty("GADGETSIZE"));
-			BufferedImage IMG_GADGETS = PropertyFilters.getImage(p.getProperty("IMG_GADGETS"), p.getProperty("IMG_GADGETS_BOUNDS"));
-			this.aimLineTile  = ImageUtils.crearImagen(IMG_GADGETS, 0, 0, this.gadgetSize, this.gadgetSize);
-			this.scanTile = ImageUtils.crearImagen(IMG_GADGETS, this.gadgetSize, 0, this.gadgetSize, this.gadgetSize);
-			this.stepsTile = ImageUtils.crearImagen(IMG_GADGETS, this.gadgetSize*2, 0, this.gadgetSize, this.gadgetSize);
-			
 			this.UserInterfaceBackgroundImage = ImageUtils.createImage(p.getProperty("IMG_INTERFACE"));
 			
 		} catch (Exception e){
@@ -198,34 +193,6 @@ public class GFXConfiguration {
 		return statusScreenBackground;
 	}
 
-	/**
-	 * @return the gadget size
-	 */
-	public int getGadgetSize() {
-		return gadgetSize;
-	}
-
-	/**
-	 * @return the aim line tile
-	 */
-	public BufferedImage getAimLineTile() {
-		return aimLineTile;
-	}
-
-	/**
-	 * @return the scan tile
-	 */
-	public BufferedImage getScanTile() {
-		return scanTile;
-	}
-
-	/**
-	 * @return the steps tile
-	 */
-	public BufferedImage getStepsTile() {
-		return stepsTile;
-	}
-	
 	public double getScreenScale() {
 		return screenScale;
 	}
@@ -244,5 +211,9 @@ public class GFXConfiguration {
 	
 	public GFXImageConfiguration getImageConfiguration() {
 		return imageConfiguration;
+	}
+
+	public int getViewportUserInterfaceScale() {
+		return viewportUserInterfaceScale;
 	}
 }

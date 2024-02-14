@@ -59,8 +59,7 @@ public class GFXMeleeEffect extends GFXDirectionalEffect{
 			Position toPrint = Position.add(ui.PC_POS, relative);
 			/*if (!ui.insideViewPort(toPrint))
 				break;*/
-			si.drawImage(toPrint.x()*configuration.getNormalTileWidth()+8, 
-					     toPrint.y()*configuration.getNormalTileWidth()+8-4*height, icon);
+			ui.drawImageVP(toPrint.x() * 32 + 8, toPrint.y() * 32 + 8 - 4 * height, icon);
 			si.refresh();
 			animationPause();
 			si.restore();

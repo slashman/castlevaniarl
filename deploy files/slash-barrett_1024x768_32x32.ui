@@ -9,9 +9,6 @@ BIG_TILESIZE = 48
 HALF_TILESIZE = 16
 CELL_HEIGHT = 49
 
-SPRITES_UI_GADGETS = gfx/drashinterface.gif
-GADGETSIZE = 36
-
 PC_POS = 14,10
 XRANGE = 14
 YRANGE = 10
@@ -49,7 +46,7 @@ FNT_TITLE = res/avatar.ttf
 IMG_TITLE = gfx/barrett-title_2x.gif
 IMG_PROLOGUE = gfx/barrett-moon_2x.gif
 IMG_RESUME = gfx/barrett-moon_2x.gif
-IMG_INTERFACE = gfx/barrett-title_2x.gif
+IMG_INTERFACE = gfx/barrett-moon_2x.gif
 IMG_ENDGAME = gfx/barrett-moon_2x.gif
 IMG_HISCORES = gfx/barrett-moon_2x.gif
 IMG_SAVED = gfx/barrett-moon_2x.gif

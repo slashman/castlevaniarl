@@ -76,6 +76,6 @@ public class Equipment implements MenuItem, GFXMenuItem{
 	}
 
 	public Image getMenuImage() {
-		return ((GFXAppearance)item.getAppearance()).getImage();
+		return ((GFXAppearance)item.getAppearance()).getIconImage();
 	}
 }

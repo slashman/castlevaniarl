@@ -28,8 +28,8 @@ public class GFXCircleBlastEffect extends GFXEffect{
 		Stroke oldStroke = g.getStroke();
 		g.setStroke(new BasicStroke(10));
 		g.setColor(blastColor);
-		int xcenter = center.x*configuration.getNormalTileWidth()+configuration.getHalfTileWidth();
-		int ycenter = center.y*configuration.getNormalTileWidth()+configuration.getHalfTileWidth();
+		int xcenter = center.x * 32 + 16;
+		int ycenter = center.y * 32 + 16;
 		for (int i = 0; i < 30; i++){
 			g.fillOval(xcenter-i*(ADVANCE+i), ycenter-i*(ADVANCE+i),i*(ADVANCE+i)*2,i*(ADVANCE+i)*2);
 			si.refresh();

@@ -51,7 +51,9 @@ import crl.ui.*;
  */
 
 public class GFXUserInterface extends UserInterface implements Runnable {
-	private static final String INTERFACE_FILE = "gfx/barrett-interface.gif";
+	private static final String BORDERS_FILE = "gfx/barrett-interface.gif"; //TODO: Move to GFXConfiguration
+	private static final int BORDERS_SCALE = 1; //TODO: Move to GFXConfiguration
+	private static final int BORDERS_SIZE = 32; //TODO: Move to GFXConfiguration
 
 	private int STANDARD_WIDTH;
 	//Attributes
@@ -135,7 +137,6 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		IMG_NO_BTN,
 		
 		IMG_ICON;
-	private int GADGETSIZE;
 	private Color 
 		COLOR_BORDER_OUT, COLOR_BORDER_IN, COLOR_WINDOW_BACKGROUND;
 	private Color
@@ -181,6 +182,9 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				VP_END = new Position (5,5),
 				PC_POS = new Position (3,3);
 
+	private Position CAMERA = new Position(-32, -32); // TODO: Read from configuration
+	private int cameraScale = 2; // TODO: Read from configuration
+
     public void setFlipFacing(boolean val){
     	flipFacing = val;
     }
@@ -212,9 +216,9 @@ public class GFXUserInterface extends UserInterface implements Runnable {
     
     
     private Color TRANSPARENT_GRAY = new Color(20,20,20,180);
-    private Color MAP_NOSOLID_LOS = new Color(98,96,85,150);
-    private Color MAP_NOSOLID = new Color(86,77,65,150);
-    private Color MAP_SOLID = new Color(83,83,83);
+    private Color MAP_NOSOLID_LOS = new Color(204,182,116);
+    private Color MAP_NOSOLID = new Color(148,122,60);
+    private Color MAP_SOLID = new Color(180,154,68);
     private void examineLevelMap(){
 		messageBox.setVisible(false);
 		isCursorEnabled = false;
@@ -222,11 +226,13 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		//si.drawImage(GFXDisplay.IMG_FRAME);
 		int lw = level.getWidth();
 		int lh = level.getHeight();
-		int remnantx = (int)((740 - (lw * 3))/2.0d); 
-		int remnanty = (int)((480 - (lh * 3))/2.0d);
+		int sw = this.configuration.getScreenWidth();
+		int sh = this.configuration.getScreenHeight();
+		int remnantx = (int)((sw - 60 - (lw * 3))/2.0d); 
+		int remnanty = (int)((sh - 120 - (lh * 3))/2.0d);
 		Graphics2D g = si.getGraphics2D();
 		g.setColor(TRANSPARENT_GRAY);
-		g.fillRect(0,0,800,600);
+		g.fillRect(0,0,sw,sh);
 		Color cellColor = null;
 		Position runner = new Position(0,0,player.getPosition().z);
 		for (int x = 0; x < level.getWidth(); x++, runner.x++, runner.y = 0)
@@ -275,6 +281,49 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		si.restore();
 		si.refresh();
 		
+	}
+
+	/*
+	 * Expensively render the minimap as part of the HUD instead of
+	 * being a separete mode.
+	 */
+	private void renderMiniMap(){
+		int lw = level.getWidth();
+		int lh = level.getHeight();
+		int sw = this.configuration.getScreenWidth();
+		int sh = this.configuration.getScreenHeight();
+		int mapX = sw - 60 - (lw * 3); 
+		int mapY = sh - 60 - (lh * 3); 
+		Graphics2D g = si.getGraphics2D();
+		Color cellColor = null;
+		Position runner = new Position(0,0,player.getPosition().z);
+		for (int x = 0; x < level.getWidth(); x++, runner.x++, runner.y = 0) {
+			for (int y = 0; y < level.getHeight(); y++, runner.y++){
+				if (player.getPosition().x == x && player.getPosition().y == y) {
+					cellColor = Color.RED;
+				} else if (!level.remembers(x,y)) {
+					continue;
+				} else {
+					Cell current = level.getMapCell(runner);
+					if (current == null)
+						continue;
+					if (level.getExitOn(runner) != null) {
+						cellColor = Color.RED;
+					} else {
+						Feature currentF = level.getFeatureAt(runner);
+						if (current.isSolid() || (currentF != null && currentF.isSolid())) {
+							cellColor = MAP_SOLID;
+						} else if (level.isVisible(x,y)){
+							cellColor = MAP_NOSOLID_LOS;
+						} else {
+							cellColor = MAP_NOSOLID;
+						}
+					}
+				}
+				g.setColor(cellColor);
+				g.fillRect(mapX + x * 3, mapY + y * 3, 3,3);
+			}
+		}
 	}
     
     private void enterScreen(){
@@ -351,7 +400,11 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				}
 			}
 			messageBox.setText(looked);
-			si.drawImage((PC_POS.x + offset.x)*STANDARD_WIDTH-2, ((PC_POS.y + offset.y)*STANDARD_WIDTH-2)-4*cellHeight, TILE_SCAN);
+			drawImageVP(
+				(PC_POS.x + offset.x) * 32 - 2,
+				(PC_POS.y + offset.y) * 32 - 2 - 4 * cellHeight,
+				TILE_SCAN
+			);
 			si.refresh();
 			CharKey x = new CharKey(CharKey.NONE);
 			while (x.code != CharKey.SPACE && x.code != CharKey.m && x.code != CharKey.ESC &&
@@ -482,10 +535,15 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					if (rcells[x][y] != null && !rcells[x][y].getAppearance().getID().equals("NOTHING")){
 						GFXAppearance app = (GFXAppearance)rcells[x][y].getAppearance();
 						try {
+							Image cellImage;
 							if (level.isDay())
-								si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-app.getSuperHeight(), app.getDarkImage());
+								cellImage = app.getDarkImage();
 							else
-								si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-app.getSuperHeight(), app.getDarkniteImage());
+								cellImage = app.getDarkniteImage();
+							drawImageVP(
+								(PC_POS.x-xrange+x) * 32,
+								(PC_POS.y-yrange+y) * 32 - 17 - app.getSuperHeight(),
+								cellImage);
 						} catch (NullPointerException npe){
 							Color c = si.getGraphics2D().getColor();
 							si.getGraphics2D().setColor(Color.RED);
@@ -510,21 +568,39 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					}
 					int depthFromPlayer =level.getDepthFromPlayer(player.getPosition().x - xrange + x, player.getPosition().y - yrange + y); 
 					if (depthFromPlayer != 0 ){
-						si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17+depthFromPlayer*10, cellApp.getDarkImage());
+						drawImageVP(
+							(PC_POS.x-xrange+x) * 32,
+							(PC_POS.y-yrange+y) * 32 + depthFromPlayer * 10 - 17,
+							cellApp.getDarkImage()
+						);
 					} else {
+						Image img;
 						if (level.isDay())
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-cellApp.getSuperHeight(), cellApp.getImage());
+							img = cellApp.getImage();
 						else
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-17-cellApp.getSuperHeight(), cellApp.getNiteImage());
+							img = cellApp.getNiteImage();
+						drawImageVP(
+							(PC_POS.x-xrange+x) * 32,
+							(PC_POS.y-yrange+y) * 32 - 17 - cellApp.getSuperHeight(),
+							img
+						);
 					}
 					if (bloodLevel != null){
+						Image img = null;
 						switch (Integer.parseInt(bloodLevel)){
 						case 0:
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-cellApp.getSuperHeight(), BLOOD1);
+							img = BLOOD1;
 							break;
 						case 1:
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-cellApp.getSuperHeight(), BLOOD2);
+							img = BLOOD2;
 							break;
+						}
+						if (img != null) {
+							drawImageVP(
+								(PC_POS.x-xrange+x) * 32,
+								(PC_POS.y-yrange+y) * 32 - 4 * cellHeight - cellApp.getSuperHeight(),
+								img
+							);
 						}
 					}
 				}
@@ -539,7 +615,11 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					if (feat != null){
 						if (feat.isVisible()) {
 							GFXAppearance featApp = (GFXAppearance)feat.getAppearance();
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH-featApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-featApp.getSuperHeight(), featApp.getImage());
+							drawImageVP(
+								(PC_POS.x - xrange + x) * 32 - featApp.getSuperWidth(),
+								(PC_POS.y - yrange + y) * 32 - 4 * cellHeight - featApp.getSuperHeight(),
+								featApp.getImage()
+							);
 						}
 					}
 					
@@ -548,7 +628,11 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 						if (sfeat.isVisible()){
 							GFXAppearance featApp = 
 								(GFXAppearance)sfeat.getAppearance();
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH-featApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-featApp.getSuperHeight(), featApp.getImage());
+							drawImageVP(
+								(PC_POS.x-xrange+x) * 32 - featApp.getSuperWidth(),
+								(PC_POS.y-yrange+y) * 32 - 4 * cellHeight - featApp.getSuperHeight(),
+								featApp.getImage()
+							);
 						}
 					}
 
@@ -560,13 +644,20 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					if (item != null){
 						if (item.isVisible()){
 							GFXAppearance itemApp = (GFXAppearance)item.getAppearance();
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH-itemApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight -itemApp.getSuperHeight(), itemApp.getImage());
+							drawImageVP((PC_POS.x-xrange+x) * 32 - itemApp.getSuperWidth(),
+								(PC_POS.y-yrange+y) * 32 - 4 * cellHeight - itemApp.getSuperHeight(),
+								itemApp.getImage()
+							);
 						}
 					}
 					
 					if (yrange == y && x == xrange){
 						if (player.isInvisible()){
-							si.drawImage(PC_POS.x*STANDARD_WIDTH,PC_POS.y*STANDARD_WIDTH-4*cellHeight, ((GFXAppearance)AppearanceFactory.getAppearanceFactory().getAppearance("SHADOW")).getImage());
+							drawImageVP(
+								PC_POS.x * 32,
+								PC_POS.y * 32 - 4 * cellHeight,
+								((GFXAppearance)AppearanceFactory.getAppearanceFactory().getAppearance("SHADOW")).getImage()
+							);
 						}else{
 							GFXAppearance playerAppearance = (GFXAppearance)player.getAppearance();
 							BufferedImage playerImage = (BufferedImage)playerAppearance.getImage();
@@ -574,29 +665,24 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 								playerImage = ImageUtils.vFlip(playerImage);
 								//flipFacing = false;
 							}
-							if (level.getMapCell(player.getPosition())!= null && level.getMapCell(player.getPosition()).isShallowWater())
-								//si.drawImage(PC_POS.x*32-playerAppearance.getSuperWidth(),PC_POS.y*32-4*cellHeight-playerAppearance.getSuperHeight()+16/, playerImage);
-								si.drawImage(PC_POS.x*STANDARD_WIDTH-playerAppearance.getSuperWidth(),PC_POS.y*STANDARD_WIDTH-4*player.getStandingHeight()-playerAppearance.getSuperHeight()+16, playerImage);
-							else
-								//si.drawImage(PC_POS.x*32-playerAppearance.getSuperWidth(),PC_POS.y*32-4*cellHeight-playerAppearance.getSuperHeight(), playerImage);
-								si.drawImage(PC_POS.x*STANDARD_WIDTH-playerAppearance.getSuperWidth(),PC_POS.y*STANDARD_WIDTH-4*player.getStandingHeight()-playerAppearance.getSuperHeight(), playerImage);
+							int waterBonus = (level.getMapCell(player.getPosition())!= null && level.getMapCell(player.getPosition()).isShallowWater()) ? 16 : 0;
+							drawImageVP(
+								PC_POS.x * 32 - playerAppearance.getSuperWidth(),
+								PC_POS.y * 32 - 4 * player.getStandingHeight() - playerAppearance.getSuperHeight() + waterBonus,
+								playerImage
+							);
 						}
 					}
 					Monster monster = level.getMonsterAt(runner);
 					
 					if (monster != null && monster.isVisible()){
 						GFXAppearance monsterApp = (GFXAppearance) monster.getAppearance();
-						if (monster.canSwim() && level.getMapCell(runner)!= null && level.getMapCell(runner).isShallowWater()){
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH-monsterApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-monsterApp.getSuperHeight()+16, monsterApp.getImage());
-							//TODO: Overlap water on the monster, draw it lowly
-						}
-						else
-						if (monster.hasCounter(Consts.C_MONSTER_FREEZE)){
-							//TODO: Overlay a cyan layer
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH-monsterApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-monsterApp.getSuperHeight(), monsterApp.getImage());
-						}
-						else
-							si.drawImage((PC_POS.x-xrange+x)*STANDARD_WIDTH-monsterApp.getSuperWidth(),(PC_POS.y-yrange+y)*STANDARD_WIDTH-4*cellHeight-monsterApp.getSuperHeight(), monsterApp.getImage());
+						int swimBonus = (monster.canSwim() && level.getMapCell(runner)!= null && level.getMapCell(runner).isShallowWater()) ? 16 : 0; //TODO: Overlap water on the monster, draw it lowly
+						drawImageVP(
+							(PC_POS.x - xrange + x) * 32 - monsterApp.getSuperWidth(),
+							(PC_POS.y - yrange + y) * 32 - 4 * cellHeight - monsterApp.getSuperHeight() + swimBonus,
+							monsterApp.getImage()
+						);
 					}
 					// Draw Masks
 					Color mask = null;
@@ -612,7 +698,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					}
 					if (mask != null){
 						si.getGraphics2D().setColor(mask);
-						si.getGraphics2D().fillRect((PC_POS.x-xrange+x)*STANDARD_WIDTH,(PC_POS.y-yrange+y)*STANDARD_WIDTH, STANDARD_WIDTH, STANDARD_WIDTH);
+						si.getGraphics2D().fillRect((PC_POS.x-xrange+x)*STANDARD_WIDTH + CAMERA.x,(PC_POS.y-yrange+y)*STANDARD_WIDTH + CAMERA.y, STANDARD_WIDTH, STANDARD_WIDTH);
 					}
 				}
 				//runner.y++;
@@ -672,7 +758,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		/*if (isCursorEnabled){
 			si.restore();
 			Cell underlying = player.getLevel().getMapCell(tempCursorPosition);
-			si.drawImage((PC_POS.x+tempCursorPositionScr.x)*32,(PC_POS.y+tempCursorPositionScr.y)*32-4*underlying.getHeight(), TILE_SCAN);
+			drawImageVP((PC_POS.x+tempCursorPositionScr.x)*32,(PC_POS.y+tempCursorPositionScr.y)*32-4*underlying.getHeight(), TILE_SCAN);
 			si.refresh();
 		}
 	}*/
@@ -763,11 +849,9 @@ public class GFXUserInterface extends UserInterface implements Runnable {
     	    
     	    int restB = ((sixthiedBossHits-1) % 20) + 1;
     		
-    		for (int i = 0; i < 20; i++)
-    			if (i+1 <= restB)
-    				si.drawImage(665+ (i*6),540, foreColorB);
-    			else
-    				si.drawImage(665+ (i*6),540, backColorB);
+    		for (int i = 0; i < 20; i++) {
+				si.drawImage(this.configuration.getScreenWidth() - 135 + (i*6), this.configuration.getScreenHeight() - 60, i + 1 <= restB ? foreColorB : backColorB);
+			}
     	}
     	
     	//TODO: Add the background
@@ -776,26 +860,27 @@ public class GFXUserInterface extends UserInterface implements Runnable {
     			si.drawImage(18,38, getImageForMystic(player.getMysticWeapon()));
     	}else
     	if (player.getWeapon() != null){
-    		si.drawImage(18,38, ((GFXAppearance)player.getWeapon().getAppearance()).getImage());
+    		si.drawImage(18,38, ((GFXAppearance)player.getWeapon().getAppearance()).getIconImage());
     	}
     	if (player.getLevel().getLevelNumber() != -1)
-    		si.printAtPixel(524,50,"STAGE  "+player.getLevel().getLevelNumber()+" "+player.getLevel().getDescription(), Color.WHITE);
+    		si.printAtPixel(this.configuration.getScreenWidth() - 276,50,"STAGE  "+player.getLevel().getLevelNumber()+" "+player.getLevel().getDescription(), Color.WHITE);
     	else
-    		si.printAtPixel(524,50,player.getLevel().getDescription(), Color.WHITE);
+    		si.printAtPixel(this.configuration.getScreenWidth() - 276,50,player.getLevel().getDescription(), Color.WHITE);
     	
     	
     	
     	
     	//si.drawImage(759, 35, TILE_TIME_BACK);
-    	si.drawImage(723, 38, timeTile);
+		int timeTilePosition = this.configuration.getScreenWidth() - 77;
+    	si.drawImage(timeTilePosition, 38, timeTile);
     	if (player.getFlag(Consts.ENV_FOG))
-    		si.printAtPixel (723,30,"FOG",Color.GRAY);
+    		si.printAtPixel (timeTilePosition,30,"FOG",Color.GRAY);
     	if (player.getFlag(Consts.ENV_RAIN))
-    		si.printAtPixel (723,30,"RAIN",Color.BLUE);
+    		si.printAtPixel (timeTilePosition,30,"RAIN",Color.BLUE);
     	if (player.getFlag(Consts.ENV_SUNNY))
-    		si.printAtPixel (723,30,"SUNNY",Color.YELLOW);
+    		si.printAtPixel (timeTilePosition,30,"SUNNY",Color.YELLOW);
     	if (player.getFlag(Consts.ENV_THUNDERSTORM))
-    		si.printAtPixel (723,30,"STORM",Color.WHITE);
+    		si.printAtPixel (timeTilePosition,30,"STORM",Color.WHITE);
     	
 		si.drawImage(166, 42,HEART_TILE);
 		si.printAtPixel(182,51,""+player.getHearts(), Color.WHITE);
@@ -807,6 +892,8 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			Hostage h = player.getHostage();
 			si.drawImage(18,64, ((GFXAppearance)h.getAppearance()).getImage());
 		}
+
+		renderMiniMap();
 		
 		//si.printAtPixel(18,80,""+player.getHoverHeight(), Color.WHITE);
   		Debug.exitMethod();
@@ -825,10 +912,6 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		FNT_MESSAGEBOX = this.configuration.getMessageBoxFont();
 		FNT_PERSISTANTMESSAGEBOX = this.configuration.getPersistantMessageBoxFont();
 		IMG_STATUSSCR_BGROUND = this.configuration.getStatusScreenBackground();
-		GADGETSIZE = this.configuration.getGadgetSize();		
-		TILE_LINE_AIM  = this.configuration.getAimLineTile();
-		TILE_SCAN  = this.configuration.getScanTile();
-		TILE_LINE_STEPS  = this.configuration.getStepsTile();	
 	}
     
 	public void init(SwingSystemInterface psi, UserCommand[] gameCommands, Action target){
@@ -856,53 +939,56 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		
 		/*-- Load UI Images */
 		try {
-			HEALTH_WHITE = ImageUtils.crearImagen(INTERFACE_FILE, 198, 1, 5, 16);
+			BufferedImage userInterfaceTileset = this.configuration.getImageConfiguration().getUserInterfaceTileset();
+			BufferedImage viewportUserInterfaceTileset = this.configuration.getImageConfiguration().getViewportUserInterfaceTileset();
+			int viewportUserInterfaceScale = this.configuration.getViewportUserInterfaceScale();
+			HEALTH_WHITE = ImageUtils.crearImagen(userInterfaceTileset, 198, 1, 5, 16);
 			/*HEALTH_BLUE? unneeded*/
-			HEALTH_RED = ImageUtils.crearImagen(INTERFACE_FILE, 210, 1, 5, 16); 
-			HEALTH_DARK_RED = ImageUtils.crearImagen(INTERFACE_FILE, 216, 1, 5, 16);
-			HEALTH_MAGENTA = ImageUtils.crearImagen(INTERFACE_FILE, 222, 1, 5, 16); 
+			HEALTH_RED = ImageUtils.crearImagen(userInterfaceTileset, 210, 1, 5, 16); 
+			HEALTH_DARK_RED = ImageUtils.crearImagen(userInterfaceTileset, 216, 1, 5, 16);
+			HEALTH_MAGENTA = ImageUtils.crearImagen(userInterfaceTileset, 222, 1, 5, 16); 
 			 
-			HEALTH_YELLOW = ImageUtils.crearImagen(INTERFACE_FILE, 228, 1, 5, 16);
-			HEALTH_BROWN = ImageUtils.crearImagen(INTERFACE_FILE, 234, 1, 5, 16); 
-			HEALTH_PURPLE = ImageUtils.crearImagen(INTERFACE_FILE, 240, 1, 5, 16);
+			HEALTH_YELLOW = ImageUtils.crearImagen(userInterfaceTileset, 228, 1, 5, 16);
+			HEALTH_BROWN = ImageUtils.crearImagen(userInterfaceTileset, 234, 1, 5, 16); 
+			HEALTH_PURPLE = ImageUtils.crearImagen(userInterfaceTileset, 240, 1, 5, 16);
 
-			HEART_TILE = ImageUtils.crearImagen(INTERFACE_FILE, 199, 20, 14, 12);
-			GOLD_TILE = ImageUtils.crearImagen(INTERFACE_FILE, 214, 19, 9, 13);
-			KEY_TILE = ImageUtils.crearImagen(INTERFACE_FILE, 224, 20, 13, 13);
+			HEART_TILE = ImageUtils.crearImagen(userInterfaceTileset, 199, 20, 14, 12);
+			GOLD_TILE = ImageUtils.crearImagen(userInterfaceTileset, 214, 19, 9, 13);
+			KEY_TILE = ImageUtils.crearImagen(userInterfaceTileset, 224, 20, 13, 13);
 	    	
 	    	
-			TILE_MORNING_TIME = ImageUtils.crearImagen(INTERFACE_FILE, 1, 109, 49, 24);
-			TILE_NOON_TIME = ImageUtils.crearImagen(INTERFACE_FILE, 52, 109, 49, 24);
-	    	TILE_AFTERNOON_TIME = ImageUtils.crearImagen(INTERFACE_FILE, 103, 109, 49, 24);
-	    	TILE_DUSK_TIME = ImageUtils.crearImagen(INTERFACE_FILE, 154, 109, 49, 24);
-	    	TILE_NIGHT_TIME = ImageUtils.crearImagen(INTERFACE_FILE, 205, 109, 49, 24);
-	    	TILE_DAWN_TIME = ImageUtils.crearImagen(INTERFACE_FILE, 256, 109, 49, 24);
+			TILE_MORNING_TIME = ImageUtils.crearImagen(userInterfaceTileset, 1, 109, 49, 24);
+			TILE_NOON_TIME = ImageUtils.crearImagen(userInterfaceTileset, 52, 109, 49, 24);
+	    	TILE_AFTERNOON_TIME = ImageUtils.crearImagen(userInterfaceTileset, 103, 109, 49, 24);
+	    	TILE_DUSK_TIME = ImageUtils.crearImagen(userInterfaceTileset, 154, 109, 49, 24);
+	    	TILE_NIGHT_TIME = ImageUtils.crearImagen(userInterfaceTileset, 205, 109, 49, 24);
+	    	TILE_DAWN_TIME = ImageUtils.crearImagen(userInterfaceTileset, 256, 109, 49, 24);
 	    	
 	    	
 	    	//TILE_NO_SHO;
-	    	TILE_SHOT_II  = ImageUtils.crearImagen(INTERFACE_FILE, 300, 3, 16, 16);
-	    	TILE_SHOT_III  = ImageUtils.crearImagen(INTERFACE_FILE, 300, 20, 16, 16);
+	    	TILE_SHOT_II  = ImageUtils.crearImagen(userInterfaceTileset, 300, 3, 16, 16);
+	    	TILE_SHOT_III  = ImageUtils.crearImagen(userInterfaceTileset, 300, 20, 16, 16);
 
-			TILE_LINE_STEPS  = ImageUtils.crearImagen(INTERFACE_FILE, 280, 25, 6, 5);
-			TILE_LINE_AIM  = ImageUtils.crearImagen(INTERFACE_FILE, 265, 37, 36, 36);
-			TILE_SCAN  = ImageUtils.crearImagen(INTERFACE_FILE, 302, 37, 36, 36);
+			TILE_LINE_STEPS  = ImageUtils.crearImagen(viewportUserInterfaceTileset, 280 * viewportUserInterfaceScale, 25* viewportUserInterfaceScale, 6* viewportUserInterfaceScale, 5* viewportUserInterfaceScale);
+			TILE_LINE_AIM  = ImageUtils.crearImagen(viewportUserInterfaceTileset, 265* viewportUserInterfaceScale, 37* viewportUserInterfaceScale, 36* viewportUserInterfaceScale, 36* viewportUserInterfaceScale);
+			TILE_SCAN  = ImageUtils.crearImagen(viewportUserInterfaceTileset, 302* viewportUserInterfaceScale, 37* viewportUserInterfaceScale, 36* viewportUserInterfaceScale, 36* viewportUserInterfaceScale);
 			
-			TILE_WEAPON_BACK = ImageUtils.crearImagen(INTERFACE_FILE, 173, 1, 24, 24);
-			TILE_HEALTH_BACK = ImageUtils.crearImagen(INTERFACE_FILE, 3, 34, 261, 24);
-			TILE_TIME_BACK  = ImageUtils.crearImagen(INTERFACE_FILE, 246, 1, 22, 21);
+			TILE_WEAPON_BACK = ImageUtils.crearImagen(userInterfaceTileset, 173, 1, 24, 24);
+			TILE_HEALTH_BACK = ImageUtils.crearImagen(userInterfaceTileset, 3, 34, 261, 24);
+			TILE_TIME_BACK  = ImageUtils.crearImagen(userInterfaceTileset, 246, 1, 22, 21);
 			
 			IMG_STATUSSCR_BGROUND = configuration.getUserInterfaceBackgroundImage(); 
 					//ImageUtils.createImage("gfx/barrett-moon_2x.gif");
 			
-			BORDER1 = ImageUtils.crearImagen(INTERFACE_FILE, 34,1,STANDARD_WIDTH,STANDARD_WIDTH);
-			BORDER2 = ImageUtils.crearImagen(INTERFACE_FILE, 1,1,STANDARD_WIDTH,STANDARD_WIDTH);
-			BORDER3 = ImageUtils.crearImagen(INTERFACE_FILE, 100, 1, STANDARD_WIDTH,STANDARD_WIDTH);
-			BORDER4 = ImageUtils.crearImagen(INTERFACE_FILE, 67,1,STANDARD_WIDTH,STANDARD_WIDTH);
+			BORDER1 = ImageUtils.crearImagen(BORDERS_FILE, 34 * BORDERS_SCALE, 1 * BORDERS_SCALE, BORDERS_SIZE, BORDERS_SIZE);
+			BORDER2 = ImageUtils.crearImagen(BORDERS_FILE, 1 * BORDERS_SCALE, 1 * BORDERS_SCALE, BORDERS_SIZE, BORDERS_SIZE);
+			BORDER3 = ImageUtils.crearImagen(BORDERS_FILE, 100 * BORDERS_SCALE, 1 * BORDERS_SCALE, BORDERS_SIZE, BORDERS_SIZE);
+			BORDER4 = ImageUtils.crearImagen(BORDERS_FILE, 67 * BORDERS_SCALE, 1 * BORDERS_SCALE, BORDERS_SIZE, BORDERS_SIZE);
 			
 			IMG_AXE = ImageUtils.crearImagen("gfx/crl_features.gif", 48,0,16,16);
 			IMG_BIBLE = ImageUtils.crearImagen("gfx/crl_features.gif", 96,0,16,16);
 			IMG_CROSS = ImageUtils.crearImagen("gfx/crl_features.gif", 64,0,16,16);
-			IMG_DAGGER = ImageUtils.crearImagen("gfx/crl_features.gif", STANDARD_WIDTH,0,16,16);
+			IMG_DAGGER = ImageUtils.crearImagen("gfx/crl_features.gif", 32,0,16,16);
 			IMG_HOLY = ImageUtils.crearImagen("gfx/crl_features.gif", 112,0,16,16);
 			IMG_CRYSTAL = ImageUtils.crearImagen("gfx/crl_features.gif", 128,0,16,16);
 			IMG_FIST = ImageUtils.crearImagen("gfx/crl_features.gif", 136,0,16,16);
@@ -911,14 +997,14 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			/*COLOR_BORDER_IN = new Color(187,161,80);
 			COLOR_BORDER_OUT = new Color(92,78,36);*/
 			
-			BLOOD1 = ImageUtils.crearImagen("gfx/crl_effects.gif", 128,96,STANDARD_WIDTH,STANDARD_WIDTH);
-			BLOOD2 = ImageUtils.crearImagen("gfx/crl_effects.gif", 192,96,STANDARD_WIDTH,STANDARD_WIDTH);
+			BLOOD1 = (BufferedImage)((GFXAppearance)AppearanceFactory.getAppearanceFactory().getAppearance("BLOOD1")).getImage();
+			BLOOD2 = (BufferedImage)((GFXAppearance)AppearanceFactory.getAppearanceFactory().getAppearance("BLOOD2")).getImage();
 			
-			IMG_EXIT_BTN = ImageUtils.crearImagen(INTERFACE_FILE, 65,81,60,26);
-			IMG_OK_BTN = ImageUtils.crearImagen(INTERFACE_FILE, 2,81,60,26);
-			IMG_BUY_BTN = ImageUtils.crearImagen(INTERFACE_FILE, 128,81,60,26);
-			IMG_YES_BTN = ImageUtils.crearImagen(INTERFACE_FILE, 191,81,60,26);
-			IMG_NO_BTN = ImageUtils.crearImagen(INTERFACE_FILE, 254,81,60,26);
+			IMG_EXIT_BTN = ImageUtils.crearImagen(userInterfaceTileset, 65,81,60,26);
+			IMG_OK_BTN = ImageUtils.crearImagen(userInterfaceTileset, 2,81,60,26);
+			IMG_BUY_BTN = ImageUtils.crearImagen(userInterfaceTileset, 128,81,60,26);
+			IMG_YES_BTN = ImageUtils.crearImagen(userInterfaceTileset, 191,81,60,26);
+			IMG_NO_BTN = ImageUtils.crearImagen(userInterfaceTileset, 254,81,60,26);
 			
 			IMG_ICON = ImageUtils.createImage("res/crl_icon.png");
 		} catch (Exception e){
@@ -931,7 +1017,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		/*-- Init Components*/
 		messageBox = new SwingInformBox();
 		/*idList = new ListBox(psi);*/
-		messageBox.setBounds(1*10,22*24,78*10,2*24);
+		messageBox.setBounds(16, this.configuration.getScreenHeight() - 10 * 24, this.configuration.getScreenWidth() - 32, 10 * 24);
 		messageBox.setForeground(COLOR_LAST_MESSAGE);
 		messageBox.setBackground(Color.BLACK);
 		messageBox.setFont(FNT_MESSAGEBOX);
@@ -943,23 +1029,23 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		
 		psi.add(messageBox);
 		
-		merchantBox = new MerchantBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH,STANDARD_WIDTH);
+		merchantBox = new MerchantBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, BORDERS_SIZE, BORDERS_SIZE);
 		merchantBox.setBounds(150, 60, 500, 410);
 		merchantBox.setVisible(false);
 		psi.add(merchantBox);
 		
-		multiItemsBox = new MultiItemsBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH,STANDARD_WIDTH);
+		multiItemsBox = new MultiItemsBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, BORDERS_SIZE, BORDERS_SIZE);
 		multiItemsBox.setBounds(250, 235, 300, 260);
 		multiItemsBox.setVisible(false);
 		psi.add(multiItemsBox);
 		
-		helpBox = new HelpBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH,STANDARD_WIDTH);
-		helpBox.setBounds(12,STANDARD_WIDTH, 770, 450);
+		helpBox = new HelpBox(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, BORDERS_SIZE, BORDERS_SIZE);
+		helpBox.setBounds(12, 32, 770, 450);
 		helpBox.setVisible(false);
 		psi.add(helpBox);
 		
-		persistantMessageBox = new AddornedBorderTextArea(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH,STANDARD_WIDTH);
-		persistantMessageBox.setBounds(520,90,260,400);
+		persistantMessageBox = new AddornedBorderTextArea(BORDER1, BORDER2, BORDER3, BORDER4, COLOR_BORDER_IN, COLOR_BORDER_OUT, BORDERS_SIZE, BORDERS_SIZE);
+		persistantMessageBox.setBounds(this.configuration.getScreenWidth() - 280,90,260,400);
 		persistantMessageBox.setVisible(false);
 		persistantMessageBox.setFont(FNT_PERSISTANTMESSAGEBOX);
 		persistantMessageBox.setForeground(Color.WHITE);
@@ -1085,7 +1171,12 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			//si.print(PC_POS.x + offset.x, PC_POS.y + offset.y, '_', ConsoleSystemInterface.RED);
 			drawStepsTo(PC_POS.x + offset.x, (PC_POS.y + offset.y), TILE_LINE_STEPS, cellHeight);
 			
-			si.drawImage((PC_POS.x + offset.x)*STANDARD_WIDTH-2, ((PC_POS.y + offset.y)*STANDARD_WIDTH-2) -4*cellHeight, TILE_LINE_AIM);
+			drawImageVP(
+				(PC_POS.x + offset.x) * 32 - 2,
+				(PC_POS.y + offset.y) * 32 - 2 - 4 * cellHeight,
+				TILE_LINE_AIM
+			);
+
 			si.refresh();
 			CharKey x = new CharKey(CharKey.NONE);
 			while (x.code != CharKey.SPACE && x.code != CharKey.ESC && x.code != fireKeyCode &&
@@ -1156,7 +1247,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			throw ret;
   		}
   		
-  		BorderedMenuBox menuBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, TILE_WEAPON_BACK);
+  		BorderedMenuBox menuBox = GetMenuBox();
   		menuBox.setGap(35);
   		
   		//menuBox.setBounds(26,6,30,11);
@@ -1182,7 +1273,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 	private Item pickItem(String prompt) throws ActionCancelException{
 		enterScreen();
   		Vector inventory = player.getInventory();
-  		BorderedMenuBox menuBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, TILE_WEAPON_BACK);
+  		BorderedMenuBox menuBox = GetMenuBox();
   		menuBox.setGap(35);
   		menuBox.setPosition(6,4);
   		menuBox.setWidth(70);
@@ -1211,7 +1302,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 	private Vector pickMultiItems(String prompt) throws ActionCancelException{
 		//Equipment.eqMode = true;
 		Vector inventory = player.getInventory();
-		BorderedMenuBox menuBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, TILE_WEAPON_BACK);
+		BorderedMenuBox menuBox = GetMenuBox();
   		menuBox.setBounds(25,3,40,18);
   		//menuBox.setPromptSize(2);
   		menuBox.setMenuItems(inventory);
@@ -1219,7 +1310,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
   		//menuBox.setForeColor(ConsoleSystemInterface.RED);
   		//menuBox.setBorder(true);
   		Vector ret = new Vector();
-  		BorderedMenuBox selectedBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, TILE_WEAPON_BACK);
+  		BorderedMenuBox selectedBox = GetMenuBox();
   		selectedBox.setBounds(5,3,20,18);
   		//selectedBox.setPromptSize(2);
   		selectedBox.setTitle("Selected Items");
@@ -1344,7 +1435,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
   			return null;
   		if (items.size() == 1)
   			return (Item) items.elementAt(0);
-  		BorderedMenuBox menuBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, TILE_WEAPON_BACK);
+  		BorderedMenuBox menuBox = GetMenuBox();
   		menuBox.setGap(35);
   		menuBox.setBounds(6,4,70,12);
   		menuBox.setMenuItems(items);
@@ -1389,7 +1480,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		Equipment.menuDetail = true;
   		Vector inventory = player.getInventory();
 		int xpos = 1, ypos = 0;
-		BorderedMenuBox menuBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, TILE_WEAPON_BACK);
+		BorderedMenuBox menuBox = GetMenuBox();
   		menuBox.setGap(35);
   		menuBox.setItemsPerPage(10);
   		menuBox.setWidth(75);
@@ -1418,7 +1509,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		si.getGraphics2D().setColor(COLOR_BORDER_IN);
 		si.getGraphics2D().drawRect(xx+8,yy+8,ww-18,hh-18);
 		
-  		si.print(xpos+2,ypos+2,  "Inventory", Color.BLUE);
+  		si.print(xpos+2,ypos+2,  "Inventory", GFXDisplay.COLOR_BOLD);
  		si.print(xpos+2,ypos+3,  "1. Weapon:", Color.WHITE);
  		si.print(xpos+2,ypos+4,  "2. Readied", Color.WHITE);
  		si.print(xpos+2,ypos+5,  "3. Armor:", Color.WHITE);
@@ -1669,13 +1760,21 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		leaveScreen();
 	}
 	
+	private BorderedMenuBox GetMenuBox() {
+		return GetMenuBox(false);
+	}
+
+	private BorderedMenuBox GetMenuBox(boolean nullBox) {
+		BufferedImage box = nullBox ? null : TILE_WEAPON_BACK;
+		return new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, BORDERS_SIZE, box);
+	}
 
     public Action showSkills() throws ActionCancelException {
     	Debug.enterMethod(this, "showSkills");
     	enterScreen();
     	si.saveBuffer();
 		Vector skills = player.getAvailableSkills();
-		BorderedMenuBox menuBox = new BorderedMenuBox(BORDER1, BORDER2, BORDER3, BORDER4, si, COLOR_WINDOW_BACKGROUND, COLOR_BORDER_IN, COLOR_BORDER_OUT, STANDARD_WIDTH, null);
+		BorderedMenuBox menuBox = GetMenuBox(true);
   		menuBox.setItemsPerPage(14);
   		menuBox.setWidth(48);
   		menuBox.setPosition(6,4);
@@ -1826,7 +1925,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				}
 				break;
 			case CommandListener.EXAMINELEVELMAP:
-				examineLevelMap();
+				// examineLevelMap(); Disabled, we have minimap on HUD
 				break;
 			case CommandListener.CHARDUMP:
 				GameFiles.saveChardump(player);
@@ -1854,7 +1953,11 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		Position tmp = line.next();
 		while (!tmp.equals(target)){
 			tmp = line.next();
-			si.drawImage(tmp.x*STANDARD_WIDTH+13, (tmp.y*STANDARD_WIDTH+13)-4*cellHeight, tile);
+			drawImageVP(
+				tmp.x * 32 + 13,
+				tmp.y * 32 + 14 - 4 * cellHeight,
+				tile
+			);
 		}
 		
 	}
@@ -2102,7 +2205,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			}
 			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 				Item smi = (Item) value;
-				ren.setIcon(new ImageIcon(((GFXAppearance)smi.getAppearance()).getImage()));
+				ren.setIcon(new ImageIcon(((GFXAppearance)smi.getAppearance()).getIconImage()));
 				//ren.setText(smi.getMenuDescription());
 				ren.setText(smi.getAttributesDescription() + " ["+smi.getDefinition().getMenuDescription()+"] ($"+smi.getGoldPrice()+")");
 				ren.setOpaque(isSelected);
@@ -2254,11 +2357,11 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				if (value instanceof Equipment){
 					Equipment smi = (Equipment) value;
 					ren.setText(smi.getMenuDescription());
-					ren.setIcon(new ImageIcon(((GFXAppearance)smi.getItem().getAppearance()).getImage()));
+					ren.setIcon(new ImageIcon(((GFXAppearance)smi.getItem().getAppearance()).getIconImage()));
 				} else {
 					Item smi = (Item) value;
 					ren.setText(smi.getMenuDescription());
-					ren.setIcon(new ImageIcon(((GFXAppearance)smi.getAppearance()).getImage()));
+					ren.setIcon(new ImageIcon(((GFXAppearance)smi.getAppearance()).getIconImage()));
 				}
 					
 				ren.setOpaque(isSelected);
@@ -2285,7 +2388,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				int borderWidth, int borderHeight) {
 			super(UPRIGHT, UPLEFT, DOWNRIGHT, DOWNLEFT, OUT_COLOR, IN_COLOR, borderWidth, borderHeight);
 			setOpaque(false);
-			setBorder(new EmptyBorder(STANDARD_WIDTH,STANDARD_WIDTH,STANDARD_WIDTH,STANDARD_WIDTH));
+			setBorder(new EmptyBorder(BORDERS_SIZE,BORDERS_SIZE,BORDERS_SIZE,BORDERS_SIZE));
 			
 			btnOk = new GFXButton(IMG_OK_BTN);
 			setLayout(new BorderLayout());
@@ -2353,7 +2456,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			print(g, 41,5 , "("+CharKey.getString(Display.getKeyBindings().getProperty("LOOK_KEY"))+")", GFXDisplay.COLOR_BOLD);
 			print(g, 41,6 , "("+CharKey.getString(Display.getKeyBindings().getProperty("SHOW_MESSAGE_HISTORY_KEY"))+")", GFXDisplay.COLOR_BOLD);
 			print(g, 41,7, "("+CharKey.getString(Display.getKeyBindings().getProperty("SHOW_MAP_KEY"))+")", GFXDisplay.COLOR_BOLD);
-			print(g, 41,8, "("+CharKey.getString(Display.getKeyBindings().getProperty("EXAMINE_LEVEL_MAP_KEY"))+")", GFXDisplay.COLOR_BOLD);
+			//print(g, 41,8, "("+CharKey.getString(Display.getKeyBindings().getProperty("EXAMINE_LEVEL_MAP_KEY"))+")", GFXDisplay.COLOR_BOLD);
 			print(g, 41,9, "("+CharKey.getString(Display.getKeyBindings().getProperty("QUIT_KEY"))+")", GFXDisplay.COLOR_BOLD);
 			print(g, 41,10, "("+CharKey.getString(Display.getKeyBindings().getProperty("PROMPT_SAVE_KEY"))+")", GFXDisplay.COLOR_BOLD);
 			print(g, 41,11, "("+CharKey.getString(Display.getKeyBindings().getProperty("SWITCH_MUSIC_KEY"))+")", GFXDisplay.COLOR_BOLD);
@@ -2363,7 +2466,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			print(g, 44,5, "Look: Identifies map symbols and monsters", Color.WHITE);
 			print(g, 44,6, "Messages: Shows the latest messages", Color.WHITE);
 			print(g, 44,7, "Castle Map: Shows the castle map", Color.WHITE);
-			print(g, 44,8, "Area Map: Show the current area map", Color.WHITE);
+			//print(g, 44,8, "Area Map: Show the current area map", Color.WHITE);
 			print(g, 44,9, "Quit: Exits game", Color.WHITE);
 			print(g, 44,10, "Save: Saves game", Color.WHITE);
 			print(g, 44,11, "Switch Music: Turns music on/off", Color.WHITE);			
@@ -2390,6 +2493,14 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		actionSelectedByCommand = null;
 		Debug.exitMethod(ret);
 		return ret;
+	}
+
+	public void drawImageVP(int scrX, int scrY, Image img){
+		si.drawImage(
+			CAMERA.x + scrX * cameraScale,
+			CAMERA.y + scrY * cameraScale,
+			img
+		);
 	}
 }
 
