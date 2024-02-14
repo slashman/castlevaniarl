@@ -194,7 +194,7 @@ public class Game implements CommandListener, PlayerEventListener, java.io.Seria
 		loadLevel("CHARRIOT_W", 0);
 		//loadLevel("DRAGON_KING_LAIR", 15);
 		turns = 0;
-		timeSwitch = (int)(DAY_LENGTH / 2.0);
+		timeSwitch = DAY_LENGTH;
 		run();
 	}
 	
