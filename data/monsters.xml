@@ -16,10 +16,10 @@
 			<sel_basic>
 				<rangedAttacks>
 					<rangedAttack id = "MONSTER_MISSILE" type = "AXE"
-						range = "5" frequency = "80" charge = "3" message= "throws a bone at you"
+						range = "5" frequency = "60" charge = "99" message= "throws a bone at you"
 						effectType="missile" effectID="SFX_ROTATING_BONE" effectWav="wav/m_skeleton.wav"/>
 					<rangedAttack id = "MONSTER_MISSILE" status_effect = "STUN" type = "AXE"
-						range = "5" frequency = "40" charge = "3" message= "throws a yellow bone at you"
+						range = "5" frequency = "40" charge = "99" message= "throws a yellow bone at you"
 						effectType="missile" effectID="SFX_ROTATING_BONE" effectWav="wav/m_skeleton.wav"/>	
 				</rangedAttacks>
 			</sel_basic>
@@ -31,7 +31,7 @@
 			<sel_basic>
 				<rangedAttacks>
 					<rangedAttack id = "MONSTER_MISSILE" type = "AXE"
-						range = "6" charge = "2" frequency = "80" message= "throws a bone at you"
+						range = "5" charge = "99" frequency = "60" message= "throws a bone at you"
 						effectType="missile" effectID="SFX_ROTATING_BONE" effectWav="wav/m_skeleton.wav"/>
 				</rangedAttacks>
 			</sel_basic>

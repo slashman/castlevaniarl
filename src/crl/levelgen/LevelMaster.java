@@ -33,7 +33,7 @@ public class LevelMaster {
 		boolean overrideLevelNumber = false;
 		Level ret = null;
 		PatternGenerator.getGenerator().resetFeatures();
-		Respawner x = new Respawner(5, 90);
+		Respawner x = new Respawner(15, 90);
 		x.setSelector(new RespawnAI());
 		boolean hasHostage = false;
 		boolean isStatic = false;
@@ -172,14 +172,14 @@ public class LevelMaster {
 		} 
 		
 		if (levelID.startsWith("PRELUDE_ARENA")){
-			x = new Respawner(2, 100);
+			x = new Respawner(6, 100);
 			x.setSelector(new RespawnAI());
 			ret.setRespawner(x);
 			overrideLevelNumber = true;
 			ret.setLevelNumber(1);
 		}
 		if (levelID.startsWith("TOWN")){
-			x = new Respawner(2, 100);
+			x = new Respawner(6, 100);
 			x.setSelector(new RespawnAI());
 			ret.setRespawner(x);
 		}

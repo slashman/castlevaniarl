@@ -865,49 +865,6 @@ public class Player extends Actor {
 		}
 		Debug.exitMethod();
 	}
-/*		if (standsOnPlace() || level.getMapCell(getPosition()).isStair() || isInvincible() || hasEnergyField())
-			return;
-		Position landingPoint = null;
-		
-		for (int run = 0; run < dep; run++){
-			landingPoint = Position.add(getPosition(), variation);
-			if (!level.isValidCoordinate(landingPoint)){
-				land();
-				return;
-			}
-			Cell landingCell = getLevel().getMapCell(landingPoint);
-			if (landingCell == null){
-				if (run < dep-1){
-					//setPosition(landingPoint);
-					landOn(landingPoint);
-				} else {
-					landingPoint = level.getDeepPosition(landingPoint);
-					if (landingPoint == null){
-						level.addMessage("You are thrown into a endless pit!");
-						gameSessionInfo.setDeathCause(GameSessionInfo.ENDLESS_PIT);
-						hits = -1;
-						informPlayerEvent(Player.DEATH);
-						return;
-					} else {
-						landOn(landingPoint);
-						return;
-					}
-				}
-			} else {
-				if (!landingCell.isSolid()
-				 && landingCell.getHeight() <= getLevel().getMapCell(getPosition()).getHeight()) {
-					if (run < dep-1){
-						landOn(landingPoint);
-					} else {
-						landOn(landingPoint);
-						return;
-					}
-				} else {
-					return;
-				}
-			}
-		}
-	}*/
 	
 	public boolean isSwimming(){
 		Cell mapcell = level.getMapCell(getPosition());

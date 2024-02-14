@@ -17,20 +17,15 @@ public class Intro3 extends Unleasher {
 			level.addMessage("A monstruous Warg appears out of nowhere! Remember to 'j'ump and 'a'ttack from safe distance!");
 			Position playerFloor = new Position(level.getPlayer().getPosition());
 			playerFloor.z = 2;
-			int skeletons = Util.rand(1,2);
-			for (int i = 0; i < skeletons+1; i++){
-				int xpos = Util.rand(-5,5);
-				int ypos = Util.rand(-5,5);
+			while (true) {
+				int xpos = Util.rand(3,5) * (Util.chance(50) ? 1 : -1);
+				int ypos = Util.rand(3,5) * (Util.chance(50) ? 1 : -1);
 				Position wargPosition = Position.add(playerFloor, new Position(xpos, ypos));
 				if (level.isWalkable(wargPosition)){
-					String monsterId = "WHITE_SKELETON";
-					if (i == 0)
-						monsterId = "WARG";
-					Monster warg = MonsterFactory.getFactory().buildMonster(monsterId);
+					Monster warg = MonsterFactory.getFactory().buildMonster("WARG");
 					warg.setPosition(wargPosition);
 					level.addMonster(warg);
-				} else {
-					i--;
+					break;
 				}
 			}
 			STMusicManagerNew.thus.playKey("WRECKAGE");

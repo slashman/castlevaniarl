@@ -72,8 +72,7 @@ public class MonsterCharge extends Action{
 			if (aPlayer.getPosition().equals(destinationPoint)){
 				if (aPlayer.getStandingHeight() == aMonster.getStandingHeight()){
 					StringBuffer buff = new StringBuffer("You are hit.");
-					if (aPlayer.damage(buff, aMonster, new Damage((damage==0?aMonster.getAttack():damage), false)))
-						aPlayer.bounceBack(var, 1);
+					aPlayer.damage(buff, aMonster, new Damage((damage==0?aMonster.getAttack():damage), false));
 					aLevel.addMessage(buff.toString());
 				} else if (aPlayer.getStandingHeight() > aMonster.getStandingHeight()){
 					aLevel.addMessage("The "+aMonster.getDescription()+ "'s attack passes beneath you!");
