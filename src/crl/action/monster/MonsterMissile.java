@@ -113,7 +113,7 @@ public class MonsterMissile extends Action{
 				}
 				if (hits){
 					aLevel.addBlood(destinationPoint, 1);
-					StringBuffer buff = new StringBuffer("You are hit.");
+					StringBuffer buff = new StringBuffer("");
 					if (aPlayer.damage(buff, aMonster, new Damage((damage==0?aMonster.getAttack():damage), false))) {
 						aLevel.addMessage(buff.toString());
 						if (statusEffect != null){
