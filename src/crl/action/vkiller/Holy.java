@@ -79,12 +79,12 @@ public class Holy extends HeartAction{
 		aLevel.addSmartFeature("BURNING_FLAME", Position.add(flameOrigin, Action.directionToVariation(Action.DOWNLEFT)));
 		aLevel.addSmartFeature("BURNING_FLAME", Position.add(flameOrigin, Action.directionToVariation(Action.DOWNRIGHT)));
 
-		StringBuffer message = new StringBuffer();
 		for (int x = flameOrigin.x -1; x <= flameOrigin.x+1; x++)
 			for (int y = flameOrigin.y -1; y <= flameOrigin.y+1; y++){
 				Position destinationPoint = new Position(x,y, flameOrigin.z);
 				Feature destinationFeature = aLevel.getFeatureAt(destinationPoint);
 	        	if (destinationFeature != null && destinationFeature.isDestroyable()){
+					StringBuffer message = new StringBuffer();
 		        	message.append("The "+destinationFeature.getDescription()+" burns");
 					Feature prize = destinationFeature.damage(aPlayer, damage);
 		        	if (prize != null){
@@ -92,10 +92,11 @@ public class Holy extends HeartAction{
 
 					}
 					message.append(".");
+					aLevel.addMessage(message.toString());
 				}
 				Monster targetMonster = performer.getLevel().getMonsterAt(destinationPoint);
 				if (targetMonster != null){
-					
+					StringBuffer message = new StringBuffer();
 					if (targetMonster.wasSeen())
 						message.append("The "+targetMonster.getDescription()+" catches in flame");
 					//targetMonster.damage(player.getWhipLevel());
@@ -105,10 +106,9 @@ public class Holy extends HeartAction{
 		        			message.append(" and is roasted!");
 						performer.getLevel().removeMonster(targetMonster);
 					}
+					aLevel.addMessage(message.toString());
 				}
 			}
-		aLevel.addMessage(message.toString());
-
 	}
 
 	public String getPromptPosition(){
