@@ -1488,7 +1488,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
   		menuBox.setTitle("Items");
   		menuBox.setMenuItems(inventory);
   		
-  		MenuBox itemUsageChoices = new MenuBox(si, null);
+  		MenuBox itemUsageChoices = new MenuBox(si, this.configuration, null);
   		itemUsageChoices.setItemsPerPage(6);
   		itemUsageChoices.setWidth(20);
   		itemUsageChoices.setPosition(52,15);

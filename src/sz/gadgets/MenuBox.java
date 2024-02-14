@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
+import crl.conf.gfx.data.GFXConfiguration;
 import crl.ui.graphicsUI.GFXDisplay;
 import crl.ui.graphicsUI.SwingSystemInterface;
 
@@ -24,8 +25,11 @@ public class MenuBox {
 	private int xpos, ypos, width, itemsPerPage;;
 	private SwingSystemInterface si;
 	private BufferedImage box;
-	public MenuBox(SwingSystemInterface g, BufferedImage box){
+	private GFXConfiguration configuration;
+
+	public MenuBox(SwingSystemInterface g, GFXConfiguration configuration, BufferedImage box){
 		this.si = g;
+		this.configuration = configuration;
 		this.box = box;
 	}
 	
@@ -46,25 +50,22 @@ public class MenuBox {
 		this.items = items;
 	}
 
-	private static Color TRANSPARENT_BLUE = new Color(0,0,0,250);
-	private static Color COLOR_BORDER_IN = new Color(160,160,160);
-	private static Color COLOR_BORDER_OUT = new Color(80,80,255);
-	
 	private int gap = 24;
 	
 	public void setGap(int val){
 		gap = val;
 	}
 	
-	
-	
 	public void draw(){
 		int realW = width * 10 +20;
 		int realH = (itemsPerPage+1)*gap+20;
 		int realPosX = xpos*10 - 20;
 		int realPosY = ypos*24 - 30;
-		
-		si.getGraphics2D().setColor(TRANSPARENT_BLUE);
+		Color COLOR_WINDOW_BACKGROUND = this.configuration.getWindowBackgroundColour();
+		Color COLOR_BORDER_IN = this.configuration.getBorderColourIn();
+		Color COLOR_BORDER_OUT = this.configuration.getBorderColourOut();
+
+		si.getGraphics2D().setColor(COLOR_WINDOW_BACKGROUND);
 		si.getGraphics2D().fillRect(realPosX+6, realPosY+6, realW-14, realH-14);
 		si.getGraphics2D().setColor(COLOR_BORDER_OUT);
 		si.getGraphics2D().drawRect(realPosX+6,realPosY+6,realW-14,realH-14);
