@@ -586,6 +586,7 @@ public class Player extends Actor {
 		}
 
 		damage(message, dam);
+		UserInterface.getUI().drawEffect(EffectFactory.getSingleton().createLocatedEffect(getPosition(), "SFX_QUICK_WHITE_HIT"));
 		if (hits < 0){
 			if (getSex() == MALE)
 				SFXManager.play("wav/die_male.wav");

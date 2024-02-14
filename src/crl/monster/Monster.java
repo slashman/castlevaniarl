@@ -156,7 +156,7 @@ public class Monster extends Actor implements Cloneable{
 			dam *= 2;
 		message.append(" ("+dam+")");
 		hits -= dam;
-
+		UserInterface.getUI().drawEffect(EffectFactory.getSingleton().createLocatedEffect(getPosition(), "SFX_QUICK_WHITE_HIT"));
 		if (getDefinition().getBloodContent() > 0){
 			if (level.getPlayer().hasCounter(Consts.C_BLOOD_THIRST) &&
 					Position.flatDistance(getPosition(), level.getPlayer().getPosition()) < 3){
