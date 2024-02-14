@@ -530,7 +530,11 @@ public class Game implements CommandListener, PlayerEventListener, java.io.Seria
 	}
 
 	private void loadLevel(String levelID) {
-		loadLevel(levelID, -1);
+		boolean newLevel = loadLevel(levelID, -1);
+		ui.refresh();
+		if (newLevel) {
+			Display.thus.showMap(currentLevel.getMapLocationKey(), currentLevel.getDescription());
+		}
 	}
 	
 	public void wonGame(){
@@ -540,12 +544,12 @@ public class Game implements CommandListener, PlayerEventListener, java.io.Seria
 		return;
 	}
 	
-	private void loadLevel(String levelID, int targetLevelNumber) {
+	private boolean loadLevel(String levelID, int targetLevelNumber) {
 		Debug.enterMethod(this, "loadLevel", levelID+","+targetLevelNumber);
 		String formerLevelID = null; 
 		if (currentLevel != null){
 			if (currentLevel.getBoss() != null && !currentLevel.getBoss().isDead())
-				return;
+				return false;
 			formerLevelID = currentLevel.getID();
 			Level storedLevel = (Level) storedLevels.get(formerLevelID);
 			if (storedLevel == null){
@@ -554,6 +558,7 @@ public class Game implements CommandListener, PlayerEventListener, java.io.Seria
 		} else {
 			formerLevelID = "_BACK";
 		}
+		boolean newLevel = false;
 		Level storedLevel = (Level)storedLevels.get(levelID);
 		if (storedLevel != null) {
 			currentLevel = storedLevel;
@@ -572,8 +577,10 @@ public class Game implements CommandListener, PlayerEventListener, java.io.Seria
 				uiSelector.setPlayer(player);
 				currentLevel.setIsDay(isDay);
 				currentLevel.setTimecounter(timeSwitch);
-				if (currentLevel.getPlayer() != null)
+				if (currentLevel.getPlayer() != null) {
 					currentLevel.getPlayer().addHistoricEvent("got to the "+currentLevel.getDescription());
+					newLevel = true;
+				}
 			} catch (CRLException crle){
 				crash("Error while creating level "+levelID, crle);
 			}
@@ -625,6 +632,7 @@ public class Game implements CommandListener, PlayerEventListener, java.io.Seria
 		}
 		ui.levelChange();
 		Debug.exitMethod();
+		return newLevel;
 	}
 	
 	public void setLevel(Level level){
