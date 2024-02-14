@@ -34,8 +34,7 @@ public class Dash extends Action{
 			if (aPlayer.getPosition().equals(destinationPoint) && 
 					aPlayer.getStandingHeight() == aMonster.getStandingHeight()){
 				message.append("The "+aMonster.getDescription()+ " slices you!");
-				if (aPlayer.damage(message, aMonster, new Damage(aMonster.getAttack(), false)))
-					aPlayer.bounceBack(var, 1);
+				aPlayer.damage(message, aMonster, new Damage(aMonster.getAttack(), false));
 			}
 
 			aMonster.setPosition(destinationPoint);
