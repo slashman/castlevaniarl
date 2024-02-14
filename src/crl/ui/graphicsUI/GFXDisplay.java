@@ -525,12 +525,14 @@ public class GFXDisplay extends Display{
 	
 	public void showMap(String locationKey, String locationDescription) {
 		si.saveBuffer();
-		si.drawImage(50,50, IMG_MAP);
-		si.print(180, 200, locationDescription, Color.BLACK);
+		int mapX = this.configuration.getScreenWidth() / 2 - 696 /2;
+		int mapY = 100;
+		si.drawImage(mapX,mapY, IMG_MAP);
+		si.printAtPixel(mapX + 130, mapY + 150, locationDescription, Color.BLACK);
 		if (locationKey != null){
 			Position location = (Position) locationKeys.get(locationKey);
 			if (location != null)
-				si.drawImage(location.x+53, location.y+53, IMG_MAPMARKER);
+				si.drawImage(location.x + mapX + 3, location.y + mapY + 3, IMG_MAPMARKER);
 		}
 		si.refresh();
 		si.waitKey(CharKey.SPACE);
