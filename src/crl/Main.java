@@ -104,7 +104,7 @@ public class Main {
 	private static void init(){
 		if (createNew){		
 			System.out.println("CastlevaniaRL "+Game.getVersion());
-			System.out.println("Slash ~ 2005-2010");
+			System.out.println("by slashie ~ 2005-2007, 2010, 2024");
 			System.out.println("Reading configuration");
 	    	readConfiguration();
 			GFXConfiguration gfx_configuration = new GFXConfiguration();
