@@ -8,7 +8,7 @@
                            Serenade of Chaos
 
 
-                           by: Santiago Zapata, 2005-2010
+                           by: Santiago Zapata, 2005-2024
 
 
 
@@ -525,14 +525,14 @@ Sell magic artifacts such as medallions and spellbooks
 8. Commands and Actions
 -----------------------
 These keybindings correspond to the default definitions. You can change them by
-modifying the 'keys.cgf' file.
+modifying the 'keys.cfg' file.
 
   SpaceBar: Uses a mystic weapon
-a Attack: Uses a weapon in a given direction
-c Character info: Shows your skills and attributes
-d Drop: Drops an item
-D Dive: Dives into the water
-e Equip: Wears a weapon, armor or accesory
+. Attack: Uses a weapon in a given direction
+C Character info: Shows your skills and attributes
+D Drop: Drops an item
+P Dive: Dives into the water
+E Equip: Wears a weapon, armor or accesory
 f Fire: Aims a weapon at a position
 F Fusion: Fusion spirits to increase skills
 g Get: Picks up an item
@@ -543,7 +543,7 @@ m Messages: Shows the latest messages
 M Map: Shows the castle map
 Q Quit: Exits game
 r Reload: Reloads a given weapon
-s Skills: Allows to use your character skills
+p Skills: Allows to use your character skills
 S Save: Saves game
 t Throw: Throws an Item
 u Use: Uses an Item
@@ -573,7 +573,7 @@ used on the game
 --------
 * Christopher Barrett: Project artist, graphic design, tiles
 * Jorge D. Fuentes, Nicholas, RPGFan, Tom Kim, JiLost: Castlevania Midis
-* Björn Bergström: Recursive Shadowcasting LOS algorithm
+* Bjï¿½rn Bergstrï¿½m: Recursive Shadowcasting LOS algorithm
 
  Acknowledgements
 -----------------
@@ -586,7 +586,7 @@ used on the game
  Contact me
 -----------
 All your suggestions and bug reports are welcome via the official website (
-http://slashie.net )
+https://slashie.net )
 
 
 0.7 Manual Version 1.6 - Feb 22/10
