@@ -74,7 +74,7 @@ public class TargetPS extends ProjectileSkill{
 			if (((Player)performer).getSex() == Player.MALE)
 				return "wav/punch_male.wav";
 			else
-				return "wav/punch_female.wav";
+				return "wav/punch_male.wav";
 		}
 	}
 
@@ -125,7 +125,7 @@ public class TargetPS extends ProjectileSkill{
 		}
 		
 		if (weapon.getRange() < 2){
-			invalidationMessage = "You can´t target your "+weapon.getDescription();
+			invalidationMessage = "You canï¿½t target your "+weapon.getDescription();
 			return false;
 		}
 		
