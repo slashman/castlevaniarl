@@ -81,7 +81,7 @@ public class CharDisplay extends Display{
 		si.print(logox+5,logoy+2, "\\/", ConsoleSystemInterface.YELLOW);
 		String messageX = "'CastleVania' is a trademark of Konami Corporation.";
 		si.print((80 - messageX.length()) / 2,20, messageX, ConsoleSystemInterface.DARK_RED);
-		messageX = "CastlevaniaRL v"+Game.getVersion()+", Developed by Santiago Zapata 2005-2010";
+		messageX = "CastlevaniaRL v"+Game.getVersion()+", Developed by Santiago Zapata 2005-2024";
 		si.print((80 - messageX.length()) / 2,21, messageX, ConsoleSystemInterface.WHITE);
 		messageX = "Midi Tracks by Jorge E. Fuentes, JiLost, Nicholas and Tom Kim";
 		si.print((80 - messageX.length()) / 2,22, messageX, ConsoleSystemInterface.WHITE);
