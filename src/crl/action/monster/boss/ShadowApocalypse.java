@@ -40,9 +40,7 @@ public class ShadowApocalypse extends Action{
         Player aPlayer = aLevel.getPlayer();
         Position destinationPoint = new Position(x,y,z);
 		if (destinationPoint.equals(aPlayer.getPosition())){
-			StringBuffer buff = new StringBuffer("You feel pain all over your body!!");
-        	aPlayer.damage(buff, (Monster)performer, new Damage(4, false));
-        	aLevel.addMessage(buff.toString());
+        	aPlayer.damage("You feel pain all over your body!!", (Monster)performer, new Damage(4, false));
 		}
 	}
 }

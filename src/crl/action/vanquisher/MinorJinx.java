@@ -22,13 +22,9 @@ public class MinorJinx extends Action{
 	
 	public void execute(){
 		Player aPlayer = (Player)performer;
-		Level aLevel = aPlayer.getLevel();
-		
 		int recover = 10;
-		StringBuffer buff = new StringBuffer("You exchange vitality for power!! (+"+recover+")");
 		aPlayer.addHearts(recover);
-		aPlayer.selfDamage(buff, Player.DAMAGE_JINX, new Damage(5, true));
-		aLevel.addMessage(buff.toString());
+		aPlayer.selfDamage("You exchange vitality for power!! (+"+recover+")", Player.DAMAGE_JINX, new Damage(5, true));
 		
 	}
 	

@@ -81,10 +81,7 @@ public class MonsterWalk extends Action{
 									if (aLevel.getPlayer().getStandingHeight() == aMonster.getStandingHeight()){
 										if (aMonster.getWavOnHit() != null)
 											SFXManager.play(aMonster.getWavOnHit());
-										StringBuffer buff = new StringBuffer ("You are hit by the "+aMonster.getDescription()+"!");
-										if (aLevel.getPlayer().damage(buff, aMonster, new Damage(aMonster.getAttack(), false))) {
-											aLevel.addMessage(buff.toString());
-										}
+										aLevel.getPlayer().damage("You are hit by the "+aMonster.getDescription()+"!", aMonster, new Damage(aMonster.getAttack(), false));
 									} else if (aLevel.getPlayer().getStandingHeight() > aMonster.getStandingHeight()){
 										aLevel.addMessage("The "+aMonster.getDescription()+ " walks beneath you");
 										performer.setPosition(destinationPoint);

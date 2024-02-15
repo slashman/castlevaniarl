@@ -39,10 +39,8 @@ public class Swim extends Action{
 
 		if (aMonster.getAttack() > 0 && aLevel.getPlayer().getPosition().equals(destinationPoint) && aLevel.getPlayer().getStandingHeight() == aMonster.getStandingHeight()){
 			// Damage the poor player and bounce him back
-			StringBuffer buff = new StringBuffer("The "+aMonster.getDescription()+" hits you with his jump!");
-			if (aLevel.getPlayer().damage(buff, aMonster, new Damage(aMonster.getAttack(), false)))
+			if (aLevel.getPlayer().damage("The "+aMonster.getDescription()+" hits you with his jump!", aMonster, new Damage(aMonster.getAttack(), false)))
 				aLevel.getPlayer().bounceBack(var,1);
-			aLevel.addMessage(buff.toString());
 		}
 	}
 

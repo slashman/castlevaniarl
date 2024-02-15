@@ -12,8 +12,6 @@ public class MummyStrangle extends Action{
 	
 	public void execute(){
         Level aLevel = performer.getLevel();
-        StringBuffer buff = new StringBuffer("Akmodan strangles you!");
-        aLevel.getPlayer().damage(buff, (Monster)performer, new Damage(6, false));
-        aLevel.addMessage(buff.toString());
+        aLevel.getPlayer().damage("Akmodan strangles you!", (Monster)performer, new Damage(6, false));
 	}
 }

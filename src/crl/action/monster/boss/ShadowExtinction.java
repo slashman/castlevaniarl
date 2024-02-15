@@ -51,9 +51,7 @@ public class ShadowExtinction  extends Action{
 			aLevel.addMessage(message);
 		}
         if (destinationPoint.equals(aPlayer.getPosition())){
-        	StringBuffer buff = new StringBuffer("You are hit by the dark energy!");
-        	aPlayer.damage(buff, (Monster)performer, new Damage(2, false));
-        	aLevel.addMessage(buff.toString());
+        	aPlayer.damage("You are hit by the dark energy!", (Monster)performer, new Damage(2, false));
 		}
 	}
 }

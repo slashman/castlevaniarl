@@ -61,9 +61,7 @@ public class MandragoraScream extends Action {
 			monsters.removeAll(removables);
 			
 			if (Position.flatDistance(performer.getPosition(), performer.getLevel().getPlayer().getPosition()) < SCREAM_RANGE){
-				StringBuffer messages = new StringBuffer("You hear the mandragora scream!");
-				performer.getLevel().getPlayer().damage(messages, (Monster)performer, new Damage(SCREAM_DAMAGE, true));
-				performer.getLevel().addMessage(messages.toString());
+				performer.getLevel().getPlayer().damage("You hear the mandragora scream!", (Monster)performer, new Damage(SCREAM_DAMAGE, true));
 			}
 			
 			performer.die();

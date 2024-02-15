@@ -123,9 +123,7 @@ public class Walk extends Action{
 														aMonster.damage(buff, aPlayer.getAttack());
 														aLevel.addMessage(buff.toString());
 													} else {
-														StringBuffer buff = new StringBuffer("You bump with the "+aMonster.getDescription()+"!"); 
-														if (aPlayer.damage(buff, aMonster, new Damage(aMonster.getAttack(), false))){
-															aLevel.addMessage(buff.toString());
+														if (aPlayer.damage("You bump with the "+aMonster.getDescription()+"!", aMonster, new Damage(aMonster.getAttack(), false))){
 															aLevel.getPlayer().bounceBack(Position.mul(var, -1), 2);
 															if (aPlayer.getPosition().equals(aMonster.getPosition())){
 																//The player wasnt bounced back..

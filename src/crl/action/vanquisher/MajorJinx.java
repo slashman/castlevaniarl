@@ -22,13 +22,9 @@ public class MajorJinx extends Action{
 	
 	public void execute(){
 		Player aPlayer = (Player)performer;
-		Level aLevel = aPlayer.getLevel();
-		
-		int recover = 5+aPlayer.getSoulPower()*2;
-		StringBuffer buff = new StringBuffer("You exchange vitality for power!! (+"+recover+")");
+		int recover = 5 + aPlayer.getSoulPower() * 2;
 		aPlayer.addHearts(recover);
-		aPlayer.selfDamage(buff, Player.DAMAGE_JINX, new Damage(5, true));
-		aLevel.addMessage(buff.toString());
+		aPlayer.selfDamage("You exchange vitality for power!! (+"+recover+")", Player.DAMAGE_JINX, new Damage(5, true));
 	}
 	
 	public boolean canPerform(Actor a){

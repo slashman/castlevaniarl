@@ -362,7 +362,7 @@ public class Player extends Actor {
 		return 0;
 	}
 	
-	private void damage(StringBuffer message, Damage dam){
+	private void damage(String damageSource, Damage dam){
 		if (!level.isDay())
 			dam.boostDamage(1);
 		if (getFlag(Consts.ENV_THUNDERSTORM))
@@ -422,15 +422,15 @@ public class Player extends Actor {
 		}
 		
 		hits -= dam.getDamage();
-		message.append(" {"+dam.getDamage()+"}");
+		level.addMessage(damageSource + " {"+dam.getDamage()+"}");
 		if (Util.chance(50))
 			decreaseWhip();
 		if (Util.chance(40))
 			level.addBlood(getPosition(), Util.rand(0,1));
 	}
 
-	public void selfDamage(StringBuffer message, int damageType, Damage dam){
-		damage(message, dam);
+	public void selfDamage(String damageSource, int damageType, Damage dam){
+		damage(damageSource, dam);
 		if (hits < 0){
 			switch (damageType){
 				case Player.DAMAGE_MORPHED_WITH_STRONG_ARMOR:
@@ -532,7 +532,7 @@ public class Player extends Actor {
 		}
 	}
 	
-	public boolean damage (StringBuffer message, Monster who, Damage dam){
+	public boolean damage (String mxessage, Monster who, Damage dam){
 		int attackDirection = Action.getGeneralDirection(who.getPosition(), getPosition());
 		if (hasEnergyField()){
 			StringBuffer buff = new StringBuffer("The "+who.getDescription()+" is shocked!");
@@ -584,8 +584,7 @@ public class Player extends Actor {
 				dam.reduceDamage(getShield().getDefense());
 			}
 		}
-
-		damage(message, dam);
+		damage("The "+who.getDescription()+" hits you.", dam);
 		UserInterface.getUI().drawEffect(EffectFactory.getSingleton().createLocatedEffect(getPosition(), "SFX_QUICK_WHITE_HIT"));
 		if (hits < 0){
 			if (getSex() == MALE)
@@ -947,9 +946,7 @@ public class Player extends Actor {
     	
     	if (isPoisoned()){
     		if (Util.chance(40)){
-    			StringBuffer buff = new StringBuffer("You feel the poison coursing through your veins!");
-    			selfDamage(buff, Player.DAMAGE_POISON, new Damage(3, true));
-    			level.addMessage(buff.toString());
+    			selfDamage("You feel the poison coursing through your veins!", Player.DAMAGE_POISON, new Damage(3, true));
     		}
     	}
     	if (getHoverHeight() > 0)
@@ -1113,9 +1110,7 @@ public class Player extends Actor {
 		}
 		if (destinationCell.getDamageOnStep() > 0){
 			if (!isInvincible()){
-				StringBuffer buff = new StringBuffer("You are injured by the "+destinationCell.getShortDescription()+"!");
-				selfDamage(buff, Player.DAMAGE_WALKED_ON_LAVA, new Damage(2, false));
-				level.addMessage(buff.toString());
+				selfDamage("You are injured by the "+destinationCell.getShortDescription(), Player.DAMAGE_WALKED_ON_LAVA, new Damage(2, false));
 			}
 		}
 
@@ -2697,9 +2692,7 @@ public class Player extends Actor {
 		if (armor != null){
 			if (bigMorph){
 				if (armor.getDefense() > morphStrength){
-					StringBuffer buff = new StringBuffer("Your armor is too strong! You feel trapped! You are injured!");
-					selfDamage(buff, Player.DAMAGE_MORPHED_WITH_STRONG_ARMOR, new Damage(10, true));
-					level.addMessage(buff.toString());
+					selfDamage("Your armor is too strong! You feel trapped! You are injured!", Player.DAMAGE_MORPHED_WITH_STRONG_ARMOR, new Damage(10, true));
 					return;
 				}
 				level.addMessage("You destroy your "+armor.getDescription()+"!");

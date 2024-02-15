@@ -160,10 +160,8 @@ public class Jump extends Action{
 			Monster aMonster = aLevel.getMonsterAt(destinationPoint);
 			if (aMonster != null && !(aMonster instanceof Merchant || aMonster instanceof NPC)){
 				// Damage the poor player and bounce him back
-				StringBuffer buff = new StringBuffer("You are bounced back by the "+aMonster.getDescription()+"!");
-				if (aPlayer.damage(buff, aMonster, new Damage(aMonster.getAttack(), false)))
+				if (aPlayer.damage("You are bounced back by the "+aMonster.getDescription()+"!", aMonster, new Damage(aMonster.getAttack(), false)))
 					aLevel.getPlayer().bounceBack(Position.mul(var, -1), 3);
-				aLevel.addMessage(buff.toString());
 				break out;
 			}
 		}

@@ -113,9 +113,7 @@ public class MonsterMissile extends Action{
 				}
 				if (hits){
 					aLevel.addBlood(destinationPoint, 1);
-					StringBuffer buff = new StringBuffer("");
-					if (aPlayer.damage(buff, aMonster, new Damage((damage==0?aMonster.getAttack():damage), false))) {
-						aLevel.addMessage(buff.toString());
+					if (aPlayer.damage("The "+aMonster.getDescription()+ " hits you!", aMonster, new Damage((damage==0?aMonster.getAttack():damage), false))) {
 						if (statusEffect != null){
 							if (statusEffect.equals(Player.STATUS_STUN)){
 								aLevel.addMessage("You are stunned!");

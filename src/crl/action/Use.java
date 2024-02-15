@@ -90,9 +90,9 @@ public class Use extends Action{
 			return;
 		}                                
 		for (int cmd = 0; cmd < effect.length; cmd+=2){
-			StringBuffer message = new StringBuffer(targetItem.getUseMessage());
+			String message = targetItem.getUseMessage();
 			if (message.equals(""))
-				message.append("You use the "+targetItem.getDescription());
+				message = "You use the "+targetItem.getDescription();
 			if (effect[cmd].equals("DAYLIGHT")){
 				if (!aPlayer.getLevel().isDay()){
 					aPlayer.getLevel().addMessage("The card fizzles in a blast of light!");
