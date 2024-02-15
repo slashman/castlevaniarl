@@ -11,6 +11,16 @@ Changes List
 
 Version 0.8: 14/02/2024
 ------------------------
+Gameplay:
+- Remove bounce back when hit
+- Buff healing items
+- Remove skeletons from welcome party
+- Make starting skeletons only throw bone once
+- Fixes on battle messages
+- Start game at dawn for higher chances to reach Petra on daylight
+- Reduce monster spawning frequency
+- Mandragora screm now ignores armour
+
 Visuals:
 - Increase canvas size to 1024x768 (was 800x600)
 - Scale sprites 2x on viewport
@@ -24,18 +34,14 @@ Visuals:
 - Optional full screen mode
 - Fix Paranthropus sprite
 
-Gameplay:
-- Remove bounce back when hit
-- Buff healing items
-- Remove skeletons from welcome party
-- Make starting skeletons only throw bone once
-- Fixes on battle messages
-- Start game at dawn for higher chances to reach Petra on daylight
-- Reduce monster spawning frequency
-- Mandragora screm now ignores armour
+Controls
+- Add short keyboard movement, via WASDpad
 
 Audio:
 - Disable ridiculous female sound effects
+
+Technical:
+- Bundle 64bit libjcurses .dll to enable console mode in modern OSs
 
 Version 0.73: 28/02/2010
 ------------------------
