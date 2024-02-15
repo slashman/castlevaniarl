@@ -107,12 +107,13 @@ public class Main {
 			System.out.println("by slashie ~ 2005-2007, 2010, 2024");
 			System.out.println("Reading configuration");
 	    	readConfiguration();
-			GFXConfiguration gfx_configuration = new GFXConfiguration();
-			gfx_configuration.LoadConfiguration(UIconfiguration);
+			GFXConfiguration gfx_configuration = null;
             try {
     			
     			switch (mode){
 				case SWING_GFX:
+					gfx_configuration = new GFXConfiguration();
+					gfx_configuration.LoadConfiguration(UIconfiguration);
 					System.out.println("Initializing Graphics Appearances");
 					initializeGAppearances(gfx_configuration);
 					break;
