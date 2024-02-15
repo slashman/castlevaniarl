@@ -784,15 +784,15 @@ public class ConsoleUserInterface extends UserInterface implements CommandListen
 		CharKey x = new CharKey(CharKey.NONE);
 		while (x.code == CharKey.NONE)
 			x = si.inkey();
-		if (x.isArrow() || x.code == CharKey.N5){
-			int ret = Action.toIntDirection(x);
+		int ret = ConsoleUISelector.toIntDirection(x);
+		if (ret != -1) {
         	Debug.exitMethod(ret);
         	return ret;
 		} else {
-			ActionCancelException ret = new ActionCancelException(); 
-			Debug.exitExceptionally(ret);
+			ActionCancelException ace = new ActionCancelException(); 
+			Debug.exitExceptionally(ace);
 			si.refresh();
-        	throw ret; 
+        	throw ace; 
 		}
 	}
 

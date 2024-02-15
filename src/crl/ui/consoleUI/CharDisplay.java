@@ -269,7 +269,7 @@ public class CharDisplay extends Display{
 		si.print( 3,15, "("+CharKey.getString(Display.getKeyBindings().getProperty("UNEQUIP_KEY"))+")", ConsoleSystemInterface.RED);
 		si.print( 3,16, "("+CharKey.getString(Display.getKeyBindings().getProperty("SWITCH_WEAPONS_KEY"))+")", ConsoleSystemInterface.RED);
 		
-		si.print( 6,3,  "Action: Action: Aim special weapon", ConsoleSystemInterface.WHITE);
+		si.print( 6,3,  "Action: Aim special weapon", ConsoleSystemInterface.WHITE);
 		si.print( 6,4,  "Attack: Uses a weapon", ConsoleSystemInterface.WHITE);
 		si.print( 6,5,  "Drop: Drops an item", ConsoleSystemInterface.WHITE);
 		si.print( 6,6,  "Equip: Wears equipment", ConsoleSystemInterface.WHITE);

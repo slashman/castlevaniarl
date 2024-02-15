@@ -26,21 +26,21 @@ public class Cells {
 		ret [165] = new Cell("STATIC_VOID", "", "", apf.getAppearance("VOID"));
 
 		ret [133] = new Cell("SIGNPOST_T1", "signpost", "Exercise 1: Items \n \n " +
-				" Pick up the herbs moving over them and pressing 'g', move to the house and drop them using 'd'.\n \n" +
+				" Pick up the herbs moving over them and pressing 'g', move to the house and drop them using 'D'.\n \n" +
 				" During your journeys, you will find items laying in the ground, you must pick them up before using " +
 				"or wearing them.", apf.getAppearance("SIGN_POST"), true, false);
 		ret [177] = new Cell("SIGNPOST_T2", "signpost", "Exercise 2: Jumping \n \n " +
 				"Jump the water moving next to it and pressing the jump key 'j' and the direction. \n \n " +
 				"Jumping is useful in combat to gain tactical advantage, and you can also use it to pass over gaps in the terrain.", apf.getAppearance("SIGN_POST"), true, false);
 		ret [132] = new Cell("SIGNPOST_T3", "signpost", "Exercise 3: Attacking \n \n " +
-				"Move next to a tree and press 'a', then the direction to attack the tree. \n \n " +
+				"Move next to a tree and press [PERIOD], then the direction to attack the tree. \n \n " +
 				"The world is full of monsters eager to kill you. This is the main way of attacking. Depending on your " +
 				"current weapon, you may hit enemies which are not adjacent to you.", apf.getAppearance("SIGN_POST"), true, false);
 		ret [135] = new Cell("SIGNPOST_T4", "signpost", "Exercise 4: Ranged Weapons \n \n " +
 				"Pick up this bow and press 'e' and then the item letter to equip it. \n \n Press 'f' and aim at a tree using the directional keys and press 'f' again to shoot an arrow. \n \n " +
 				"Ranged weapons allow you to attack at a distance, but must be reloaded consuming hearts and gold.", apf.getAppearance("SIGN_POST"), true, false);
 		ret [134] = new Cell("SIGNPOST_T5", "signpost", "Exercise 5: Swimming \n \n " +
-				"Walk over the water and use 'p' to plunge into the lake, swim north into the other side and use 'j' to go back to the surface. \n \n " +
+				"Walk over the water and use 'P' to plunge into the lake, swim north into the other side and use 'j' to go back to the surface. \n \n " +
 				"Diving is a dangerous.. you will die as soon as you run " +
 				"out of oxygen (02 indicator).\n \n Be sure to resurface to replenish your oxygen.", apf.getAppearance("SIGN_POST"), true, false);
 		ret [136] = new Cell("SIGNPOST_T6", "signpost", "Exercise 6: Throwing \n \n " +
@@ -52,7 +52,7 @@ public class Cells {
 		ret [178] = new Cell("SIGNPOST_T8", "signpost", "Exercise 8: Monsters! \n \n " +
 				"You are now ready to fight! with your mystic weapon you should have no problem dispatching these weak foes.\n \n " +
 				"You can evade the skeleton bones by moving out of their firing range, they always target your previous location!", apf.getAppearance("SIGN_POST"), true, false);
-		ret [139] = new Cell("SIGNPOST_T9", "signpost", "You can check the area map using 'M', access your skills using 's' " +
+		ret [139] = new Cell("SIGNPOST_T9", "signpost", "You can access your skills using 'p' " +
 				"and check your inventory using 'i'. Press '?' for complete reference. \n \n You can access most of the item manipulation commands from the Inventory screen!\n \n Walk through here to leave this area and end your training \n \n CastleVania awaits!", apf.getAppearance("SIGN_POST"), true, false);
 		
 				

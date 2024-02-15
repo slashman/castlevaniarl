@@ -14,7 +14,7 @@ public class Intro3 extends Unleasher {
 
 	public void unleash(Level level, Game game) {
 		if (level.getFlag("INTRO2")&& level.getCounter("COUNTBACK_INTRO_2").isOver()){
-			level.addMessage("A monstruous Warg appears out of nowhere! Remember to 'j'ump and 'a'ttack from safe distance!");
+			level.addMessage("A monstruous Warg appears out of nowhere! Remember to [j]ump, attack from safe distance (with [.]), and use your [p]owers!");
 			Position playerFloor = new Position(level.getPlayer().getPosition());
 			playerFloor.z = 2;
 			while (true) {

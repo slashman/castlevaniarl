@@ -1215,15 +1215,15 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		CharKey x = new CharKey(CharKey.NONE);
 		while (x.code == CharKey.NONE)
 			x = si.inkey();
-		if (x.isArrow()){
-			int ret = GFXUISelector.toIntDirection(x);
+		int ret = GFXUISelector.toIntDirection(x);
+		if (ret != -1) {
         	Debug.exitMethod(ret);
         	return ret;
 		} else {
-			ActionCancelException ret = new ActionCancelException(); 
-			Debug.exitExceptionally(ret);
+			ActionCancelException ace = new ActionCancelException(); 
+			Debug.exitExceptionally(ace);
 			si.refresh();
-			throw ret; 
+			throw ace; 
 		}
 	}
 
