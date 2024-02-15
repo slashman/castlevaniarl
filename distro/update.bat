@@ -1,2 +1,0 @@
-copy * ..\distro\
-pause

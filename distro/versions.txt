@@ -11,6 +11,13 @@
 
 Changes List
 
+Version 0.73: 28/02/2010
+------------------------
+- 0001007: [Bug Report] Invalid BLAST action crash
+- 0001006: [Bug Report] No Boss in Dragon King Lair
+- 0001005: [Bug Report] Equipping a weapon deletes the one that was previously equipped
+
+
 Version 0.72: 27/02/2010
 ------------------------
 - 0001002: [Tasks] Fix MP3 Player
