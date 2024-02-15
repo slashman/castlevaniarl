@@ -712,7 +712,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		
 		//Overlay
 		// Draw Masks
-		Color mask = null;
+		/*Color mask = null;
 		//Rain
 		if (player.getFlag(Consts.ENV_RAIN))
 			mask = RAINCOLOR;
@@ -729,7 +729,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 			si.getGraphics2D().fillRect(0,0,
 					this.configuration.getScreenWidth(),
 					this.configuration.getScreenHeight());
-		}
+		}*/
 		
 		
 		Debug.exitMethod();
