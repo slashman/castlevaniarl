@@ -1674,6 +1674,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 	public void showMessage(String x){
 		messageBox.setForeground(COLOR_LAST_MESSAGE);
 		messageBox.setText(x);
+		messageBox.setVisible(true); // Force it!
 		//si.refresh();
 	}
 	
