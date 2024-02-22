@@ -134,10 +134,10 @@ public class GFXCuts {
 		hashCuts.put("DEATH_HALL", temp);
 		temp = new GFXChat();
 		temp.add("Soleiyu Belmont", "Begone... Your quest ends here", PRT_SOLIEYU_D);
-		temp.add("%NAME", "It is not time yet... I won’t give up... YOU can't give up!");
-		temp.add("Soleiyu Belmont", "It is all worthless, all our efforts… A world of light is a dream built up by dreamers, for dreamers.", PRT_SOLIEYU_D);
-		temp.add("Soleiyu Belmont", "Your fight is a pitiful struggle against the natural evolution of universe. A blindfolded battle against something you don’t event know about. The time has come for a new ordeal", PRT_SOLIEYU_D);
-		temp.add("%NAME", "Our fight is something far more important than ourselves. Our fate is to protect all that is good in the world. You must never forget that… everything is important!");
+		temp.add("%NAME", "It is not time yet... I won't give up... YOU can't give up!");
+		temp.add("Soleiyu Belmont", "It is all worthless, all our efforts... A world of light is a dream built up by dreamers, for dreamers.", PRT_SOLIEYU_D);
+		temp.add("Soleiyu Belmont", "Your fight is a pitiful struggle against the natural evolution of universe. A blindfolded battle against something you don't event know about. The time has come for a new ordeal", PRT_SOLIEYU_D);
+		temp.add("%NAME", "Our fight is something far more important than ourselves. Our fate is to protect all that is good in the world. You must never forget that... everything is important!");
 		temp.add("Soleiyu Belmont", "Shut up! And DIE!", PRT_SOLIEYU_D);
 		hashCuts.put("BADSOLIEYU1", temp);
 		temp = new GFXChat();
