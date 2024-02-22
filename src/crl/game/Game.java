@@ -3,6 +3,8 @@ package crl.game;
 
 import java.util.*;
 
+import javax.swing.SwingUtilities;
+
 import crl.Main;
 import crl.ui.*;
 //import crl.action.vkiller.Whip;
@@ -67,8 +69,13 @@ public class Game implements CommandListener, PlayerEventListener, java.io.Seria
             if (actor == player){
             	player.darken();
             	player.see();
-            	if (!player.justJumped())
-            		ui.refresh();
+            	if (!player.justJumped()) {
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							ui.refresh();
+						}
+					});
+				}
 				player.getGameSessionInfo().increaseTurns();
 				player.checkDeath();
 				player.getLevel().checkUnleashers(this);
