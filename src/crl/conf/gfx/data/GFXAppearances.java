@@ -158,7 +158,7 @@ public class GFXAppearances {
 		createTAppearance("CHURCH_WOODEN_BARRIER_V", 20, 4),
 		createTAppearance("CHURCH_CHAIR", 18, 4),
 		createTAppearance("CHURCH_CONFESSIONARY", 11, 5),
-		createTAppearance("CHURCH_CARPET", 14, 4),
+		createTAppearance("CHURCH_CARPET", 16, 4),
 		createTAppearance("ATRIUM", 14, 5),
 		createTAppearance("CHURCH_STAINED_WINDOW", 12, 4),
 		createTAppearance("CHURCH_FLOOR_H", 13, 4),
@@ -252,7 +252,7 @@ public class GFXAppearances {
 		createTAppearance("VOID_STAR", 1, 9),
 		createTAppearance("VOID_SUN", 2, 9),
 		
-		createAppearance("TELEPORT", imgConfig.getTerrainImage(), 193,99,WIDTH_NORMAL,CELL_HEIGHT,0, 16),
+		createTAppearance("TELEPORT", 7, 3,0,8),
 		
 		// Sacred weapons
 		createIAppearance("ART_CARD_SOL", false, 1, 1),
