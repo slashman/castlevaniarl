@@ -102,7 +102,10 @@ public class Walk extends Action{
 											} else {
 												aPlayer.informPlayerEvent(Player.EVT_CHAT, (NPC) aActor);
 												if (((NPC) aActor).isPriest()){
-													aPlayer.heal();
+													if (!aPlayer.getFlag("HEALED_BY_" + ((NPC) aActor).getNPCID())) {
+														aPlayer.heal();
+														aPlayer.setFlag("HEALED_BY_" + ((NPC) aActor).getNPCID(), true);
+													}
 												}
 												if (aActor instanceof Hostage){
 													if (!aPlayer.hasHostage() && !((Hostage)aActor).isRescued()){
