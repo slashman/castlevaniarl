@@ -7,6 +7,7 @@ import crl.item.Item;
 import crl.item.ItemDefinition;
 import crl.monster.Monster;
 import crl.player.Player;
+import crl.ui.effects.EffectFactory;
 
 public class TargetPS extends ProjectileSkill{
 	private Player player;
@@ -121,6 +122,13 @@ public class TargetPS extends ProjectileSkill{
 
 		if (weapon == null) {
 			invalidationMessage = "It is useless to target your own blows...";
+			return false;
+		}
+
+		if (!EffectFactory.getSingleton().isDirectedEffect(
+				"SFX_WP_"+weapon.getDefinition().getID()
+			)) {
+			invalidationMessage = "You cannot target your " + weapon.getDescription() + ". Attack on a direction instead!";
 			return false;
 		}
 		

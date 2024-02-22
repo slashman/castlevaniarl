@@ -10,6 +10,8 @@ public abstract class EffectFactory {
 	public static EffectFactory getSingleton(){
 		return singleton;
 	}
+
+	public abstract boolean isDirectedEffect(String ID);
 	
 	/*public abstract Effect createAnimatedMissileEffect(Position start, Position end, String ID, int length);
 	public abstract Effect createDirectionalMissileEffect(Position start, Position end, String ID, int length);

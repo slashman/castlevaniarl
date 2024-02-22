@@ -15,6 +15,10 @@ public class GFXEffectFactory extends EffectFactory{
 		}
 	}
 
+	public boolean isDirectedEffect(String ID) {
+		return effects.containsKey(ID) && (effects.get(ID) instanceof GFXDirectedEffect);
+	}
+
 	public Effect createDirectedEffect(Position start, Position end, String ID, int length) {
 		try {
 			GFXDirectedEffect x = (GFXDirectedEffect) effects.get(ID);

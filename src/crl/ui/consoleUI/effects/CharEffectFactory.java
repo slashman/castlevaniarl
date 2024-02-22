@@ -2,7 +2,6 @@ package crl.ui.consoleUI.effects;
 
 import java.util.Hashtable;
 
-import sz.csi.ConsoleSystemInterface;
 import sz.util.Position;
 import crl.game.Game;
 import crl.ui.effects.Effect;
@@ -15,6 +14,10 @@ public class CharEffectFactory extends EffectFactory{
 		for (int i = 0; i < effectsA.length; i++){
 			effects.put(effectsA[i].getID(), effectsA[i]);
 		}
+	}
+
+	public boolean isDirectedEffect(String ID) {
+		return effects.containsKey(ID) && effects.get(ID) instanceof CharDirectedEffect;
 	}
 
 	public Effect createDirectedEffect(Position start, Position end, String ID, int length) {
