@@ -267,10 +267,11 @@ public class GFXDisplay extends Display{
 		((GFXUserInterface)UserInterface.getUI()).messageBox.setVisible(false);
 		si.drawImage(IMG_ENDGAME);
 		si.setFont(FNT_TITLE);
-		si.printAtPixel(426,95,"Epilogue",Color.RED);
+		si.printAtPixel(156,136, "Epilogue", Color.WHITE);
 		String heshe = (player.getSex() == Player.MALE ? "he" : "she");
 		//String hisher = (player.getSex() == Player.MALE ? "his" : "her");
-		JTextArea t1 = createTempArea(20,125,700,400);
+		JTextArea t1 = createTempArea(150,170,this.configuration.getScreenWidth() - 300,400);
+
 		t1.setForeground(Color.WHITE);
 		t1.setText(player.getName()+ " made many sacrifices, but now the long fight is over. Dracula is dead "+
 				"and all other spirits are asleep. In the shadows, a person watches the castle fall. "+
@@ -279,8 +280,7 @@ public class GFXDisplay extends Display{
 				+"by all people. \n\n\n"+
 				"You played the greatest role in this history... \n\n"+
 				"Thank you for playing.\n\n\n"+
-				"CastlevaniaRL: v"+Game.getVersion()+
-				"\n\nSantiago Zapata 2005-2010");
+				"CastlevaniaRL: v"+Game.getVersion());
 		si.add(t1);
 		si.setFont(FNT_TEXT);
 		si.print(2,20, "[Press Space]",Color.WHITE);
