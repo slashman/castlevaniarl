@@ -343,7 +343,7 @@ public class BigTown extends StaticPattern
 		charMap.put("m", "MIDWALKWAY");
 		charMap.put("=", "TOWN_STAIRS");
 		charMap.put("v", "TOWN_CHURCH_FLOOR");
-		charMap.put("W", "STATIC_VOID EXIT SPECIAL_SEWERS_ENTRANCE0");
+		charMap.put("W", "SEWERS_DOWN EXIT SPECIAL_SEWERS_ENTRANCE0");
 		charMap.put("_", "AIR");
 		charMap.put("/", "TOWN_DOOR");
 		charMap.put("s", "TOWN_DOOR_H");

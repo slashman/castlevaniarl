@@ -37,8 +37,8 @@ public class SewersEntrance extends StaticPattern
 		charMap.put("#", "SEWERS_WALL");
 		charMap.put(".", "SEWERS_FLOOR");
 		charMap.put("-", "SEWERS_FLOOR");
-		charMap.put("S", "STATIC_VOID EXIT TOWN0");
-		charMap.put("E", "STATIC_VOID EXIT SEWERS0");
+		charMap.put("S", "SEWERS_UP EXIT TOWN0");
+		charMap.put("E", "SEWERS_DOWN EXIT SEWERS0");
 	}
 
 	

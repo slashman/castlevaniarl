@@ -49,7 +49,7 @@ public class SewersBottom extends StaticPattern
 		charMap.put("#", "SEWERS_WALL");
 		charMap.put(".", "SEWERS_FLOOR");
 		charMap.put("-", "SEWERS_FLOOR");
-		charMap.put("S", "STATIC_VOID EXIT _BACK");
+		charMap.put("S", "SEWERS_UP EXIT _BACK");
 		charMap.put("E", "WEIRD_MACHINE");
 	}
 
