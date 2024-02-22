@@ -9,6 +9,26 @@
 
 Changes List
 
+Version 0.8.1: 21/02/2024
+------------------------
+Gameplay
+- Prevent targetting "directional" weapons, only ranged weapons can be aimed.
+- Priest in Petra will now only heal you once :)
+
+User Interface
+- CRITICAL Prevent invisible prompt when using Orb of Return and similar.
+- Remove black flickering box under the messages box.
+
+Visuals
+- Add an outline to bats
+- Fix tile appearances (teleport statue, church carpet, sewer stairs, moat stair, moat platforms)
+- Visual Fixes on epilogue
+
+Other
+- Fix grammatical issues in manual
+- Fix encoding issues in conversations
+- Add clarity to some skills and heart usage in manual
+
 Version 0.8: 14/02/2024
 ------------------------
 Gameplay:

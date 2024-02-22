@@ -662,7 +662,7 @@ public class Game implements CommandListener, PlayerEventListener, java.io.Seria
 	}
 	
 	public static String getVersion(){
-		return "0.8";
+		return "0.8.1";
 	}
 	
 	public void setInterfaces(UserInterface pui, UISelector ps){

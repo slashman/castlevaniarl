@@ -1,15 +1,8 @@
 Visuals
-- Weird tiles stairs up and down in moat
-- Weird tiles stairs up and down in town underwater
-- Weird tiles in teleporter
 - Dash animation should show the enemy on every tile it's dashing at least
 
 Gameplay
-- Enemies sneaking up to you because the tile blends in with the background is not fun.
-  - Triage: Interrupt game when an enemy comes into view, dismissable by a specific key (say, enter by default), and able to be turned off in the options. 
-  - Triage: Add outline to bats
 - Walking into a wall or trying to use a power you can't afford still takes a turn.
-- Exploit: Staying in town and kill things right by the free healing priest for xp
 - Improve Jump: is there any reason not to jump literally every move?
   - Add cooldown to jump
   - Make it only useful in battle or moving around
@@ -27,7 +20,4 @@ Audio
 
 Manual:
 - Explain the mechanics and powers in the manual.
-- Grammatical fixes
-- Explain how hearts "power up" skills, i.e. you spend them to use skills.
 - Explain jump adequately.
-- Explain how dark metamorphosis works, blood from where? doesn't work with blood in the floor.
