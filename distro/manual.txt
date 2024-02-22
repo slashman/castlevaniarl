@@ -236,7 +236,7 @@ Minor Jinx (0)
 Summon Soul (4)
   Summons a fierce soul that breaks through the enemy
 Dark Metamorphosis (10)
-  Regains health by drinking blood from the enemies
+  Regains health when killing enemies that have blood
 Shade Teleport (5)
   De-materializes and travel as a shade
 Souls' Strike (8)
@@ -392,8 +392,8 @@ attributes, which are modified along the game as the player levels up, performs
 spiritual fusion or gets access to mystic relics.
 
 * Hits: Determines how much damage the character may take before dying
-* Hearts: Obtained by killing enemies or destroying furniture, they power up
-skills and magic abilities.
+* Hearts: Obtained by killing enemies or destroying furniture, they are required
+to use skills and magic abilities.
 * Gold: Enables the character to buy stuff from merchants.
 * Keys: Needed to advance through the castle
 * Carrying: Number of carried items
