@@ -32,7 +32,7 @@ after time the count of darkness rises from the shadows, and a Belmont hero
 responds to the call of fate to confront him.
 
 Years ago, it was the turn of Christopher Belmont to take his place in the
-history of his bloodline, and meet his fate on the castle of chaos. He emerged
+history of his bloodline, and meet his fate in the castle of chaos. He emerged
 victorious, and the land was saved.
 
 However, not much after his victory over Castlevania, when his son Soleiyu was
@@ -42,7 +42,7 @@ different nature, and finally found his child transformed into a vicious demon;
 He had to fight Dracula, whom still without his full power, died to the sacred
 whip.
 
-He came back with his son on his hands. The townspeople had his wounds attended,
+He came back with his son in his hands. The townspeople had his wounds attended,
 but there are wounds human medicine cannot cure... three days after returning
 safe and regaining his human shape, Soleiyu fled to the mountains and forests,
 and never again came back.
@@ -199,7 +199,7 @@ Cure (5)
 Energy Shield (15)
   Reduces taken damage by 2/3 for a short time
 MindLock (7)
-  Paralizes an enemy
+  Paralyzes an enemy
 Light (15)
   Creates a magical source of light that follows its caster
 MindBlast (15)
@@ -238,7 +238,7 @@ Summon Soul (4)
 Dark Metamorphosis (10)
   Regains health by drinking blood from the enemies
 Shade Teleport (5)
-  Dematerializes and travel as a shade
+  De-materializes and travel as a shade
 Souls' Strike (8)
   Summons three souls that attack the nearest enemy
 Flames Shoot (10)
@@ -312,7 +312,7 @@ Man-Beast
 ---------
 In the far mountains of Transylvania, where only the Belmont's have dared to
 travel, there are small communities of beings which are neither human nor
-monsters; they have managed to live along after being shunned by the humans as
+monsters; they have managed to live alongside after being shunned by the humans as
 monstrosities. When Dracula awoke and sent messengers asking them to join his
 legions of darkness, they refused. Their settlements were burned and leveled,
 and most of them were horribly massacred. The few survivors ran away, promising
@@ -389,7 +389,7 @@ Shield Guard Skill (1)
 
 The abilities of the character in the world are resumed in a series of
 attributes, which are modified along the game as the player levels up, performs
-spirital fusion or gets access to mystic relics.
+spiritual fusion or gets access to mystic relics.
 
 * Hits: Determines how much damage the character may take before dying
 * Hearts: Obtained by killing enemies or destroying furniture, they power up
@@ -493,14 +493,14 @@ multiple days; you will see the sun rise and fall, with heavy fog, rain and
 thunderstorms being unleashed into the land.
 
 The following are the different environments you will find:
-* Day: In the gray transylvannian day, you have the maximum possible sight value
+* Day: In the gray Transylvanian day, you have the maximum possible sight value
 for your character.
 * Night: Your sight depth is reduced by 3, enemies are stronger (+1 Damage)
 * Heavy Fog: Can happen during night and day. Your sight depth is reduced by 2
 * Rain: Can happen during night and day. Your sight depth is reduced by 1
 * Thunderstorm: Can happen during night and day. enemies are stronger (+2
 Damage). Your sight depth is reduced by 1
-* Sunny Day: Can happen during day. Enemies are weaker (-2 Damage)
+* Sunny Day: Can happen during the day. Enemies are weaker (-2 Damage)
 
 7. Shopkeepers
 --------------
@@ -508,7 +508,7 @@ You may find shopkeepers in the town of Petra, right to the west of Castlevania.
 It is rumored that some merchants have ventured inside the castle, looking for
 powerful artifacts.
 
-The merchandise available on each store is replenished daily.
+The merchandise available in each store is replenished daily.
 
 The following are the shops in Petra
 * Weapons Shop
@@ -532,7 +532,7 @@ modifying the 'keys.cfg' file.
 C Character info: Shows your skills and attributes
 D Drop: Drops an item
 P Dive: Dives into the water
-E Equip: Wears a weapon, armor or accesory
+E Equip: Wears a weapon, armor or accessory
 f Fire: Aims a weapon at a position
 F Fusion: Fusion spirits to increase skills
 g Get: Picks up an item
@@ -568,10 +568,10 @@ Mario Donick: 1.2* Testers
 and inspiration for the game
 * Anapan's CV Files [http://www.geocities.com/anapan8/cv/] Had ripped wav files
 used on the game
-
+ 
  Credits
 --------
-* Christopher Barrett: Project artist, graphic design, tiles
+* Christopher Barrett: Pixel art, graphics design.
 * Jorge D. Fuentes, Nicholas, RPGFan, Tom Kim, JiLost: Castlevania Midis
 * Björn Ritzl: Recursive Shadowcasting LOS algorithm
 
@@ -589,7 +589,7 @@ All your suggestions and bug reports are welcome via the official website (
 https://slashie.net )
 
 
-0.7 Manual Version 1.6 - Feb 22/10
+Last Update - February 21, 2024 for version 0.8.1
 
 ----------------------------------
 
@@ -597,7 +597,7 @@ Long time ago, there was a noble man born from the house of Tepes. As a Knight
 of the Dragon, he swore to protect the people of Wallachia from the perils that
 flooded a world full of ambition and bloodlust. Hailed by the priests as the
 very messiah who would take the land into prosperity, he ruled with strong hand
-for six years, stablishing his land as a respected neighbour power.
+for six years, establishing his land as a respected neighbour power.
 
 One day however, he was taken captive by invaders from the east. Tortured and
 humiliated, he was able to escape and return to his land, only to find his
