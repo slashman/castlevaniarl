@@ -573,7 +573,7 @@ used on the game
 --------
 * Christopher Barrett: Project artist, graphic design, tiles
 * Jorge D. Fuentes, Nicholas, RPGFan, Tom Kim, JiLost: Castlevania Midis
-* Bj�rn Bergstr�m: Recursive Shadowcasting LOS algorithm
+* Björn Ritzl: Recursive Shadowcasting LOS algorithm
 
  Acknowledgements
 -----------------
