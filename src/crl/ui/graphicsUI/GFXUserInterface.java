@@ -1013,7 +1013,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		}
 		
 		si.setIcon(IMG_ICON);
-		si.setTitle("CastlevaniaRL v"+Game.getVersion()+", Santiago Zapata 2005-2009");
+		si.setTitle("CastlevaniaRL v"+Game.getVersion());
 		/*-- Init Components*/
 		messageBox = new SwingInformBox();
 		/*idList = new ListBox(psi);*/
