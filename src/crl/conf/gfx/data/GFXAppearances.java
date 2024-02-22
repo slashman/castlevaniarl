@@ -9,6 +9,7 @@ import crl.ui.graphicsUI.*;
 
 public class GFXAppearances {
 	private int WIDTH_BIG;
+	private int UI_SCALE;
 	private int WIDTH_HALF;
 	private int WIDTH_QUARTER;
 	private final static int ICON_SIZE = 16;
@@ -22,6 +23,7 @@ public class GFXAppearances {
 		
 		WIDTH_BIG = configuration.getBigTileWidth();
 		WIDTH_HALF = configuration.getHalfTileWidth();
+		UI_SCALE = configuration.getViewportUserInterfaceScale();
 		WIDTH_QUARTER = (int) Math.floor(configuration.getHalfTileWidth() / 2);
 		CELL_HEIGHT = configuration.getCellHeight();
 		WIDTH_NORMAL = configuration.getNormalTileWidth();
@@ -131,8 +133,8 @@ public class GFXAppearances {
 				imgConfig.getTerrainImage(), 
 				160, 154,WIDTH_NORMAL,42,
 				0,10),*/
-		createAppearance("MOAT_DOWN", imgConfig.getTerrainImage(), 5, 4),
-		createAppearance("MOAT_UP", imgConfig.getTerrainImage(), 6, 4),
+		createTAppearance("MOAT_DOWN", 5, 4, 0, 8),
+		createTAppearance("MOAT_UP", 6, 4, 0, 8),
 		createTAppearance("MOSS_MIDFLOOR", 4, 4),
 		createTAppearance("MOSS_STAIRS", 3, 4),
 		//createTAppearance("MOAT_UP", 6, 4),
@@ -700,7 +702,7 @@ public class GFXAppearances {
 			BufferedImage darkimg = ImageUtils.crearImagen(bigDarkImage, xpos*WIDTH_NORMAL, ypos*CELL_HEIGHT, WIDTH_NORMAL, CELL_HEIGHT);
 			BufferedImage niteimg = ImageUtils.crearImagen(bigNiteImage, xpos*WIDTH_NORMAL, ypos*CELL_HEIGHT, WIDTH_NORMAL, CELL_HEIGHT);
 			BufferedImage darkniteimg = ImageUtils.crearImagen(bigDarkNiteImage, xpos*WIDTH_NORMAL, ypos*CELL_HEIGHT, WIDTH_NORMAL, CELL_HEIGHT);
-			GFXAppearance ret = new GFXAppearance(ID, img, darkimg, niteimg, darkniteimg, xoff,yoff);
+			GFXAppearance ret = new GFXAppearance(ID, img, darkimg, niteimg, darkniteimg, xoff * UI_SCALE, yoff * UI_SCALE);
 			return ret;
 		} catch (Exception e){
 			Game.crash("Error loading terrain image ", e);
