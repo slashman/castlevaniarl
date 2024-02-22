@@ -125,7 +125,7 @@ public class TargetPS extends ProjectileSkill{
 		}
 		
 		if (weapon.getRange() < 2){
-			invalidationMessage = "You can�t target your "+weapon.getDescription();
+			invalidationMessage = "You can't target your "+weapon.getDescription();
 			return false;
 		}
 		
