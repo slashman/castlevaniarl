@@ -41,18 +41,13 @@ public class Use extends Action{
 					return;
 				}
 			}
+			SFXManager.play("wav/loutwarp.wav");
 			aPlayer.informPlayerEvent(Player.EVT_GOTO_LEVEL, "TOWN0");
+			// We need to properly relocate the player
 			Position exit = aPlayer.getLevel().getExitFor("FOREST0");
-			//if exit is not null, then we are in TOWN0, else we couldnt escape... 
-			if (exit != null){
-				aPlayer.getLevel().setLevelNumber(0);
-				SFXManager.play("wav/loutwarp.wav");
-				aPlayer.landOn(Position.add(exit, new Position(-1,0,0)));
-				aPlayer.reduceQuantityOf(targetItem);
-			} else {
-				aPlayer.getLevel().addMessage("The dark energy won't allow the gem to work!");
-			}
-			
+			aPlayer.getLevel().setLevelNumber(0);
+			aPlayer.landOn(Position.add(exit, new Position(-1,0,0)));
+			aPlayer.reduceQuantityOf(targetItem);
 			return;
 		}
 		

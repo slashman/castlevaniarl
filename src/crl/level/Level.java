@@ -67,6 +67,10 @@ public class Level implements FOVMap, Serializable{
 	public Position getExitFor(String levelID){
 		return (Position)exits.get(levelID);
 	}
+
+	public Position getAnExit(){
+		return (Position)exits.get(exits.keys().nextElement());
+	}
 	
 	public void addItem(Position where, Item what){
 		Vector stack = (Vector)items.get(where.toString());

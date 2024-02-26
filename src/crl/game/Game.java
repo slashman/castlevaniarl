@@ -599,6 +599,8 @@ public class Game implements CommandListener, PlayerEventListener, java.io.Seria
 			player.setPosition(currentLevel.getExitFor(formerLevelID));
 		} else if(currentLevel.getExitFor("_START") != null) {
 			player.setPosition(currentLevel.getExitFor("_START"));
+		} else { // We need to make sure the player is located somewhere
+			player.setPosition(currentLevel.getAnExit());
 		}
 		
 		if (currentLevel.isHostageSafe()){
