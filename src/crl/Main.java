@@ -13,7 +13,8 @@ import java.util.Properties;
 
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Sequencer;
+
+import org.apache.commons.httpclient.HttpException;
 
 import sz.csi.CharKey;
 import sz.csi.ConsoleSystemInterface;
@@ -56,6 +57,7 @@ import crl.feature.ai.NullSelector;
 import crl.game.CRLException;
 import crl.game.Game;
 import crl.game.GameFiles;
+import crl.game.GameVersion;
 import crl.game.MonsterRecord;
 import crl.game.PlayerGenerator;
 import crl.game.SFXManager;
@@ -227,6 +229,23 @@ public class Main {
         	}
 			Player.initializeWhips("LEATHER_WHIP", "CHAIN_WHIP", "VKILLERW","THORN_WHIP", "FLAME_WHIP", "LIT_WHIP");
 			
+			try {
+				GameVersion latestVersion = GameVersion.getLatestVersion();
+				if (latestVersion == null){
+					ui.showVersionDialog("Error checking for updates.", true);
+					System.err.println("null latest version");
+				} else if (latestVersion.equals(GameVersion.getCurrentVersion())){
+					ui.showVersionDialog("You are using the latest available version", false);
+				} else {
+					ui.showVersionDialog("A newer version, "+latestVersion.getCode()+" from "+latestVersion.getFormattedDate()+" is available!", true);
+				}
+			} catch (HttpException ex) {
+				ui.showVersionDialog("Error checking for updates.", true);
+				ex.printStackTrace();
+			} catch (IOException ex) {
+				ui.showVersionDialog("Error checking for updates.", true);
+				ex.printStackTrace();
+			}
 			createNew = false;
     	}
 	}

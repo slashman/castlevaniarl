@@ -1000,6 +1000,15 @@ public class ConsoleUserInterface extends UserInterface implements CommandListen
 		return (x.code == CharKey.Y || x.code == CharKey.y);
 	}
 
+	@Override
+	public void showVersionDialog(String description, boolean stop) {
+		si.print(2,20, description, ConsoleSystemInterface.WHITE);
+		si.refresh();
+		if (stop) {
+			si.waitKey(CharKey.SPACE);
+		}
+	}
+
 	public void safeRefresh(){
 		// For the Console UI we just do a normal refresh
 		refresh();

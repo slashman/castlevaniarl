@@ -74,6 +74,10 @@ public class SwingSystemInterface implements Runnable{
 	public void setVisible(boolean bal){
 		frameMain.setVisible(bal);
 	}
+
+	public void showAlert(String message) {
+		JOptionPane.showMessageDialog(frameMain, message, "Alert", JOptionPane.ERROR_MESSAGE);
+	}
 	
 	public SwingSystemInterface (GFXConfiguration configuration){
 		this.configuration = configuration;

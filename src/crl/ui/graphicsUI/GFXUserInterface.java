@@ -1692,6 +1692,15 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		showMessage(x);
 		si.waitKey(CharKey.SPACE);
 	}
+
+	@Override
+	public void showVersionDialog(String description, boolean stop) {
+		if (stop) {
+			((SwingSystemInterface)si).showAlert(description);
+		} else {
+			System.out.println(description);
+		}
+	}
 	
 	public void showSystemMessage(String x){
 		messageBox.setForeground(COLOR_LAST_MESSAGE);
