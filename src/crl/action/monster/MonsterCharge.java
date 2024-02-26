@@ -74,9 +74,13 @@ public class MonsterCharge extends Action{
 					aPlayer.damage("The "+aMonster.getDescription()+ " hits you!", aMonster, new Damage((damage==0?aMonster.getAttack():damage), false));
 				} else if (aPlayer.getStandingHeight() > aMonster.getStandingHeight()){
 					aLevel.addMessage("The "+aMonster.getDescription()+ "'s attack passes beneath you!");
-				} else
+				} else {
 					aLevel.addMessage("The "+aMonster.getDescription()+ "'s attack passes over you!");
-				
+				}
+				if (i == range - 1) {
+					// Prevent enemy from landing over player
+					break;
+				}
 			}
 			aMonster.setPosition(destinationPoint);
 		}
