@@ -9,6 +9,21 @@
 
 Changes List
 
+Version 0.8.2: 25/02/2024
+-------------------------
+Crashes
+- Prevent issues with null position in UI refresh after warping with Orb of Return
+
+Gameplay
+- Prevent enemy from landing over player when charging
+
+Visuals
+- Display updated position of enemies, tile by tile, for multi-tile movement actions such as MonsterCharge and Jump
+
+Other
+- Check for current version on game start
+
+
 Version 0.8.1: 21/02/2024
 ------------------------
 Gameplay
