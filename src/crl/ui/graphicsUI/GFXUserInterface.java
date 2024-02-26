@@ -1380,6 +1380,16 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 	}
 
 	private int dimMsg = 0;
+
+	@Override
+	public void safeRefresh() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				refresh();
+			}
+		});
+	}
+
 	public void refresh(){
 		si.cls();
 		//messageBox.setVisible(true);

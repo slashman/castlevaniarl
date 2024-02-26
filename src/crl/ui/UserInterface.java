@@ -164,6 +164,10 @@ public abstract class UserInterface implements CommandListener/*, Runnable*/{
 
 	public abstract void refresh();
 
+	// This method can be invoked from any thread and won't cause rendering issues.
+	// Provided mostly so that the Swing implementation can refresh the UI from
+	// non UI threads safely.
+	public abstract void safeRefresh();
 
  	/**
      * Shows a message inmediately; useful for system

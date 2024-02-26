@@ -112,8 +112,7 @@ public class Jump extends Action{
 		Cell currentCell = aLevel.getMapCell(startingPosition);
 		aPlayer.doJump(aPlayer.getStandingHeight());
         out: for (int i = 1; i < jumpingRange; i++){
-        	UserInterface.getUI().refresh();
-        	Position destinationPoint = Position.add(startingPosition, Position.mul(var, i));
+			Position destinationPoint = Position.add(startingPosition, Position.mul(var, i));
         	Cell destinationCell = aLevel.getMapCell(destinationPoint);
         	/*if (destinationCell == null)
         		break out;*/
@@ -125,6 +124,8 @@ public class Jump extends Action{
         		}
         		if (i < jumpingRange-1){
 					aPlayer.setPosition(destinationPoint);
+					UserInterface.getUI().safeRefresh();
+					actionAnimationPause();
 					continue out;
         		}
 				else{
@@ -147,10 +148,13 @@ public class Jump extends Action{
 					messaged = true;
 				}
 				if (!destinationCell.isSolid()) {
-					if (i < jumpingRange-1)
+					if (i < jumpingRange-1) {
 						aPlayer.setPosition(destinationPoint);
-					else
+						UserInterface.getUI().safeRefresh();
+						actionAnimationPause();
+					} else {
 						aPlayer.landOn(destinationPoint);
+					}
 				} else {
 					aLevel.addMessage("You bump into the "+destinationCell.getShortDescription());
 					aPlayer.land();

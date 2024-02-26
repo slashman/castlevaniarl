@@ -1000,6 +1000,11 @@ public class ConsoleUserInterface extends UserInterface implements CommandListen
 		return (x.code == CharKey.Y || x.code == CharKey.y);
 	}
 
+	public void safeRefresh(){
+		// For the Console UI we just do a normal refresh
+		refresh();
+	}
+
 	public void refresh(){
 		//cleanViewPort();
 		drawPlayerStatus();

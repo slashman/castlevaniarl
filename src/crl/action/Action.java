@@ -296,4 +296,10 @@ public abstract class Action implements java.io.Serializable{
 			break;
 		}
 	}
+
+	// Sometimes when we are executing an action, we need to pause to
+	// display an updated version of the world
+	protected final void actionAnimationPause(){
+		try {Thread.sleep(150);}catch (Exception e){}
+	}
 }

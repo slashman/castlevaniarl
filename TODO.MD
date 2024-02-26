@@ -1,6 +1,3 @@
-Visuals
-- Dash animation should show the enemy on every tile it's dashing at least
-
 Gameplay
 - Walking into a wall or trying to use a power you can't afford still takes a turn.
 - Improve Jump: is there any reason not to jump literally every move?

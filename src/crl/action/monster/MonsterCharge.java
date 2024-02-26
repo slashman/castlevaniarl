@@ -9,6 +9,7 @@ import crl.level.Level;
 import crl.monster.Monster;
 import crl.player.Damage;
 import crl.player.Player;
+import crl.ui.UserInterface;
 
 public class MonsterCharge extends Action{
 	private int range;
@@ -83,6 +84,10 @@ public class MonsterCharge extends Action{
 				}
 			}
 			aMonster.setPosition(destinationPoint);
+			if (i < range - 1) {
+				UserInterface.getUI().safeRefresh(); // We need to show the player the enemy in the updated position
+				actionAnimationPause();
+			}
 		}
 		
 	}
