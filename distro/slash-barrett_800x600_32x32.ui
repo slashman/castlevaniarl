@@ -1,5 +1,7 @@
-# CastlevaniaRL 1.26 UI Configuration File
+# CastlevaniaRL UI Configuration File
 # Slash - Christopher Barrett UI
+# 800x600, 32x32 sprites
+# Currently not working because of hardcoded camera scale
 
 useMouse = false
 TILESET = dragontileset.gif
@@ -68,6 +70,9 @@ FNT_TITLE_SIZE = 32
 FNT_TEXT = res/v5easter.ttf
 FNT_TEXT_SIZE = 16
 
+FNT_PROLOGUE = res/v5easter.ttf
+FNT_PROLOGUE_SIZE = 18
+
 FNT_MONO = res/v5easter.ttf
 FNT_MONO_SIZE = 15
 
@@ -79,9 +84,21 @@ TILES_CHARACTERS = gfx/crl_chars.gif
 TILES_MONSTERS = gfx/crl_mons32.gif
 TILES_BIG_MONSTERS = gfx/crl_mons48.gif
 TILES_ITEMS = gfx/crl_items.gif
+TILES_ITEM_ICONS = gfx/crl_items.gif
 TILES_TERRAIN = gfx/crl_terrain.gif
 TILES_DARK_TERRAIN = gfx/crl_terrain_d.gif
 TILES_NIGHT_TERRAIN = gfx/crl_terrain_night.gif
 TILES_DARK_NIGHT_TERRAIN = gfx/crl_terrain_night_d.gif
 TILES_FEATURES = gfx/crl_features.gif
+TILES_FEATURE_ICONS = gfx/crl_features.gif
 TILES_EFFECTS = gfx/crl_effects.gif
+
+SFX_EFFECTS = gfx/crl_effects.gif
+SFX_SLASHES = gfx/tempSlashes.gif
+SFX_CURVED_SLASHES = gfx/crl_slashes1.gif
+SFX_STRAIGHT_SLASHES = gfx/crl_slashes2.gif
+EFFECTS_SCALE = 1
+
+UI_TILES = gfx/barrett-interface.gif
+VIEWPORT_UI_TILES = gfx/barrett-interface.gif
+VIEWPORT_UI_SCALE = 1
