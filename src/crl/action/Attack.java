@@ -282,7 +282,7 @@ public class Attack extends Action{
 			if (((Player)performer).getSex() == Player.MALE)
 				return "wav/punch_male.wav";
 			else
-				return "wav/punch_male.wav";
+				return null;
 		}
 	}
 
