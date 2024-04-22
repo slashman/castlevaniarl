@@ -188,8 +188,8 @@ public class Main {
 					initializeUI(csi);
 				}
 				
-            } catch (CRLException crle){
-            	crash("Error initializing", crle);
+            } catch (Exception e){
+            	crash("Error initializing", e);
             }
             STMusicManagerNew.initManager();
         	if (configuration.getProperty("enableSound") != null && configuration.getProperty("enableSound").equals("true")){ // Sound
@@ -394,7 +394,7 @@ public class Main {
 		title();
 	}
 
-	private static void initializeUI(Object si){
+	private static void initializeUI(Object si) throws CRLException {
 		Action walkAction = new Walk();
 		Action jump = new Jump();
 		Action thrown = new Throw();
@@ -504,10 +504,22 @@ public class Main {
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			if (si instanceof SwingSystemInterface) {
+	        	((SwingSystemInterface)si).showAlert("Problem reading keys.cfg config file: " + e.getMessage());
+	        }
 			throw new RuntimeException("keys.cfg config file not found");
 		} catch (IOException e) {
 			e.printStackTrace();
+	        if (si instanceof SwingSystemInterface) {
+	        	((SwingSystemInterface)si).showAlert("Problem reading keys.cfg config file: " + e.getMessage());
+	        }
 			throw new RuntimeException("Problem reading keys.cfg config file");
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (si instanceof SwingSystemInterface) {
+	        	((SwingSystemInterface)si).showAlert("Problem initializing UI: " + e.getMessage());
+	        }
+			throw e;
 		}
 		
 
@@ -533,12 +545,12 @@ public class Main {
 		return Integer.parseInt(s);
 	}
 
-	private static String readKeyString(Properties config, String keyName) {
+	private static String readKeyString(Properties config, String keyName) throws CRLException {
 		return readKey(config, keyName)+"";
 	}
 
 	
-	private static int readKey(Properties config, String keyName) {
+	private static int readKey(Properties config, String keyName) throws CRLException {
 		String fieldName = config.getProperty(keyName).trim();
 		if (fieldName == null)
 			throw new RuntimeException("Invalid key.cfg file, property not found: "+keyName);
@@ -549,8 +561,7 @@ public class Main {
 			e.printStackTrace();
 			throw new RuntimeException("Error reading field : "+fieldName);
 		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Error reading field : "+fieldName);
+			throw new CRLException("Invalid key name: ["+fieldName+"]");
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Error reading field : "+fieldName);
@@ -688,6 +699,7 @@ public class Main {
         	System.out.println("Trying to save game");
         	GameFiles.saveGame(currentGame, currentGame.getPlayer());
         }
+        ui.showCriticalError("Error: " + message);
         System.exit(-1);
     }
     

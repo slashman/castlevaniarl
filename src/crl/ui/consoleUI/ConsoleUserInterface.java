@@ -1008,6 +1008,13 @@ public class ConsoleUserInterface extends UserInterface implements CommandListen
 			si.waitKey(CharKey.SPACE);
 		}
 	}
+	
+	@Override
+	public void showCriticalError(String description) {
+		si.print(2,20, description, ConsoleSystemInterface.WHITE);
+		si.refresh();
+		si.waitKey(CharKey.SPACE);
+	}
 
 	public void safeRefresh(){
 		// For the Console UI we just do a normal refresh

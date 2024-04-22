@@ -264,4 +264,5 @@ public abstract class UserInterface implements CommandListener/*, Runnable*/{
 	public abstract void setPersistantMessage(String description) ;
 
 	public abstract void showVersionDialog(String description, boolean stop);
+	public abstract void showCriticalError(String description);
 }

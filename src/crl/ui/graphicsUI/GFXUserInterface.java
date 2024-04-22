@@ -1702,6 +1702,13 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 		}
 	}
 	
+	@Override
+	public void showCriticalError(String description) {
+		if (si != null) {
+			((SwingSystemInterface)si).showAlert(description);
+		}
+	}
+	
 	public void showSystemMessage(String x){
 		messageBox.setForeground(COLOR_LAST_MESSAGE);
 		messageBox.setText(x);
