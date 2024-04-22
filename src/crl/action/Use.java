@@ -41,8 +41,13 @@ public class Use extends Action{
 					return;
 				}
 			}
-			SFXManager.play("wav/loutwarp.wav");
 			aPlayer.informPlayerEvent(Player.EVT_GOTO_LEVEL, "TOWN0");
+			// Check if we actually managed to go to level!
+			if (!aPlayer.getLevel().getID().equals("TOWN0")) {
+				aPlayer.getLevel().addMessage("An evil energy prevents the orb from working!");
+				return;
+			}
+			SFXManager.play("wav/loutwarp.wav");
 			// We need to properly relocate the player
 			Position exit = aPlayer.getLevel().getExitFor("FOREST0");
 			aPlayer.getLevel().setLevelNumber(0);
