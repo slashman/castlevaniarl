@@ -12,7 +12,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 
 
 public class GameVersion {
-	private static final GameVersion currentVersion = new GameVersion("0.8.2", 2024, 2, 25);
+	private static final GameVersion currentVersion = new GameVersion("0.8.3", 2024, 4, 22);
 	
 	public static GameVersion getCurrentVersion(){
 		return currentVersion;

@@ -9,6 +9,22 @@
 
 Changes List
 
+Version 0.8.3: 22/04/2024
+-------------------------
+Crashes
+- Prevent crash when using Orb of Return in boss area while boss is alive
+
+Audio
+- Add improved female voices
+
+Visuals
+- Add support for 800x600 32x32 and 64x64 UI
+- Add support for 1024x768 32x32 UI
+
+Other
+- Improve error messages on init
+- Add keys reference for keys.cfg
+
 Version 0.8.2: 25/02/2024
 -------------------------
 Crashes
