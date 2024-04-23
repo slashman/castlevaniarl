@@ -42,7 +42,7 @@ public class Jump extends Action{
 		if (p.getSex() == Player.MALE){
 			return "wav/jump_male.wav";
 		} else {
-			return null;
+			return "wav/jump_female.wav";
 		}
 		
 	}

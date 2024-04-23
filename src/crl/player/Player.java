@@ -413,6 +413,12 @@ public class Player extends Actor {
 			} else {
 				SFXManager.play("wav/hurt_male2.wav");
 			}
+		} else {
+			if (Util.chance(50)){
+				SFXManager.play("wav/hurt_female.wav");				
+			} else {
+				SFXManager.play("wav/hurt_female2.wav");
+			}
 		}
 		
 		hits -= dam.getDamage();
@@ -583,6 +589,8 @@ public class Player extends Actor {
 		if (hits < 0){
 			if (getSex() == MALE)
 				SFXManager.play("wav/die_male.wav");
+			else
+				SFXManager.play("wav/die_female.wav");
 			gameSessionInfo.setDeathCause(GameSessionInfo.KILLED);
 			gameSessionInfo.setKillerMonster(who);
 			gameSessionInfo.setDeathLevel(level.getLevelNumber());
