@@ -182,9 +182,6 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 				VP_END = new Position (5,5),
 				PC_POS = new Position (3,3);
 
-	private Position CAMERA = new Position(-32, -32); // TODO: Read from configuration
-	private int cameraScale = 2; // TODO: Read from configuration
-
     public void setFlipFacing(boolean val){
     	flipFacing = val;
     }
@@ -698,7 +695,7 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 					}
 					if (mask != null){
 						si.getGraphics2D().setColor(mask);
-						si.getGraphics2D().fillRect((PC_POS.x-xrange+x)*STANDARD_WIDTH + CAMERA.x,(PC_POS.y-yrange+y)*STANDARD_WIDTH + CAMERA.y, STANDARD_WIDTH, STANDARD_WIDTH);
+						si.getGraphics2D().fillRect((PC_POS.x-xrange+x)*STANDARD_WIDTH + this.configuration.getCameraPosition().x,(PC_POS.y-yrange+y)*STANDARD_WIDTH + this.configuration.getCameraPosition().y, STANDARD_WIDTH, STANDARD_WIDTH);
 					}
 				}
 				//runner.y++;
@@ -2524,8 +2521,8 @@ public class GFXUserInterface extends UserInterface implements Runnable {
 
 	public void drawImageVP(int scrX, int scrY, Image img){
 		si.drawImage(
-			CAMERA.x + scrX * cameraScale,
-			CAMERA.y + scrY * cameraScale,
+				this.configuration.getCameraPosition().x + scrX * this.configuration.getCameraScale(),
+				this.configuration.getCameraPosition().y + scrY * this.configuration.getCameraScale(),
 			img
 		);
 	}

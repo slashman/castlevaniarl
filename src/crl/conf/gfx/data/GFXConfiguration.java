@@ -48,6 +48,9 @@ public class GFXConfiguration {
 	protected int effectsScale;
 	protected int viewportUserInterfaceScale;
 	
+	protected int cameraScale;
+	protected Position cameraPosition;
+	
 	/**
 	 * Default constructor
 	 */
@@ -71,6 +74,10 @@ public class GFXConfiguration {
 		this.screenWidthInTiles = PropertyFilters.inte(p.getProperty("XRANGE"));
 		this.screenHeightInTiles = PropertyFilters.inte(p.getProperty("YRANGE"));
 		this.playerLocationOnScreen = PropertyFilters.getPosition(p.getProperty("PC_POS"));
+		
+		this.cameraScale = PropertyFilters.inte(p.getProperty("CAMERA_SCALE"));
+		this.cameraPosition= PropertyFilters.getPosition(p.getProperty("CAMERA_POS"));
+		
 		
 		this.windowBackgroundColour = PropertyFilters.getColor(p.getProperty("COLOR_WINDOW_BACKGROUND"));
 		this.borderColourIn = PropertyFilters.getColor(p.getProperty("COLOR_BORDER_IN"));
@@ -215,5 +222,13 @@ public class GFXConfiguration {
 
 	public int getViewportUserInterfaceScale() {
 		return viewportUserInterfaceScale;
+	}
+	
+	public Position getCameraPosition() {
+		return cameraPosition;
+	}
+	
+	public int getCameraScale() {
+		return cameraScale;
 	}
 }
