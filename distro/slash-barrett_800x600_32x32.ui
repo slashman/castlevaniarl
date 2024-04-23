@@ -1,7 +1,6 @@
 # CastlevaniaRL UI Configuration File
 # Slash - Christopher Barrett UI
 # 800x600, 32x32 sprites
-# Currently not working because of hardcoded camera scale
 
 useMouse = false
 TILESET = dragontileset.gif
@@ -15,6 +14,8 @@ PC_POS = 12,9
 XRANGE = 12
 YRANGE = 9
 UPLEFTBORDER = 0
+CAMERA_POS = -24,0
+CAMERA_SCALE = 1
 
 # Message Box 
 FNT_MESSAGEBOX = res/v5easter.ttf
